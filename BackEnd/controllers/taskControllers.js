@@ -1,33 +1,33 @@
+const asyncHandler = require("express-async-handler");
+const User = require("../mongooseModels/userModel");
+
 //@desc get tasks
 //router get request to /api/tasks
 //access private
-const getTasks = (req, res) => {
-  res.status(200).json({ task: "You have just requested a task for view" });
-};
+const getTasks = asyncHandler(async (req, res) => {
+ // Send the response
+});
 
 //@desc add tasks
 //router post request to /api/tasks
 //access private
-const addTask = (req, res) => {
-  res.status(200).json({ task: "You have just added a new task" });
-};
+const addTask = asyncHandler(async (req, res) => {
+
+
+});
 
 //@desc edit tasks
 //router put request to /api/tasks
 //access private
-const editTask = (req, res) => {
-  res
-    .status(200)
-    .json({ task: `You have just edited the task ${req.params.id}` });
-};
+const editTask = asyncHandler(async (req, res) => {
+ 
+});
 
 //@desc delete tasks
 //router delete request to /api/tasks
 //access private
-const deleteTasks = (req, res) => {
-  res
-    .status(200)
-    .json({ task: `You have just deleted the task ${req.params.id}` });
-};
+const deleteTasks = asyncHandler(async (req, res) => {
+
+});
 
 module.exports = { getTasks, addTask, editTask, deleteTasks };
