@@ -12,10 +12,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const taskRoutes = require("./routes/taskRoutes");
-const userRoutes = require("./routes.userRoutes");
+const userRoutes = require("./routes/userRoutes");
 
-
-app.use("/api/users")
+app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
+
 app.use(handleError);
+
 app.listen(port, () => console.log(`Server started on port ${port}`));
