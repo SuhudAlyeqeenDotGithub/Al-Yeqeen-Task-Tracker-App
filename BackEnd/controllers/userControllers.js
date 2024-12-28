@@ -1,5 +1,5 @@
 const User = require("../mongooseModels/userModel");
-const asyncHandler = require("express-async-handler")
+const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
