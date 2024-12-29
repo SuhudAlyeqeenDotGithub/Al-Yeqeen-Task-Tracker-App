@@ -17,11 +17,15 @@ const taskSchema = new Schema(
     },
     taskStartTime: { type: String, default: "00:00" },
     taskDueTime: { type: String, default: "00:00" },
-    taskStatus: { type: String, required: [true, "Please enter a task status"] },
+    taskStatus: {
+      type: String,
+      required: [true, "Please enter a task status"],
+    },
     taskOwner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
 
 const Task = model("Task", taskSchema);
+
 module.exports = Task;
