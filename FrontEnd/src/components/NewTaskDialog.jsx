@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setNewTaskDialogIsOpen } from "../reduxFeatures/dialogSlice";
+import { useState } from "react";
 import AllPurposeContainer from "./AllPurposeContainer";
 import AllPurposeInput from "./allPurposeInput";
 import { enableScroll } from "../UtilityFunctions/UtilityFunctions";
-import { TaskDialogContext } from "../contexts/TaskContext";
 import AllPurposeLabel from "./AllPurposeLabel";
 import { closeIcon } from "./icons";
 
 const NewTaskDialog = () => {
-  const { newTaskDialogIsOpen, setNewTaskDialogIsOpen } =
-    useContext(TaskDialogContext);
+  const { newTaskDialogIsOpen } = useSelector(state => state.dialog);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     taskName: "",
@@ -39,7 +40,7 @@ const NewTaskDialog = () => {
 
   const closeDialog = () => {
     if (newTaskDialogIsOpen === true) {
-      setNewTaskDialogIsOpen(false);
+      dispatch(setNewTaskDialogIsOpen(false));
       enableScroll();
     }
   };

@@ -1,14 +1,36 @@
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setNewTaskDialogIsOpen,
+  setViewTaskDialogIsOpen,
+  setEditTaskDialogIsOpen,
+  setEditDialogTaskFromViewIsOpen,
+  setViewTaskDataToExport,
+  setDeleteTaskDialogIsOpen,
+  setDeleteTaskFromView
+} from "../reduxFeatures/dialogSlice";
+
 import AllPurposeCheckBox from "../components/AllPurposeCheckBox";
 import { editIcon, deleteIcon, addIcon } from "../components/icons";
-import { useContext, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
-import { TaskDialogContext } from "../contexts/TaskContext";
 import { disableScroll } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 
 function TasksPage() {
+  const {
+    newTaskDialogIsOpen,
+    viewTaskDialogIsOpen,
+    editTaskDialogIsOpen,
+    editTaskDialogFromViewIsOpen,
+    viewTaskDataToExport,
+    deleteTaskDialogIsOpen,
+    deleteTaskFromView,
+  } = useSelector(state => state.dialog);
+
+  const dispatch = useDispatch();
+
   const taskContainerStyle =
     "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 flex flex-wrap w-2/5 max-w-2/4 min-w-96 items-center justify-center hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
@@ -30,23 +52,6 @@ function TasksPage() {
     Array(tasksData.length).fill(false)
   );
   const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
-
-  const {
-    newTaskDialogIsOpen,
-    setNewTaskDialogIsOpen,
-    viewTaskDialogIsOpen,
-    setViewTaskDialogIsOpen,
-    editTaskDialogIsOpen,
-    setEditTaskDialogIsOpen,
-    editTaskDialogFromViewIsOpen,
-    setEditDialogTaskFromViewIsOpen,
-    viewTaskDataToExport,
-    setViewTaskDataToExport,
-    deleteTaskDialogIsOpen,
-    setDeleteTaskDialogIsOpen,
-    deleteTaskFromView,
-    setDeleteTaskFromView,
-  } = useContext(TaskDialogContext);
 
   const oneOrMoreRegBoxIsTrue = regularCheckBoxStatus.some(
     (checkStatus) => checkStatus === true
@@ -75,7 +80,7 @@ function TasksPage() {
   const showViewTaskDialog = (taskData) => {
     if (viewTaskDialogIsOpen === false) {
       setViewTaskData(taskData);
-      setViewTaskDialogIsOpen(true);
+      dispatch(setViewTaskDialogIsOpen(true));
       disableScroll();
     }
   };
@@ -84,14 +89,14 @@ function TasksPage() {
     event.stopPropagation();
     if (editTaskDialogIsOpen === false) {
       setEditTaskData(taskObj);
-      setEditTaskDialogIsOpen(true);
+      dispatch(setEditTaskDialogIsOpen(true))
       disableScroll();
     }
   };
 
   const showNewTaskDialog = () => {
     if (newTaskDialogIsOpen === false) {
-      setNewTaskDialogIsOpen(true);
+      dispatch(setNewTaskDialogIsOpen(true));
       disableScroll();
     }
   };
@@ -104,7 +109,7 @@ function TasksPage() {
           return taskData.taskId === taskToEdit;
         })
       );
-      setEditTaskDialogIsOpen(true);
+      dispatch(setEditTaskDialogIsOpen(true));
     }
   };
 
@@ -128,7 +133,7 @@ function TasksPage() {
         .filter((task) => task !== null); // Remove null values from the array
 
       setTasksToDelete(tasksToDeleteLookUp);
-      setDeleteTaskDialogIsOpen(true);
+      dispatch(setDeleteTaskDialogIsOpen(true));
       disableScroll();
     }
   };

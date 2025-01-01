@@ -1,11 +1,19 @@
-import React from "react";
-import { useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setViewTaskDialogIsOpen,
+  setEditTaskDialogIsOpen,
+  setEditDialogTaskFromViewIsOpen,
+  setViewTaskDataToExport,
+  setDeleteTaskDialogIsOpen,
+  setDeleteTaskFromView,
+} from "../reduxFeatures/dialogSlice";
+
 import AllPurposeContainer from "./AllPurposeContainer";
 import {
   disableScroll,
   enableScroll,
 } from "../UtilityFunctions/UtilityFunctions";
-import { TaskDialogContext } from "../contexts/TaskContext";
+
 import { editIcon, deleteIcon, closeIcon } from "./icons";
 import { RegularParagraph, TaskStatusChip } from "./ShortComponents";
 import EditTaskDialog from "./EditTaskDialog";
@@ -14,18 +22,13 @@ import DeleteTaskDialog from "./deleteTaskDialog";
 const ViewTaskDialog = ({ taskData }) => {
   const {
     viewTaskDialogIsOpen,
-    setViewTaskDialogIsOpen,
     editTaskDialogIsOpen,
-    setEditTaskDialogIsOpen,
     editTaskDialogFromViewIsOpen,
-    setEditDialogTaskFromViewIsOpen,
     viewTaskDataToExport,
-    setViewTaskDataToExport,
     deleteTaskDialogIsOpen,
-    setDeleteTaskDialogIsOpen,
     deleteTaskFromView,
-    setDeleteTaskFromView,
-  } = useContext(TaskDialogContext);
+  } = useSelector(state => state.dialog);
+  const dispatch = useDispatch();
 
   const {
     taskId,
@@ -40,17 +43,17 @@ const ViewTaskDialog = ({ taskData }) => {
 
   const handleCloseViewTask = () => {
     if (viewTaskDialogIsOpen === true) {
-      setViewTaskDialogIsOpen(false);
+      dispatch(setViewTaskDialogIsOpen(false));
       enableScroll();
     }
   };
 
   const handleEditTaskFromView = () => {
     if (editTaskDialogIsOpen === false) {
-      setViewTaskDataToExport(taskData);
-      setEditTaskDialogIsOpen(true);
-      setEditDialogTaskFromViewIsOpen(true);
-      setViewTaskDialogIsOpen(false);
+      dispatch(setViewTaskDataToExport(taskData));
+      dispatch(setEditTaskDialogIsOpen(true));
+      dispatch(setEditDialogTaskFromViewIsOpen(true));
+      dispatch(setViewTaskDialogIsOpen(false));
     }
   };
 

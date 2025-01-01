@@ -1,28 +1,28 @@
-import { useContext, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setDeleteTaskDialogIsOpen,
+  setDeleteTaskFromView,
+  setViewTaskDialogIsOpen,
+} from "../reduxFeatures/dialogSlice";
+import { useState } from "react";
 import AllPurposeContainer from "./AllPurposeContainer";
 import {
   disableScroll,
   enableScroll,
 } from "../UtilityFunctions/UtilityFunctions";
-import { TaskDialogContext } from "../contexts/TaskContext";
-import { editIcon, deleteIcon, closeIcon } from "./icons";
 import { RegularParagraph } from "./ShortComponents";
-import ViewTaskDialog from "./ViewTaskDialog";
 
 const DeleteTaskDialog = ({ tasksToDelete }) => {
-  const {
-    deleteTaskDialogIsOpen,
-    setDeleteTaskDialogIsOpen,
-    deleteTaskFromView,
-    setDeleteTaskFromView,
-    viewTaskDialogIsOpen,
-    setViewTaskDialogIsOpen,
-  } = useContext(TaskDialogContext);
+  const { deleteTaskDialogIsOpen, viewTaskDialogIsOpen } = useSelector(
+    (state) => state.dialog
+  );
+
+  const dispatch = useDispatch();
 
   function closeDialog() {
     if (deleteTaskDialogIsOpen) {
-      setDeleteTaskDialogIsOpen(false);
-      setDeleteTaskFromView(false);
+      dispatch(setDeleteTaskDialogIsOpen(false));
+      dispatch(setDeleteTaskFromView(false));
       enableScroll();
     }
   }
@@ -38,7 +38,7 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
     closeDialog();
 
     if (viewTaskDialogIsOpen) {
-      setViewTaskDialogIsOpen(false);
+      dispatch(setViewTaskDialogIsOpen(false));
     }
   }
 
@@ -46,22 +46,23 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
     return task.split("||")[0];
   });
 
-  const slicedTasks = JSON.stringify(tasksToDisplay.slice(0, 4));
+  const fourTaskToDisplay = tasksToDisplay.slice(0, 4).join(", ");
 
   const [seeMoreIsClicked, setSeeMoreIsClicked] = useState(false);
   const [seeLessIsClicked, setSeeLessIsClicked] = useState(true);
-  const [taskLengthToDisplay, setTaskLengthToDisplay] = useState(slicedTasks);
+  const [taskLengthToDisplay, setTaskLengthToDisplay] =
+    useState(fourTaskToDisplay);
 
   const handleSeeMore = () => {
     setSeeMoreIsClicked(true);
     setSeeLessIsClicked(false);
-    setTaskLengthToDisplay(JSON.stringify(tasksToDisplay));
+    setTaskLengthToDisplay(tasksToDisplay.join(", "));
   };
 
   const handleSeeLess = () => {
     setSeeMoreIsClicked(false);
     setSeeLessIsClicked(true);
-    setTaskLengthToDisplay(slicedTasks);
+    setTaskLengthToDisplay(fourTaskToDisplay);
   };
 
   const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-blue-900`;
