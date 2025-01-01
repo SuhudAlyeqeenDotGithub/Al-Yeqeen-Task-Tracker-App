@@ -27,7 +27,7 @@ const ViewTaskDialog = ({ taskData }) => {
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
     deleteTaskFromView,
-  } = useSelector(state => state.dialog);
+  } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
 
   const {
@@ -62,10 +62,10 @@ const ViewTaskDialog = ({ taskData }) => {
       const dataNeededToDelete = [
         `Task Id: ${taskData.taskId} || Task Name: ${taskName}`,
       ];
-      setViewTaskDataToExport(dataNeededToDelete);
-      setDeleteTaskDialogIsOpen(true);
+      dispatch(setViewTaskDataToExport(dataNeededToDelete));
+      dispatch(setDeleteTaskDialogIsOpen(true));
 
-      setDeleteTaskFromView(true);
+      dispatch(setDeleteTaskFromView(true));
     }
   };
 
