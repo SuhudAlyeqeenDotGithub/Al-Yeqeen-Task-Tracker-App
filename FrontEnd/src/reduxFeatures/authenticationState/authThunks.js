@@ -1,10 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {register, login} from "./authLinkToBackend"
+import { register, login } from "./authLinkToBackend";
 
 const registerThunk = createAsyncThunk(
   "register",
   async (userData, ThunkApi) => {
-    const response = await register(userData);
-    return response;
+    try {
+      const response = await register(userData);
+      return response;
+    } catch (error) {
+      return ThunkApi.rejectWithValue(error.response?.data || error.message);
+    }
   }
 );

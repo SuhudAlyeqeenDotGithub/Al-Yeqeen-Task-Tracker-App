@@ -2,27 +2,82 @@ import AllPurposeContainer from "../components/AllPurposeContainer";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import Logo from "../components/ToDoLogo";
 import AllPurposeInput from "../components/allPurposeInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { register } from "../reduxFeatures/authenticationState/authLinkToBackend";
 
 const SignUpPage = () => {
   // Background styling for the signup page
   const [formData, setFormData] = useState({
     userName: "",
-    email: "",
-    password: "",
-    confirmedPassword: "",
+    userEmail: "",
+    userPassword: "",
+    userConfirmedPassword: "",
   });
-  const { userName, email, password, confirmedPassword } = formData;
 
-  const onchangeFunction = (e) => {
-    setFormData((previousState) => ({
-      ...previousState,
+  const { userName, userEmail, userPassword, userConfirmedPassword } = formData;
+
+  const [showValidateFormData, setShowValidateFormData] = useState({
+    showEmail: false,
+    showPass1: false,
+    showPass2: false,
+  });
+
+
+
+  const [validationMessage, setValidationMessage] = useState({
+    showEmailMessage: "",
+    showPass1Message: "",
+    showPass2Message: "",
+  });
+
+  const handleFormData = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (userEmail === "" || !userEmail.includes("@")) {
+      setShowValidateFormData((prevState) => {
+        ({ ...prevState, showEmail: true });
+      });
+      setValidationMessage((prevState) => {
+        ({ ...prevState, showEmailMessage: "Please enter a valid email" });
+      });
+    }
+    if (userPassword === "") {
+      setShowValidateFormData((prevState) => {
+        ({ ...prevState, showPass1: true });
+      });
+      setValidationMessage((prevState) => {
+        ({ ...prevState, showPass1Message: "Please enter a password" });
+      });
+    }
+    if (userConfirmedPassword !== userPassword) {
+      setShowValidateFormData((prevState) => {
+        ({ ...prevState, showPass2: true });
+      });
+      setValidationMessage((prevState) => {
+        ({ ...prevState, showPass2Message: "Please ensure passwords match" });
+      });
+    }
+  }, [userEmail, userPassword, userConfirmedPassword]);
+
+  // const validateEmailStyling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
+
+  // const validatePassword1Styling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
+
+  // const validatePassword2Styling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
+
+  const handleRegisterUser = (e) => {
+    e.preventDefault;
+    alert(JSON.stringify(new FormData(e.target)));
+  };
+
   const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
   const buttonStyling = `bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
@@ -39,52 +94,67 @@ const SignUpPage = () => {
             Sign Up {UserIcon}
           </p>
 
-          <AllPurposeLabel
-            labelStyling="text-blue-900 font-semibold  mb-5 text-center text-sm"
-            value="Please Enter Your Sign-Up Details"
-          />
+          <AllPurposeLabel labelStyling="text-blue-900 font-semibold mb-5 text-center text-sm">
+            Please Enter Your Sign-Up Details
+          </AllPurposeLabel>
         </div>
 
-        <form className="w-full">
+        <form className="w-full" onSubmit={handleRegisterUser}>
           {/* <AllPurposeLabel labelStyling="text-black" value="User Name" /> */}
           <AllPurposeInput
             inputPlaceHolder="User Name"
-            value={userName}
+            inputValue={userName}
             inputType="text"
             inputId="name"
-            name="name"
-            onchangeFunction={onchangeFunction}
+            inputName="userName"
+            onchangeFunction={handleFormData}
           />
 
           {/* <AllPurposeLabel labelStyling="text-black" value="User Email" /> */}
-          <AllPurposeInput
-            inputPlaceHolder="User Email"
-            value={email}
-            inputType="email"
-            inputId="userEmail"
-            name="userEmail"
-            onchangeFunction={onchangeFunction}
-          />
+          <div>
+            <AllPurposeInput
+              inputPlaceHolder="User Email *"
+              inputValue={userEmail}
+              inputType="email"
+              inputId="userEmail"
+              inputName="userEmail"
+              onchangeFunction={handleFormData}
+            />
+
+            <AllPurposeLabel labelStyling={validateEmailStyling}>
+              {validationMessage.showEmailMessage}
+            </AllPurposeLabel>
+          </div>
 
           {/* <AllPurposeLabel labelStyling="text-black" value="Password" /> */}
-          <AllPurposeInput
-            inputPlaceHolder="Password"
-            value={password}
-            inputType="password"
-            inputId="userPassword"
-            name="userPassword"
-            onchangeFunction={onchangeFunction}
-          />
+          <div>
+            <AllPurposeInput
+              inputPlaceHolder="Password *"
+              inputValue={userPassword}
+              inputType="password"
+              inputId="userPassword"
+              inputName="userPassword"
+              onchangeFunction={handleFormData}
+            />
+            <AllPurposeLabel labelStyling={validatePassword1Styling}>
+              {validationMessage.showPass1Message}
+            </AllPurposeLabel>
+          </div>
 
           {/* <AllPurposeLabel labelStyling="text-black" value="Confirm Password" /> */}
-          <AllPurposeInput
-            inputPlaceHolder="Confirm Password"
-            value={confirmedPassword}
-            inputType="password"
-            inputId="confirmedUserPassword"
-            name="confirmedUserPassword"
-            onchangeFunction={onchangeFunction}
-          />
+          <div>
+            <AllPurposeInput
+              inputPlaceHolder="Confirm Password *"
+              inputValue={userConfirmedPassword}
+              inputType="password"
+              inputId="userConfirmedPassword"
+              inputName="userConfirmedPassword"
+              onchangeFunction={handleFormData}
+            />
+            <AllPurposeLabel labelStyling={validatePassword2Styling}>
+              {validationMessage.showPass2Message}
+            </AllPurposeLabel>
+          </div>
 
           <button type="submit" className={buttonStyling}>
             Sign Up
