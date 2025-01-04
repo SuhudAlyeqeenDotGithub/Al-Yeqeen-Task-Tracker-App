@@ -2,36 +2,33 @@ import AllPurposeContainer from "../components/AllPurposeContainer";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import Logo from "../components/ToDoLogo";
 import AllPurposeInput from "../components/allPurposeInput";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { register } from "../reduxFeatures/authenticationState/authLinkToBackend";
+import { useNavigate } from "react-router-dom";
+import { reset } from "../reduxFeatures/authenticationState/authSlice";
+import { registerUser } from "../reduxFeatures/authenticationState/authThunks";
+import { useSelector, useDispatch } from "react-redux";
 
 const SignUpPage = () => {
   // Background styling for the signup page
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isSuccess, isError, errorMessage } = useSelector(
+    (state) => state.auth
+  );
+
   const [formData, setFormData] = useState({
     userName: "",
     userEmail: "",
     userPassword: "",
-    userConfirmedPassword: "",
+    userConfirmPassword: "",
   });
 
-  const { userName, userEmail, userPassword, userConfirmedPassword } = formData;
-
-  const [showValidateFormData, setShowValidateFormData] = useState({
-    showEmail: false,
-    showPass1: false,
-    showPass2: false,
-  });
-
-
-
-  const [validationMessage, setValidationMessage] = useState({
-    showEmailMessage: "",
-    showPass1Message: "",
-    showPass2Message: "",
-  });
+  const { userName, userEmail, userPassword, userConfirmPassword } = formData;
 
   const handleFormData = (e) => {
     setFormData((prevState) => ({
@@ -40,47 +37,51 @@ const SignUpPage = () => {
     }));
   };
 
+  const [hideSubmitBtn, setHideSubmitBtn] = useState(true);
+  const [onSubmitError, setOnSubmitError] = useState(false);
+
   useEffect(() => {
-    if (userEmail === "" || !userEmail.includes("@")) {
-      setShowValidateFormData((prevState) => {
-        ({ ...prevState, showEmail: true });
-      });
-      setValidationMessage((prevState) => {
-        ({ ...prevState, showEmailMessage: "Please enter a valid email" });
-      });
+    if (
+      userEmail.includes("@") &&
+      userEmail.includes(".") &&
+      userConfirmPassword === userPassword
+    ) {
+      setHideSubmitBtn(false);
+    } else {
+      setHideSubmitBtn(true);
     }
-    if (userPassword === "") {
-      setShowValidateFormData((prevState) => {
-        ({ ...prevState, showPass1: true });
-      });
-      setValidationMessage((prevState) => {
-        ({ ...prevState, showPass1Message: "Please enter a password" });
-      });
+  }, [userEmail, userPassword, userConfirmPassword]);
+
+  const handleRegisterUser = async (e) => {
+    e.preventDefault();
+    if (
+      !userEmail.includes("@") ||
+      !userEmail.includes(".") ||
+      userConfirmPassword !== userPassword
+    ) {
+      setOnSubmitError(true);
+      return;
     }
-    if (userConfirmedPassword !== userPassword) {
-      setShowValidateFormData((prevState) => {
-        ({ ...prevState, showPass2: true });
-      });
-      setValidationMessage((prevState) => {
-        ({ ...prevState, showPass2Message: "Please ensure passwords match" });
-      });
+
+    dispatch(reset());
+
+    try {
+      // Dispatch the thunk and unwrap the result
+      const user = await dispatch(registerUser(formData)).unwrap();
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Registration failed:", error);
     }
-  }, [userEmail, userPassword, userConfirmedPassword]);
-
-  // const validateEmailStyling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
-
-  // const validatePassword1Styling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
-
-  // const validatePassword2Styling = ` text-red-500 font-semibold mb-5 text-center text-sm`;
-
-  const handleRegisterUser = (e) => {
-    e.preventDefault;
-    alert(JSON.stringify(new FormData(e.target)));
   };
+
+  const validationStyling =
+    "text-red-500 font-semibold mb-5 text-center text-[12px]";
 
   const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
-  const buttonStyling = `bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
+  const buttonStyling = `${
+    hideSubmitBtn ? "hidden" : ""
+  } bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
   const hoverUnderline =
     "text-sm mt-4 text-blue-900 text-center font-semibold hover:underline";
 
@@ -97,9 +98,13 @@ const SignUpPage = () => {
           <AllPurposeLabel labelStyling="text-blue-900 font-semibold mb-5 text-center text-sm">
             Please Enter Your Sign-Up Details
           </AllPurposeLabel>
+
+          <AllPurposeLabel labelStyling={validationStyling}>
+            {onSubmitError ? "Invalid Email or Passwords" : errorMessage}
+          </AllPurposeLabel>
         </div>
 
-        <form className="w-full" onSubmit={handleRegisterUser}>
+        <form className="w-full space-y-4" onSubmit={handleRegisterUser}>
           {/* <AllPurposeLabel labelStyling="text-black" value="User Name" /> */}
           <AllPurposeInput
             inputPlaceHolder="User Name"
@@ -121,8 +126,11 @@ const SignUpPage = () => {
               onchangeFunction={handleFormData}
             />
 
-            <AllPurposeLabel labelStyling={validateEmailStyling}>
-              {validationMessage.showEmailMessage}
+            <AllPurposeLabel labelStyling={validationStyling}>
+              {(!userEmail.includes("@") || !userEmail.includes(".")) &&
+              userEmail.length > 0
+                ? "Submit Disabled: Please enter a valid email"
+                : ""}
             </AllPurposeLabel>
           </div>
 
@@ -136,23 +144,25 @@ const SignUpPage = () => {
               inputName="userPassword"
               onchangeFunction={handleFormData}
             />
-            <AllPurposeLabel labelStyling={validatePassword1Styling}>
-              {validationMessage.showPass1Message}
+            <AllPurposeLabel labelStyling={validationStyling}>
+              {/* {userPassword.length < 9 && userPassword.length > 0 ? "Weak Password": ""} */}
             </AllPurposeLabel>
           </div>
 
-          {/* <AllPurposeLabel labelStyling="text-black" value="Confirm Password" /> */}
           <div>
             <AllPurposeInput
               inputPlaceHolder="Confirm Password *"
-              inputValue={userConfirmedPassword}
+              inputValue={userConfirmPassword}
               inputType="password"
-              inputId="userConfirmedPassword"
-              inputName="userConfirmedPassword"
+              inputId="userConfirmPassword"
+              inputName="userConfirmPassword"
               onchangeFunction={handleFormData}
             />
-            <AllPurposeLabel labelStyling={validatePassword2Styling}>
-              {validationMessage.showPass2Message}
+            <AllPurposeLabel labelStyling={validationStyling}>
+              {userConfirmPassword !== "" &&
+              userConfirmPassword !== userPassword
+                ? "Submit Disabled: Password are not matching"
+                : ""}
             </AllPurposeLabel>
           </div>
 

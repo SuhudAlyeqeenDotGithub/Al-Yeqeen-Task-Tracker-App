@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (userEmailExists) {
     res.status(409);
     throw new Error(
-      `User currently have an account with this email ${userEmail}. Please log in using that`
+      `You currently have an account with this email ${userEmail}. Please log in using that`
     );
   }
 

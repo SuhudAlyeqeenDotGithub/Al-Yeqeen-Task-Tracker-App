@@ -1,18 +1,28 @@
 import axios from "axios";
 
-const registerURI = "api/users/register";
-const loginURI = "api/users/login";
+const registerURI = "http://localhost:5000/api/users/register";
+const loginURI = "http://localhost:5000/api/users/login";
 
 const register = async (userData) => {
   try {
-    const { user } = await axios.post(registerURI, userData);
+    const response = await axios.post(registerURI, userData);
+    const user = response.data;
     localStorage.setItem("user", JSON.stringify(user));
     return user;
   } catch (error) {
-    console.error("Registration failed:", error);
-    throw error; // You can choose to throw the error or handle it differently
+    throw new Error(error.response.data.message);
   }
 };
 
-const login = async () => {};
+const login = async (userData) => {
+  try {
+    const response = await axios.post(loginURI, userData);
+    const user = response.data;
+    localStorage.setItem("user", JSON.stringify(user));
+    return user;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export { register, login };
