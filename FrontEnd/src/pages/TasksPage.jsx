@@ -6,7 +6,7 @@ import {
   setEditDialogTaskFromViewIsOpen,
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
-  setDeleteTaskFromView
+  setDeleteTaskFromView,
 } from "../reduxFeatures/dialogSlice";
 
 import AllPurposeCheckBox from "../components/AllPurposeCheckBox";
@@ -17,6 +17,7 @@ import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
 import { disableScroll } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
+import AllPurposeLabel from "../components/AllPurposeLabel";
 
 function TasksPage() {
   const {
@@ -27,7 +28,12 @@ function TasksPage() {
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
     deleteTaskFromView,
-  } = useSelector(state => state.dialog);
+  } = useSelector((state) => state.dialog);
+
+  const { userId, userName, userToken } = JSON.parse(
+    localStorage.getItem("user")
+  );
+  console.log({ userId, userName, userToken });
 
   const dispatch = useDispatch();
 
@@ -89,7 +95,7 @@ function TasksPage() {
     event.stopPropagation();
     if (editTaskDialogIsOpen === false) {
       setEditTaskData(taskObj);
-      dispatch(setEditTaskDialogIsOpen(true))
+      dispatch(setEditTaskDialogIsOpen(true));
       disableScroll();
     }
   };
@@ -199,7 +205,11 @@ function TasksPage() {
   }, [regularCheckBoxStatus]);
 
   return (
-    <div className="">
+    <div>
+      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6">
+        Hello {userName}, Let's add some tasks and complete some
+      </h1>
+
       {newTaskDialogIsOpen && <NewTaskDialog />}
       {editTaskDialogIsOpen && (
         <EditTaskDialog

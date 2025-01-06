@@ -66,7 +66,7 @@ const LoginPage = () => {
 
     try {
       const response = await dispatch(loginUser(formData)).unwrap();
-      navigate("/dashboard");
+      navigate("/alyeqeenTaskTracker/mytasks");
     } catch (error) {
       console.error("Login failed:", error);
     }

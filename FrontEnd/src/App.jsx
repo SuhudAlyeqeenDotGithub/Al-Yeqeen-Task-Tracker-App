@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import LandingPage from "./pages/LandingPage";
+import ProtectRoute from "./pages/ProtectRoute";
 
 const App = () => {
   return (
@@ -17,8 +18,8 @@ const App = () => {
 
         {/* Protected Routes (under alyeqeenTaskTracker layout) */}
         <Route path="alyeqeenTaskTracker" element={<Layout />}>
-          <Route path="mytasks" element={<TasksPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="mytasks" element={<ProtectRoute><TasksPage /></ProtectRoute>} />
+          <Route path="dashboard" element={<ProtectRoute><DashboardPage /></ProtectRoute>} />
         </Route>
       </Routes>
     </Router>

@@ -10,48 +10,39 @@ const getTasks = asyncHandler(async (req, res) => {
 
   const userTasks = await Task.find({ taskOwner: userId });
 
-  res.status(200).json(userTasks);
+  res.status(200).json({ message: "Task Fetched Successfully", userTasks });
 });
 
 //@desc add tasks
 //router post request to /api/tasks
 //access private
 const addTask = asyncHandler(async (req, res) => {
-  const {
-    taskName,
-    taskDescription,
-    taskStartDate,
-    taskDueDate,
-    taskStartTime,
-    taskDueTime,
-    taskStatus,
-  } = req.body;
+  const { taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = req.body;
 
   if (!taskName || !taskStatus) {
     res.status(400);
-    throw new Error(
-      "Please fill in the mandatory fields (task name and task status)"
-    );
+    throw new Error("Please fill in the mandatory fields (task name and task status)");
   }
 
   const userId = req.userId;
 
-  const task = await Task.create({
-    taskName,
-    taskDescription,
-    taskStartDate,
-    taskDueDate,
-    taskStartTime,
-    taskDueTime,
-    taskStatus,
-    taskOwner: userId,
-  });
+  try {
+    const task = await Task.create({
+      taskName,
+      taskDescription,
+      taskStartDate,
+      taskDueDate,
+      taskStartTime,
+      taskDueTime,
+      taskStatus,
+      taskOwner: userId,
+    });
 
-  if (!task) {
-    res.status(500);
+    const userTasks = await Task.find({ taskOwner: userId });
+
+    res.status(200).json({ message: "Task added Successfully", userTasks });
+  } catch (error) {
     throw new Error(`The task ${taskName} creation failed`);
-  } else {
-    res.status(200).json(task);
   }
 });
 
@@ -60,23 +51,14 @@ const addTask = asyncHandler(async (req, res) => {
 //access private
 const editTask = asyncHandler(async (req, res) => {
   // get the data that is being updated
-  const {
-    _id,
-    taskName,
-    taskDescription,
-    taskStartDate,
-    taskDueDate,
-    taskStartTime,
-    taskDueTime,
-    taskStatus,
-  } = req.body;
+  const { _id, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = req.body;
+
+  const userId = req.userId;
 
   // task name and status must not be empty
   if (!taskName || !taskStatus) {
     res.status(400);
-    throw new Error(
-      "Please fill in the mandatory fields (task name and task status)"
-    );
+    throw new Error("Please fill in the mandatory fields (task name and task status)");
   }
 
   // get the id of the task that is being updated
@@ -95,7 +77,9 @@ const editTask = asyncHandler(async (req, res) => {
       { new: true }
     );
 
-    res.status(201).json(taskToUpdate);
+    const userTasks = await Task.find({ taskOwner: userId });
+
+    res.status(201).json({ message: "Task Edited Successfully", userTasks });
   } catch (err) {
     res.status(400);
     throw new Error(err.message);
@@ -119,11 +103,13 @@ const deleteTasks = asyncHandler(async (req, res) => {
 
   try {
     const deletedTasks = await Task.deleteMany({ _id: { $in: tasksToDelete } });
-    res
-      .status(200)
-      .json({
-        message: `${deletedTasks.deletedCount} tasks deleted successfully`,
-      });
+
+    const userTasks = await Task.find({ taskOwner: userId });
+
+    res.status(200).json({
+      message: `${deletedTasks.deletedCount} tasks deleted successfully`,
+      userTasks,
+    });
   } catch (err) {
     res.status(500).json({ message: "Error deleting tasks", error });
   }
