@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { reset } from "../reduxFeatures/authenticationState/authSlice";
+import { resetUser } from "../reduxFeatures/authenticationState/authSlice";
 import { loginUser } from "../reduxFeatures/authenticationState/authThunks";
 import { useSelector, useDispatch } from "react-redux";
 import { getDataFromLocalStorage } from "../reduxFeatures/taskState/taskLinkToBackend";
@@ -57,13 +57,13 @@ const LoginPage = () => {
       return;
     }
 
-    dispatch(reset());
+    dispatch(resetUser());
     setIncorrectPassword(false);
     setNotRegistedEmail(false);
 
     try {
-      dispatch(loginUser(formData));
-      navigate("/alyeqeenTaskTracker/mytasks");
+      const user = await dispatch(loginUser(formData)).unwrap();
+      if(user) {navigate("/alyeqeenTaskTracker/mytasks")};
     } catch (error) {
       // console.error("Login failed:", error);
     }

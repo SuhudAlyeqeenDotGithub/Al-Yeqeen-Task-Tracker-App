@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getTasks, addTask, deleteTasks, editTask } from "./taskThunk";
-import {getDataFromLocalStorage} from "./taskLinkToBackend"
+import { getDataFromLocalStorage } from "./taskLinkToBackend";
 
 const initialState = {
   tasks: getDataFromLocalStorage("tasks")?.tasks || [],
@@ -14,7 +14,7 @@ const taskSlice = createSlice({
   name: "taskSlice",
   initialState,
   reducers: {
-    reset: (state) => {
+    resetTasks: (state) => {
       state.tasks = [];
       state.isSuccess = false;
       state.isLoading = false;
@@ -103,5 +103,5 @@ const taskSlice = createSlice({
   },
 });
 
-export const { reset } = taskSlice.actions;
+export const { resetTasks } = taskSlice.actions;
 export default taskSlice.reducer;

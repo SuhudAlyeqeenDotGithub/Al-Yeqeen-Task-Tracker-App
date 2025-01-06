@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, addTask, deleteTasks, editTask } from "../reduxFeatures/taskState/taskThunk";
-import { reset } from "../reduxFeatures/taskState/taskSlice";
+import { resetTasks } from "../reduxFeatures/taskState/taskSlice";
 import {
   setNewTaskDialogIsOpen,
   setViewTaskDialogIsOpen,
@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
+import { useLocation } from "react-router-dom";
 import { disableScroll, formatDate, formatDateToUsStandard } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
@@ -34,11 +35,14 @@ function TasksPage() {
 
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
+  const location = useLocation();
+
   useEffect(() => {
     try {
+      dispatch(resetTasks());
       dispatch(getTasks());
     } catch (error) {}
-  }, []);
+  }, [location]);
 
   const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
 
@@ -60,11 +64,13 @@ function TasksPage() {
     const updatedStatuses = [...regularCheckBoxStatus];
     updatedStatuses[index] = !updatedStatuses[index];
     setRegularCheckBoxStatus(updatedStatuses);
-
-    
   };
 
-   const noTaskMessage = (<div className="flex flex-wrap justify-center ml-6"><AllPurposeLabel>Hi {userName}, You have no task. Let's start adding tasks</AllPurposeLabel></div>)
+  const noTaskMessage = (
+    <div className="flex flex-wrap justify-center ml-6 mr-6">
+      <AllPurposeLabel>Hi {userName}😊, You have no task yet. Let's start adding tasks</AllPurposeLabel>
+    </div>
+  );
   const handleSelectAllCheck = () => {
     setSelectAllCheckBoxStatus(!selectAllCheckStatus);
     setRegularCheckBoxStatus(Array(tasksData.length).fill(!selectAllCheckStatus));
@@ -135,14 +141,17 @@ function TasksPage() {
   };
 
   const tasksToDisplay = tasksData.map((rawtaskObj, index) => {
-    console.log("raw object", rawtaskObj)
+    console.log("raw object", rawtaskObj);
     const taskObj = { ...rawtaskObj, taskStartDate: formatDate(rawtaskObj.taskStartDate), taskDueDate: formatDate(rawtaskObj.taskDueDate) };
-    console.log("taskObj", taskObj)
-    const taskObjForEdit = { ...rawtaskObj, taskStartDate: formatDateToUsStandard(rawtaskObj.taskStartDate), taskDueDate: formatDateToUsStandard(rawtaskObj.taskDueDate) };
-    console.log("taskObjForEdit", taskObjForEdit)
+    console.log("taskObj", taskObj);
+    const taskObjForEdit = {
+      ...rawtaskObj,
+      taskStartDate: formatDateToUsStandard(rawtaskObj.taskStartDate),
+      taskDueDate: formatDateToUsStandard(rawtaskObj.taskDueDate),
+    };
+    console.log("taskObjForEdit", taskObjForEdit);
     const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObj;
-    
-    
+
     return (
       <div
         key={index}
@@ -240,9 +249,7 @@ function TasksPage() {
         </button>
       </div>
 
-      <div className=" mt-4 flex flex-wrap justify-center items-center">
-        {tasksData.length < 1 ?  noTaskMessage : tasksToDisplay}
-      </div>
+      <div className=" mt-4 flex flex-wrap justify-center items-center">{tasksData.length < 1 ? noTaskMessage : tasksToDisplay}</div>
     </div>
   );
 }

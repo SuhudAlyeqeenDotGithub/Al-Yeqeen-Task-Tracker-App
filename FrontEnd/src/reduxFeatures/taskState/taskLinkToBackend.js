@@ -15,13 +15,18 @@ const getUpdatedTaskAndUpdateLocalStorage = (response) => {
 };
 
 const taskUri = "http://localhost:5000/api/tasks";
-const user = getDataFromLocalStorage("user");
-const token = user?.userToken;
-const header = {
-  headers: { authorization: "Bearer " + token },
+
+const getHeader = () => {
+  const user = getDataFromLocalStorage("user");
+  const token = user ? user.userToken : null;
+  const header = {
+    headers: { authorization: "Bearer " + token },
+  };
+  return header;
 };
 
 const getTasksRequest = async () => {
+  const header = getHeader();
   try {
     const response = await axios.get(taskUri, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
@@ -31,6 +36,7 @@ const getTasksRequest = async () => {
 };
 
 const addTaskRequest = async (taskToAdd) => {
+  const header = getHeader();
   try {
     const response = await axios.post(taskUri, taskToAdd, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
@@ -40,6 +46,7 @@ const addTaskRequest = async (taskToAdd) => {
 };
 
 const deleteTasksRequest = async (tasksToDelete) => {
+  const header = getHeader();
   try {
     const response = await axios.delete(taskUri, {
       ...header,
@@ -52,6 +59,7 @@ const deleteTasksRequest = async (tasksToDelete) => {
 };
 
 const editTaskRequest = async (updatedTask) => {
+  const header = getHeader();
   try {
     const response = await axios.put(taskUri, updatedTask, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);

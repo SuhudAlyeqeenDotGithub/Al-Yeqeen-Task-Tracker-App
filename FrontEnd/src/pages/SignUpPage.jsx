@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { reset } from "../reduxFeatures/authenticationState/authSlice";
+import { resetUser } from "../reduxFeatures/authenticationState/authSlice";
 import { registerUser } from "../reduxFeatures/authenticationState/authThunks";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -17,9 +17,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isSuccess, isError, errorMessage } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading, isSuccess, isError, errorMessage } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -41,11 +39,7 @@ const SignUpPage = () => {
   const [onSubmitError, setOnSubmitError] = useState(false);
 
   useEffect(() => {
-    if (
-      userEmail.includes("@") &&
-      userEmail.includes(".") &&
-      userConfirmPassword === userPassword
-    ) {
+    if (userEmail.includes("@") && userEmail.includes(".") && userConfirmPassword === userPassword) {
       setHideSubmitBtn(false);
     } else {
       setHideSubmitBtn(true);
@@ -54,36 +48,28 @@ const SignUpPage = () => {
 
   const handleRegisterUser = async (e) => {
     e.preventDefault();
-    if (
-      !userEmail.includes("@") ||
-      !userEmail.includes(".") ||
-      userConfirmPassword !== userPassword
-    ) {
+    if (!userEmail.includes("@") || !userEmail.includes(".") || userConfirmPassword !== userPassword) {
       setOnSubmitError(true);
       return;
     }
 
-    dispatch(reset());
+    dispatch(resetUser());
 
     try {
       // Dispatch the thunk and unwrap the result
-      dispatch(registerUser(formData));
+      const user = await dispatch(registerUser(formData)).unwrap();
       navigate("/alyeqeenTaskTracker/mytasks");
     } catch (error) {
       // console.error("Registration failed:", error);
     }
   };
 
-  const validationStyling =
-    "text-red-500 font-semibold mb-5 text-center text-[12px]";
+  const validationStyling = "text-red-500 font-semibold mb-5 text-center text-[12px]";
 
   const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
-  const buttonStyling = `${
-    hideSubmitBtn ? "hidden" : ""
-  } bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
-  const hoverUnderline =
-    "text-sm mt-4 text-blue-900 text-center font-semibold hover:underline";
+  const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
+  const hoverUnderline = "text-sm mt-4 text-blue-900 text-center font-semibold hover:underline";
 
   return (
     <div className={signUpBackground}>
@@ -91,17 +77,11 @@ const SignUpPage = () => {
         <Logo logoStyling="w-30 h-28" />
 
         <div className="w-full flex flex-col mt-4 mb-2">
-          <p className="text-blue-900 text-xl font-bold mb-3 text-center">
-            Sign Up {UserIcon}
-          </p>
+          <p className="text-blue-900 text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-blue-900 font-semibold mb-5 text-center text-sm">
-            Please Enter Your Sign-Up Details
-          </AllPurposeLabel>
+          <AllPurposeLabel labelStyling="text-blue-900 font-semibold mb-5 text-center text-sm">Please Enter Your Sign-Up Details</AllPurposeLabel>
 
-          <AllPurposeLabel labelStyling={validationStyling}>
-            {onSubmitError ? "Invalid Email or Passwords" : errorMessage}
-          </AllPurposeLabel>
+          <AllPurposeLabel labelStyling={validationStyling}>{onSubmitError ? "Invalid Email or Passwords" : errorMessage}</AllPurposeLabel>
         </div>
 
         <form className="w-full space-y-4" onSubmit={handleRegisterUser}>
@@ -127,10 +107,7 @@ const SignUpPage = () => {
             />
 
             <AllPurposeLabel labelStyling={validationStyling}>
-              {(!userEmail.includes("@") || !userEmail.includes(".")) &&
-              userEmail.length > 0
-                ? "Submit Disabled: Please enter a valid email"
-                : ""}
+              {(!userEmail.includes("@") || !userEmail.includes(".")) && userEmail.length > 0 ? "Submit Disabled: Please enter a valid email" : ""}
             </AllPurposeLabel>
           </div>
 
@@ -159,10 +136,7 @@ const SignUpPage = () => {
               onchangeFunction={handleFormData}
             />
             <AllPurposeLabel labelStyling={validationStyling}>
-              {userConfirmPassword !== "" &&
-              userConfirmPassword !== userPassword
-                ? "Submit Disabled: Password are not matching"
-                : ""}
+              {userConfirmPassword !== "" && userConfirmPassword !== userPassword ? "Submit Disabled: Password are not matching" : ""}
             </AllPurposeLabel>
           </div>
 
@@ -175,9 +149,7 @@ const SignUpPage = () => {
           <Link to="/login">Have an Account Already? Log in</Link>
         </div>
         <br />
-        <p className="text-sm text-gray-400">
-          @Suhud Ayodeji Yekini Innovation
-        </p>
+        <p className="text-sm text-gray-400">@Suhud Ayodeji Yekini Innovation</p>
       </AllPurposeContainer>
     </div>
   );
