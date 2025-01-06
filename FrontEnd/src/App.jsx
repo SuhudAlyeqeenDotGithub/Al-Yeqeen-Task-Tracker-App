@@ -5,7 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import LandingPage from "./pages/LandingPage";
-import ProtectRoute from "./pages/ProtectRoute";
+import { ProtectRoute, ProtectLoginRoute } from "./pages/ProtectRoute";
 
 const App = () => {
   return (
@@ -14,12 +14,33 @@ const App = () => {
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={
+            <ProtectLoginRoute>
+              <LoginPage />
+            </ProtectLoginRoute>
+          }
+        />
 
         {/* Protected Routes (under alyeqeenTaskTracker layout) */}
         <Route path="alyeqeenTaskTracker" element={<Layout />}>
-          <Route path="mytasks" element={<ProtectRoute><TasksPage /></ProtectRoute>} />
-          <Route path="dashboard" element={<ProtectRoute><DashboardPage /></ProtectRoute>} />
+          <Route
+            path="mytasks"
+            element={
+              <ProtectRoute>
+                <TasksPage />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="dashboard"
+            element={
+              <ProtectRoute>
+                <DashboardPage />
+              </ProtectRoute>
+            }
+          />
         </Route>
       </Routes>
     </Router>

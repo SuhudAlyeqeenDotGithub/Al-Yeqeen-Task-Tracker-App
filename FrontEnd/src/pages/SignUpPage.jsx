@@ -67,10 +67,10 @@ const SignUpPage = () => {
 
     try {
       // Dispatch the thunk and unwrap the result
-      const user = await dispatch(registerUser(formData)).unwrap();
+      dispatch(registerUser(formData));
       navigate("/alyeqeenTaskTracker/mytasks");
     } catch (error) {
-      console.error("Registration failed:", error);
+      // console.error("Registration failed:", error);
     }
   };
 

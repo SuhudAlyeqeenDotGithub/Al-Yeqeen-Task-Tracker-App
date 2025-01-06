@@ -10,7 +10,7 @@ const getTasks = createAsyncThunk("getTasks", async (_, ThunkApi) => {
   }
 });
 
-const addTask = createAsyncThunk("getTasks", async (taskToAdd, ThunkApi) => {
+const addTask = createAsyncThunk("addTask", async (taskToAdd, ThunkApi) => {
   try {
     const tasks = await addTaskRequest(taskToAdd);
     return tasks;
@@ -19,7 +19,7 @@ const addTask = createAsyncThunk("getTasks", async (taskToAdd, ThunkApi) => {
   }
 });
 
-const editTask = createAsyncThunk("getTasks", async (updatedTask, ThunkApi) => {
+const editTask = createAsyncThunk("editTask", async (updatedTask, ThunkApi) => {
   try {
     const tasks = await editTaskRequest(updatedTask);
     return tasks;
@@ -28,7 +28,7 @@ const editTask = createAsyncThunk("getTasks", async (updatedTask, ThunkApi) => {
   }
 });
 
-const deleteTasks = createAsyncThunk("getTasks", async (tasksToDelete, ThunkApi) => {
+const deleteTasks = createAsyncThunk("deleteTasks", async (tasksToDelete, ThunkApi) => {
   try {
     const tasks = await deleteTasksRequest(tasksToDelete);
     return tasks;

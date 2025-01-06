@@ -1,4 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
+import { getTasks, addTask, deleteTasks, editTask } from "../reduxFeatures/taskState/taskThunk";
+import { reset } from "../reduxFeatures/taskState/taskSlice";
 import {
   setNewTaskDialogIsOpen,
   setViewTaskDialogIsOpen,
@@ -15,7 +17,7 @@ import { useState, useEffect } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
-import { disableScroll } from "../UtilityFunctions/UtilityFunctions";
+import { disableScroll, formatDate, formatDateToUsStandard } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 
@@ -30,54 +32,42 @@ function TasksPage() {
     deleteTaskFromView,
   } = useSelector((state) => state.dialog);
 
-  const { userId, userName, userToken } = JSON.parse(
-    localStorage.getItem("user")
-  );
-  console.log({ userId, userName, userToken });
+  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
+
+  useEffect(() => {
+    try {
+      dispatch(getTasks());
+    } catch (error) {}
+  }, []);
+
+  const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
 
   const dispatch = useDispatch();
 
   const taskContainerStyle =
     "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 flex flex-wrap w-2/5 max-w-2/4 min-w-96 items-center justify-center hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
-  const tasksData = Array.from({ length: 100 }, (item, i) => {
-    return {
-      taskId: i,
-      taskName: `Task Name ${i}`,
-      taskStatus: `Task Status ${i}`,
-      taskDescription: `Task ${i}: This task involves implementing a feature that dynamically generates descriptions for items based on their unique ID (${i}). The purpose of this task is to ensure that each task is identifiable and references its own ID (${i}) within the description text for clarity and tracking.`,
-      taskStartDate: `Task StartDate ${i}`,
-      taskDueDate: `Task EndDate ${i}`,
-      taskStartTime: `Task StartTime ${i}`,
-      taskDueTime: `Task EndTime ${i}`,
-    };
-  });
 
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
-  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(
-    Array(tasksData.length).fill(false)
-  );
+  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(Array(tasksData.length).fill(false));
   const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
 
-  const oneOrMoreRegBoxIsTrue = regularCheckBoxStatus.some(
-    (checkStatus) => checkStatus === true
-  );
-  const onlyOneCheckIsTrue =
-    regularCheckBoxStatus.filter((checkStatus) => checkStatus === true)
-      .length === 1;
+  const oneOrMoreRegBoxIsTrue = regularCheckBoxStatus.some((checkStatus) => checkStatus === true);
+  const onlyOneCheckIsTrue = regularCheckBoxStatus.filter((checkStatus) => checkStatus === true).length === 1;
 
   const handleRegularCheckBoxOnchange = (event, index) => {
     event.stopPropagation();
     const updatedStatuses = [...regularCheckBoxStatus];
     updatedStatuses[index] = !updatedStatuses[index];
     setRegularCheckBoxStatus(updatedStatuses);
+
+    
   };
 
+   const noTaskMessage = (<div className="flex flex-wrap justify-center ml-6"><AllPurposeLabel>Hi {userName}, You have no task. Let's start adding tasks</AllPurposeLabel></div>)
   const handleSelectAllCheck = () => {
     setSelectAllCheckBoxStatus(!selectAllCheckStatus);
-    setRegularCheckBoxStatus(
-      Array(tasksData.length).fill(!selectAllCheckStatus)
-    );
+    setRegularCheckBoxStatus(Array(tasksData.length).fill(!selectAllCheckStatus));
   };
 
   const [viewTaskData, setViewTaskData] = useState({});
@@ -144,8 +134,15 @@ function TasksPage() {
     }
   };
 
-  const tasks = tasksData.map((taskObj, index) => {
+  const tasksToDisplay = tasksData.map((rawtaskObj, index) => {
+    console.log("raw object", rawtaskObj)
+    const taskObj = { ...rawtaskObj, taskStartDate: formatDate(rawtaskObj.taskStartDate), taskDueDate: formatDate(rawtaskObj.taskDueDate) };
+    console.log("taskObj", taskObj)
+    const taskObjForEdit = { ...rawtaskObj, taskStartDate: formatDateToUsStandard(rawtaskObj.taskStartDate), taskDueDate: formatDateToUsStandard(rawtaskObj.taskDueDate) };
+    console.log("taskObjForEdit", taskObjForEdit)
     const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObj;
+    
+    
     return (
       <div
         key={index}
@@ -154,10 +151,7 @@ function TasksPage() {
         }}
         className={taskContainerStyle}
       >
-        <div
-          onClick={(event) => event.stopPropagation()}
-          className="row-span-2 flex basis-1/10 mr-4 items-center justify-self-center"
-        >
+        <div onClick={(event) => event.stopPropagation()} className="row-span-2 flex basis-1/10 mr-4 items-center justify-self-center">
           <AllPurposeCheckBox
             inputId={index}
             inputName={index}
@@ -176,7 +170,7 @@ function TasksPage() {
           </div>
 
           <div className="flex max-w-full">
-            <p className="mr-10 max-w-full">Start Date: {taskStartDate}</p>
+            <p className="mr-10 max-w-full">Start Date: {taskStartDate} </p>
             <p>Start Time: {taskStartTime}</p>
           </div>
         </div>
@@ -184,7 +178,7 @@ function TasksPage() {
         <button
           title="edit"
           className="ml-4 hover:text-white hover:bg-blue-900 text-xl p-2 rounded-lg justify-center items-center"
-          onClick={(event) => showEditTaskDialog(event, taskObj)}
+          onClick={(event) => showEditTaskDialog(event, taskObjForEdit)}
         >
           {editIcon}
         </button>
@@ -198,32 +192,20 @@ function TasksPage() {
   const editButtonStyle = `${regularButtonStyle} ${topEditButtonLogic}`;
 
   useEffect(() => {
-    const checkedBoxes = regularCheckBoxStatus.filter(
-      (status) => status === true
-    ).length;
+    const checkedBoxes = regularCheckBoxStatus.filter((status) => status === true).length;
     setCountCheckedBoxes(checkedBoxes);
   }, [regularCheckBoxStatus]);
 
   return (
     <div>
-      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6">
+      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
         Hello {userName}, Let's add some tasks and complete some
       </h1>
 
       {newTaskDialogIsOpen && <NewTaskDialog />}
-      {editTaskDialogIsOpen && (
-        <EditTaskDialog
-          taskData={
-            editTaskDialogFromViewIsOpen && editTaskDialogIsOpen
-              ? viewTaskDataToExport
-              : editTaskData
-          }
-        />
-      )}
+      {editTaskDialogIsOpen && <EditTaskDialog taskData={editTaskDialogFromViewIsOpen && editTaskDialogIsOpen ? viewTaskDataToExport : editTaskData} />}
       {viewTaskDialogIsOpen && <ViewTaskDialog taskData={viewTaskData} />}
-      {deleteTaskDialogIsOpen && !deleteTaskFromView && (
-        <DeleteTaskDialog tasksToDelete={tasksToDelete} />
-      )}
+      {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       <div className=" sticky top-52 bg-white shadow-sm border border-blue-800  p-4 rounded flex flex-wrap items-center w-4/5 justify-self-center">
         <div className="row-span-2 flex ml-10 items-center justify-self-center">
           <AllPurposeCheckBox
@@ -237,24 +219,14 @@ function TasksPage() {
         </div>
 
         <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
-          <p>
-            {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} Tasks Selected`}
-          </p>
+          <p>{oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} Tasks Selected`}</p>
         </div>
 
         <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 w-1/2 justify-center">
-          <button
-            title="delete"
-            className={deleteButtonStyle}
-            onClick={handleDeleteFromNav}
-          >
+          <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
             Delete {deleteIcon}
           </button>
-          <button
-            title="edit"
-            className={editButtonStyle}
-            onClick={handleEditTaskFromNavButton}
-          >
+          <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
             Edit {editIcon}
           </button>
         </div>
@@ -262,14 +234,14 @@ function TasksPage() {
         <button
           onClick={showNewTaskDialog}
           title="Add Task"
-          className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800   hover:bg-blue-800  hover:text-white hover:border-none"
+          className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800  hover:text-white hover:border-none"
         >
           Add Task {addIcon}
         </button>
       </div>
 
       <div className=" mt-4 flex flex-wrap justify-center items-center">
-        {tasks}
+        {tasksData.length < 1 ?  noTaskMessage : tasksToDisplay}
       </div>
     </div>
   );

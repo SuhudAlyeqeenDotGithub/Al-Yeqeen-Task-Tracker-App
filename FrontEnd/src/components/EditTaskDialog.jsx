@@ -1,9 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setEditTaskDialogIsOpen,
-  setEditDialogTaskFromViewIsOpen,
-} from "../reduxFeatures/dialogSlice";
-import { useState } from "react";
+import { setEditTaskDialogIsOpen, setEditDialogTaskFromViewIsOpen } from "../reduxFeatures/dialogSlice";
+import { useEffect, useState } from "react";
 import AllPurposeContainer from "./AllPurposeContainer";
 import AllPurposeInput from "./allPurposeInput";
 import { enableScroll } from "../UtilityFunctions/UtilityFunctions";
@@ -11,22 +8,13 @@ import AllPurposeLabel from "./AllPurposeLabel";
 import { closeIcon } from "./icons";
 
 const EditTaskDialog = ({ taskData }) => {
-  const { editTaskDialogIsOpen, editTaskDialogFromViewIsOpen } = useSelector(state => state.dialog);
+  const { editTaskDialogIsOpen, editTaskDialogFromViewIsOpen } = useSelector((state) => state.dialog);
 
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(taskData);
 
-  const {
-    taskId,
-    taskName,
-    taskDescription,
-    taskStartDate,
-    taskDueDate,
-    taskStartTime,
-    taskDueTime,
-    taskStatus,
-  } = formData;
+  const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = formData;
 
   const handleFormData = (e) => {
     setFormData((prevState) => ({
@@ -34,6 +22,10 @@ const EditTaskDialog = ({ taskData }) => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    console.log("start date from edit", taskStartTime);
+  }, [taskStartDate]);
 
   const closeDialog = () => {
     if (editTaskDialogIsOpen) {
@@ -57,20 +49,12 @@ const EditTaskDialog = ({ taskData }) => {
       <div className={overlayStyling}> </div>
       <AllPurposeContainer containerStyling={dialogueStyling}>
         <header className="w-full flex flex-row mb-4">
-          <h1 className="w-full pt-2 text-blue-900 text-2xl font-bold">
-            Edit Task
-          </h1>
-          <button
-            title="close"
-            className={`hover:bg-red-500 ${closeButtonStyling}`}
-            onClick={closeDialog}
-          >
+          <h1 className="w-full pt-2 text-blue-900 text-2xl font-bold">Edit Task</h1>
+          <button title="close" className={`hover:bg-red-500 ${closeButtonStyling}`} onClick={closeDialog}>
             {closeIcon}
           </button>
         </header>
-        <div className="text-blue-900 mb-2 w-full font-semibold">
-          Task Id: {taskId}
-        </div>
+        <div className="text-blue-900 mb-2 w-full font-semibold">Task Id: {taskId}</div>
 
         <AllPurposeInput
           inputPlaceHolder="Task Name"
@@ -91,9 +75,7 @@ const EditTaskDialog = ({ taskData }) => {
         />
         <div className={dateTimeDivStyling}>
           <div>
-            <AllPurposeLabel inputId="taskStartDate">
-              Start Date
-            </AllPurposeLabel>
+            <AllPurposeLabel inputId="taskStartDate">Start Date</AllPurposeLabel>
             <AllPurposeInput
               inputValue={taskStartDate}
               inputType="date"
@@ -105,50 +87,22 @@ const EditTaskDialog = ({ taskData }) => {
           </div>
           <div>
             <AllPurposeLabel inputId="taskEndDate">Due Date</AllPurposeLabel>
-            <AllPurposeInput
-              inputValue={taskDueDate}
-              inputType="date"
-              inputName="taskEndDate"
-              styling=""
-              onchangeFunction={handleFormData}
-            />
+            <AllPurposeInput inputValue={taskDueDate} inputType="date" inputName="taskDueDate" styling="" onchangeFunction={handleFormData} />
           </div>
         </div>
         <div className={dateTimeDivStyling}>
           <div>
-            <AllPurposeLabel inputId="taskStartTime">
-              Start Time
-            </AllPurposeLabel>
-            <AllPurposeInput
-              inputValue={taskStartTime}
-              inputType="time"
-              inputName="taskStartTime"
-              styling=""
-              onchangeFunction={handleFormData}
-            />
+            <AllPurposeLabel inputId="taskStartTime">Start Time</AllPurposeLabel>
+            <AllPurposeInput inputValue={taskStartTime} inputType="time" inputName="taskStartTime" styling="" onchangeFunction={handleFormData} />
           </div>
           <div>
             <AllPurposeLabel inputId="taskEndTime">Due Time</AllPurposeLabel>
-            <AllPurposeInput
-              inputValue={taskDueTime}
-              inputType="time"
-              inputName="taskEndTime"
-              styling=""
-              onchangeFunction={handleFormData}
-            />
+            <AllPurposeInput inputValue={taskDueTime} inputType="time" inputName="taskDueTime" styling="" onchangeFunction={handleFormData} />
           </div>
         </div>
 
-        <AllPurposeLabel inputId="taskStatusDropdown">
-          Select Task Status
-        </AllPurposeLabel>
-        <select
-          id="taskStatusDropdown"
-          value={taskStatus}
-          name="taskStatus"
-          onChange={handleFormData}
-          className={textAreaStyling}
-        >
+        <AllPurposeLabel inputId="taskStatusDropdown">Select Task Status</AllPurposeLabel>
+        <select id="taskStatusDropdown" value={taskStatus} name="taskStatus" onChange={handleFormData} className={textAreaStyling}>
           <option value="Completed" className={optionStyling}>
             Completed
           </option>

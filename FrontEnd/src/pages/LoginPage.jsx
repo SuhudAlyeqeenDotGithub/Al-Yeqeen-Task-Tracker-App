@@ -10,17 +10,18 @@ import { useNavigate } from "react-router-dom";
 import { reset } from "../reduxFeatures/authenticationState/authSlice";
 import { loginUser } from "../reduxFeatures/authenticationState/authThunks";
 import { useSelector, useDispatch } from "react-redux";
+import { getDataFromLocalStorage } from "../reduxFeatures/taskState/taskLinkToBackend";
 
 const LoginPage = () => {
   // Background styling for the signup page
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isSuccess, isError, errorMessage } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading, isSuccess, isError, errorMessage } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({ userEmail: "", userPassword: "" });
   const { userEmail, userPassword } = formData;
+
+
 
   const onchangeFunction = (e) => {
     setFormData((previousState) => ({
@@ -34,11 +35,7 @@ const LoginPage = () => {
   const [notRegistedEmail, setNotRegistedEmail] = useState(false);
 
   useEffect(() => {
-    if (
-      userEmail.includes("@") &&
-      userEmail.includes(".") &&
-      userPassword !== ""
-    ) {
+    if (userEmail.includes("@") && userEmail.includes(".") && userPassword !== "") {
       setHideSubmitBtn(false);
     } else {
       setHideSubmitBtn(true);
@@ -65,22 +62,18 @@ const LoginPage = () => {
     setNotRegistedEmail(false);
 
     try {
-      const response = await dispatch(loginUser(formData)).unwrap();
+      dispatch(loginUser(formData));
       navigate("/alyeqeenTaskTracker/mytasks");
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
     }
   };
 
   const loginBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const LoginIcon = <FontAwesomeIcon icon={faSignInAlt} size="1x" />;
-  const buttonStyling = `${
-    hideSubmitBtn ? "hidden" : ""
-  } bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900 mt-4`;
-  const hoverUnderline =
-    "text-sm mt-2 text-blue-800 text-center font-semibold hover:underline";
-  const validationStyling =
-    "text-red-500 font-semibold mb-5 text-center text-[12px]";
+  const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900 mt-4`;
+  const hoverUnderline = "text-sm mt-2 text-blue-800 text-center font-semibold hover:underline";
+  const validationStyling = "text-red-500 font-semibold mb-5 text-center text-[12px]";
 
   return (
     <div className={loginBackground}>
@@ -88,13 +81,9 @@ const LoginPage = () => {
         <Logo logoStyling="w-30 h-28" />
 
         <div className="w-full flex flex-col mt-4 mb-2">
-          <p className="text-blue-900 text-xl font-bold mb-3 text-center">
-            Log In {LoginIcon}
-          </p>
+          <p className="text-blue-900 text-xl font-bold mb-3 text-center">Log In {LoginIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-blue-900 font-semibold  mb-5 text-center text-sm">
-            Please Enter Your Log In Details
-          </AllPurposeLabel>
+          <AllPurposeLabel labelStyling="text-blue-900 font-semibold  mb-5 text-center text-sm">Please Enter Your Log In Details</AllPurposeLabel>
         </div>
 
         <form className="w-full space-y-4" onSubmit={handleLoginUser}>
@@ -110,8 +99,7 @@ const LoginPage = () => {
             <AllPurposeLabel labelStyling={validationStyling}>
               {notRegistedEmail
                 ? errorMessage
-                : userEmail.length > 2 &&
-                  (!userEmail.includes("@") || !userEmail.includes("."))
+                : userEmail.length > 2 && (!userEmail.includes("@") || !userEmail.includes("."))
                 ? "Please enter a valid email"
                 : ""}
             </AllPurposeLabel>
@@ -126,9 +114,7 @@ const LoginPage = () => {
               inputName="userPassword"
               onchangeFunction={onchangeFunction}
             />
-            <AllPurposeLabel labelStyling={validationStyling}>
-              {incorrectPassword ? errorMessage : ""}
-            </AllPurposeLabel>
+            <AllPurposeLabel labelStyling={validationStyling}>{incorrectPassword ? errorMessage : ""}</AllPurposeLabel>
           </div>
 
           <button type="submit" className={buttonStyling}>
@@ -145,9 +131,7 @@ const LoginPage = () => {
           </Link>
         </div>
         <br />
-        <p className="text-sm text-gray-400">
-          @Suhud Ayodeji Yekini Innovation
-        </p>
+        <p className="text-sm text-gray-400">@Suhud Ayodeji Yekini Innovation</p>
       </AllPurposeContainer>
     </div>
   );

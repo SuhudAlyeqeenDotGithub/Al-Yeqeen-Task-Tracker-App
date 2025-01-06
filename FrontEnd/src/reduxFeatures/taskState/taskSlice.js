@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getTasks, addTask, deleteTasks, editTask } from "./taskThunk";
+import {getDataFromLocalStorage} from "./taskLinkToBackend"
 
 const initialState = {
-  tasks: [],
+  tasks: getDataFromLocalStorage("tasks")?.tasks || [],
   isSuccess: false,
   isLoading: false,
   isError: false,
