@@ -21,7 +21,7 @@ const header = {
   headers: { authorization: "Bearer " + token },
 };
 
-const getTasks = async () => {
+const getTasksRequest = async () => {
   try {
     const response = await axios.get(taskUri, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
@@ -30,7 +30,7 @@ const getTasks = async () => {
   }
 };
 
-const addTask = async (taskToAdd) => {
+const addTaskRequest = async (taskToAdd) => {
   try {
     const response = await axios.post(taskUri, taskToAdd, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
@@ -39,7 +39,7 @@ const addTask = async (taskToAdd) => {
   }
 };
 
-const deleteTasks = async (tasksToDelete) => {
+const deleteTasksRequest = async (tasksToDelete) => {
   try {
     const response = await axios.delete(taskUri, {
       ...header,
@@ -51,7 +51,7 @@ const deleteTasks = async (tasksToDelete) => {
   }
 };
 
-const editTask = async (updatedTask) => {
+const editTaskRequest = async (updatedTask) => {
   try {
     const response = await axios.put(taskUri, updatedTask, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
@@ -60,4 +60,4 @@ const editTask = async (updatedTask) => {
   }
 };
 
-export { getTasks, addTask, deleteTasks, editTask, updateLocalStorage, getDataFromLocalStorage };
+export { getTasksRequest, addTaskRequest, deleteTasksRequest, editTaskRequest, updateLocalStorage, getDataFromLocalStorage };

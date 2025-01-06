@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTasks, addTask, deleteTasks, editTask } from "./taskLinkToBackend";
+import { getTasks, addTask, deleteTasks, editTask } from "./taskThunk";
 
 const initialState = {
   tasks: [],
@@ -24,7 +24,6 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.pending, (state) => {
-        state.tasks = [];
         state.isSuccess = false;
         state.isLoading = true;
         state.isError = false;
@@ -38,7 +37,6 @@ const taskSlice = createSlice({
         state.errorMessage = false;
       })
       .addCase(getTasks.rejected, (state, action) => {
-        state.tasks = [];
         state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
@@ -51,7 +49,7 @@ const taskSlice = createSlice({
         state.errorMessage = false;
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state.tasks.push(action.payload);
+        state.tasks = action.payload;
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
@@ -89,6 +87,7 @@ const taskSlice = createSlice({
         state.errorMessage = false;
       })
       .addCase(editTask.fulfilled, (state, action) => {
+        state.tasks = action.payload;
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
