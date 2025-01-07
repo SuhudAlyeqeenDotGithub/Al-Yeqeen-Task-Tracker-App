@@ -14,7 +14,8 @@ const EditTaskDialog = ({ taskData }) => {
 
   const [formData, setFormData] = useState(taskData);
 
-  const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = formData;
+  const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } =
+    formData;
 
   const handleFormData = (e) => {
     setFormData((prevState) => ({
@@ -22,10 +23,6 @@ const EditTaskDialog = ({ taskData }) => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  useEffect(() => {
-    console.log("start date from edit", taskStartTime);
-  }, [taskStartDate]);
 
   const closeDialog = () => {
     if (editTaskDialogIsOpen) {
@@ -80,29 +77,52 @@ const EditTaskDialog = ({ taskData }) => {
               inputValue={taskStartDate}
               inputType="date"
               inputName="taskStartDate"
-              inputId="taskStartDate"
               styling=""
               onchangeFunction={handleFormData}
             />
           </div>
           <div>
             <AllPurposeLabel inputId="taskEndDate">Due Date</AllPurposeLabel>
-            <AllPurposeInput inputValue={taskDueDate} inputType="date" inputName="taskDueDate" styling="" onchangeFunction={handleFormData} />
+            <AllPurposeInput
+              inputValue={taskDueDate}
+              inputType="date"
+              inputName="taskDueDate"
+              styling=""
+              onchangeFunction={handleFormData}
+            />
           </div>
         </div>
         <div className={dateTimeDivStyling}>
           <div>
             <AllPurposeLabel inputId="taskStartTime">Start Time</AllPurposeLabel>
-            <AllPurposeInput inputValue={taskStartTime} inputType="time" inputName="taskStartTime" styling="" onchangeFunction={handleFormData} />
+            <AllPurposeInput
+              inputValue={taskStartTime}
+              inputType="time"
+              inputName="taskStartTime"
+              styling=""
+              onchangeFunction={handleFormData}
+            />
           </div>
           <div>
             <AllPurposeLabel inputId="taskEndTime">Due Time</AllPurposeLabel>
-            <AllPurposeInput inputValue={taskDueTime} inputType="time" inputName="taskDueTime" styling="" onchangeFunction={handleFormData} />
+            <AllPurposeInput
+              inputValue={taskDueTime}
+              inputType="time"
+              inputName="taskDueTime"
+              styling=""
+              onchangeFunction={handleFormData}
+            />
           </div>
         </div>
 
         <AllPurposeLabel inputId="taskStatusDropdown">Select Task Status</AllPurposeLabel>
-        <select id="taskStatusDropdown" value={taskStatus} name="taskStatus" onChange={handleFormData} className={textAreaStyling}>
+        <select
+          id="taskStatusDropdown"
+          value={taskStatus}
+          name="taskStatus"
+          onChange={handleFormData}
+          className={textAreaStyling}
+        >
           <option value="Completed" className={optionStyling}>
             Completed
           </option>

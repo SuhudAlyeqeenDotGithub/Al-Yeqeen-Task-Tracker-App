@@ -18,7 +18,7 @@ import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
 import { useLocation } from "react-router-dom";
-import { disableScroll, formatDate, formatDateToUsStandard } from "../UtilityFunctions/UtilityFunctions";
+import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 
@@ -141,26 +141,32 @@ function TasksPage() {
   };
 
   const tasksToDisplay = tasksData.map((rawtaskObj, index) => {
-    console.log("raw object", rawtaskObj);
-    const taskObj = { ...rawtaskObj, taskStartDate: formatDate(rawtaskObj.taskStartDate), taskDueDate: formatDate(rawtaskObj.taskDueDate) };
-    console.log("taskObj", taskObj);
+    const taskObjForDisplay = {
+      ...rawtaskObj,
+      taskStartDate: formatDate(rawtaskObj.taskStartDate),
+      taskDueDate: formatDate(rawtaskObj.taskDueDate),
+    };
+
     const taskObjForEdit = {
       ...rawtaskObj,
-      taskStartDate: formatDateToUsStandard(rawtaskObj.taskStartDate),
-      taskDueDate: formatDateToUsStandard(rawtaskObj.taskDueDate),
+      taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
+      taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate),
     };
-    console.log("taskObjForEdit", taskObjForEdit);
-    const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObj;
+
+    const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObjForDisplay;
 
     return (
       <div
         key={index}
         onClick={() => {
-          showViewTaskDialog(taskObj);
+          showViewTaskDialog(taskObjForDisplay);
         }}
         className={taskContainerStyle}
       >
-        <div onClick={(event) => event.stopPropagation()} className="row-span-2 flex basis-1/10 mr-4 items-center justify-self-center">
+        <div
+          onClick={(event) => event.stopPropagation()}
+          className="row-span-2 flex basis-1/10 mr-4 items-center justify-self-center"
+        >
           <AllPurposeCheckBox
             inputId={index}
             inputName={index}
@@ -174,7 +180,7 @@ function TasksPage() {
 
         <div className="basis-3/4 flex flex-wrap justify-center items-center space-y-5 max-w-full">
           <div className="flex max-w-full">
-            <p className="mr-10 max-w-full">Task Name {taskName}</p>
+            <p className="mr-10 max-w-full">Task Name: {taskName}</p>
             <p>Task Status: {taskStatus}</p>
           </div>
 
@@ -212,7 +218,11 @@ function TasksPage() {
       </h1>
 
       {newTaskDialogIsOpen && <NewTaskDialog />}
-      {editTaskDialogIsOpen && <EditTaskDialog taskData={editTaskDialogFromViewIsOpen && editTaskDialogIsOpen ? viewTaskDataToExport : editTaskData} />}
+      {editTaskDialogIsOpen && (
+        <EditTaskDialog
+          taskData={editTaskDialogFromViewIsOpen && editTaskDialogIsOpen ? viewTaskDataToExport : editTaskData}
+        />
+      )}
       {viewTaskDialogIsOpen && <ViewTaskDialog taskData={viewTaskData} />}
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       <div className=" sticky top-52 bg-white shadow-sm border border-blue-800  p-4 rounded flex flex-wrap items-center w-4/5 justify-self-center">
@@ -249,7 +259,9 @@ function TasksPage() {
         </button>
       </div>
 
-      <div className=" mt-4 flex flex-wrap justify-center items-center">{tasksData.length < 1 ? noTaskMessage : tasksToDisplay}</div>
+      <div className=" mt-4 flex flex-wrap justify-center items-center">
+        {tasksData.length < 1 ? noTaskMessage : tasksToDisplay}
+      </div>
     </div>
   );
 }

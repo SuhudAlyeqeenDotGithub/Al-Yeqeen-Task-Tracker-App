@@ -7,15 +7,19 @@ const enableScroll = () => {
 };
 
 const formatDate = (date) => {
-  const formattedDate = new Date(date).toLocaleDateString("en-GB");
-  console.log("gb formattedDate", formattedDate);
+  const formattedDate = new Date(date).toLocaleDateString(navigator.language);
   return formattedDate;
 };
 
-const formatDateToUsStandard = (date) => {
-  const formattedDate = new Date(date).toLocaleDateString("en-US");
-  console.log("US formattedDate", formattedDate);
+const formatDateToDefault = (date) => {
+  const dateObj = new Date(date);
+  const dateDay = dateObj.getDate()
+  const dateMonth = dateObj.getMonth()
+  const dateYear = dateObj.getFullYear()
+
+  const formattedDate = `${dateYear}-${dateMonth}-${dateDay}`
+
   return formattedDate;
 };
 
-export { disableScroll, enableScroll, formatDate, formatDateToUsStandard };
+export { disableScroll, enableScroll, formatDate, formatDateToDefault };
