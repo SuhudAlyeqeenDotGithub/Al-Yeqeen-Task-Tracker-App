@@ -76,7 +76,9 @@ const ViewTaskDialog = ({ taskData }) => {
   } ${scrollBarStyling} pl-6 pr-6 pt-2 pb-8 z-40 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue-300 shadow-lg max-w-md min-w-[400px] flex flex-wrap h-full min-h-[400] max-h-[600px]`;
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
   const buttonStyling = `justify-center text-blue-900 hover:text-white text-xl p-2 rounded-lg`;
-  const gridStyling = `w-full flex flex-wrap gap-x-24`;
+  const gridStyling = `w-full flex flex-wrap  gap-x-24`;
+  const allPurposeLabelStyling = "w-full text-sm text-blue-900 font-semibold"
+  const pairDateTimeStyling = "flex flex-row-reverse gap-x-8"
 
   return (
     viewTaskDialogIsOpen && (
@@ -135,25 +137,25 @@ const ViewTaskDialog = ({ taskData }) => {
                 {taskDescription}
               </RegularParagraph>
             </div>
-            <div className="flex flex-wrap gap-6 w-full">
-              <div className="flex flex-wrap gap-1">
-                <div className={gridStyling}>
-                  <RegularParagraph>Task Start Date</RegularParagraph>
-                  <RegularParagraph>Task Due Date:</RegularParagraph>
+            <div className="flex flex-col gap-6 w-full justify-center">
+              <div className="flex flex-col gap-1">
+                <div className={pairDateTimeStyling}>
+                  <RegularParagraph styling={allPurposeLabelStyling}>Task Start Date</RegularParagraph>
+                  <RegularParagraph styling={allPurposeLabelStyling}>Task Due Date:</RegularParagraph>
                 </div>
-                <div className={gridStyling}>
-                  <RegularParagraph>{taskStartDate}</RegularParagraph>
-                  <RegularParagraph>{taskDueDate}</RegularParagraph>
+                <div className={pairDateTimeStyling}>
+                  <RegularParagraph styling={allPurposeLabelStyling}>{taskStartDate}</RegularParagraph>
+                  <RegularParagraph styling={allPurposeLabelStyling}>{taskDueDate}</RegularParagraph>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-1">
-                <div className={gridStyling}>
-                  <RegularParagraph>Task Start Time</RegularParagraph>
-                  <RegularParagraph>Task Due Time:</RegularParagraph>
+              <div className="flex flex-col gap-1">
+                <div className={pairDateTimeStyling}>
+                  <RegularParagraph styling={allPurposeLabelStyling}>Task Start Time</RegularParagraph>
+                  <RegularParagraph styling={allPurposeLabelStyling}>Task Due Time:</RegularParagraph>
                 </div>
-                <div className={gridStyling}>
-                  <RegularParagraph>{taskStartTime}</RegularParagraph>
-                  <RegularParagraph>{taskDueTime}</RegularParagraph>
+                <div className={pairDateTimeStyling}>
+                  <RegularParagraph styling={allPurposeLabelStyling}>{taskStartTime}</RegularParagraph>
+                  <RegularParagraph styling={allPurposeLabelStyling}>{taskDueTime}</RegularParagraph>
                 </div>
               </div>
             </div>
