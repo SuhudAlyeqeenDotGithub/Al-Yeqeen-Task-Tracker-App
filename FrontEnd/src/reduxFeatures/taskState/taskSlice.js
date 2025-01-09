@@ -3,11 +3,11 @@ import { getTasks, addTask, deleteTasks, editTask } from "./taskThunk";
 import { getDataFromLocalStorage } from "./taskLinkToBackend";
 
 const initialState = {
-  tasks: getDataFromLocalStorage("tasks")?.tasks || [],
+  tasks: getDataFromLocalStorage("tasks", []),
   isSuccess: false,
   isLoading: false,
   isError: false,
-  errorMessage: false,
+  errorMessage: false
 };
 
 const taskSlice = createSlice({
@@ -20,7 +20,7 @@ const taskSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.errorMessage = false;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -31,7 +31,7 @@ const taskSlice = createSlice({
         state.errorMessage = false;
       })
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.tasks = action.payload;
+        state.tasks = action.payload ?? getDataFromLocalStorage("tasks", []);
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
@@ -100,7 +100,7 @@ const taskSlice = createSlice({
         state.isError = true;
         state.errorMessage = action.payload;
       });
-  },
+  }
 });
 
 export const { resetTasks } = taskSlice.actions;

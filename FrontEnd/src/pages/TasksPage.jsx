@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
+import { TaskStatusChip } from "../components/ShortComponents";
 
 function TasksPage() {
   const {
@@ -35,6 +36,8 @@ function TasksPage() {
 
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
+ 
+
   const location = useLocation();
 
   useEffect(() => {
@@ -42,7 +45,11 @@ function TasksPage() {
       dispatch(resetTasks());
       dispatch(getTasks());
     } catch (error) {}
-  }, [location]);
+  }, [location, tasksData]);
+
+  // function
+  // handleAddTask
+  //
 
   const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
 
@@ -180,8 +187,8 @@ function TasksPage() {
 
         <div className="basis-3/4 flex flex-wrap justify-center items-center space-y-5 max-w-full">
           <div className="flex max-w-full">
-            <p className="mr-10 max-w-full">Task Name: {taskName}</p>
-            <p>Task Status: {taskStatus}</p>
+            <p className="mr-10 max-w-full">{taskName}</p>
+            <TaskStatusChip>{taskStatus}</TaskStatusChip>
           </div>
 
           <div className="flex max-w-full">

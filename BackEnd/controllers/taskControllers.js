@@ -7,10 +7,12 @@ const Task = require("../mongooseModels/taskModel");
 //access private
 const getTasks = asyncHandler(async (req, res) => {
   const userId = req.userId;
-
-  const userTasks = await Task.find({ taskOwner: userId });
-
-  res.status(200).json({ message: "Task Fetched Successfully", userTasks });
+  try {
+    const userTasks = await Task.find({ taskOwner: userId });
+    res.status(200).json({ message: "Task Fetched Successfully", userTasks });
+  } catch (error) {
+    throw new Error(error.message ?? error ?? "Error fetching tasks");
+  }
 });
 
 //@desc add tasks
@@ -35,7 +37,7 @@ const addTask = asyncHandler(async (req, res) => {
       taskStartTime,
       taskDueTime,
       taskStatus,
-      taskOwner: userId,
+      taskOwner: userId
     });
 
     const userTasks = await Task.find({ taskOwner: userId });
@@ -51,7 +53,8 @@ const addTask = asyncHandler(async (req, res) => {
 //access private
 const editTask = asyncHandler(async (req, res) => {
   // get the data that is being updated
-  const { _id, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = req.body;
+  const { _id, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } =
+    req.body;
 
   const userId = req.userId;
 
@@ -72,7 +75,7 @@ const editTask = asyncHandler(async (req, res) => {
         taskDueDate,
         taskStartTime,
         taskDueTime,
-        taskStatus,
+        taskStatus
       },
       { new: true }
     );
@@ -108,7 +111,7 @@ const deleteTasks = asyncHandler(async (req, res) => {
 
     res.status(200).json({
       message: `${deletedTasks.deletedCount} tasks deleted successfully`,
-      userTasks,
+      userTasks
     });
   } catch (err) {
     res.status(500).json({ message: "Error deleting tasks", error });

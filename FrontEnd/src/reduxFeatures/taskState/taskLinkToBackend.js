@@ -4,13 +4,13 @@ const updateLocalStorage = (key, data) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
-const getDataFromLocalStorage = (key) => {
-  return JSON.parse(localStorage.getItem(key));
+const getDataFromLocalStorage = (key, defaultVal) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : defaultVal;
 };
 
 const getUpdatedTaskAndUpdateLocalStorage = (response) => {
   const tasks = response.data.userTasks;
-  updateLocalStorage("tasks", tasks);
   return tasks;
 };
 
@@ -20,7 +20,7 @@ const getHeader = () => {
   const user = getDataFromLocalStorage("user");
   const token = user ? user.userToken : null;
   const header = {
-    headers: { authorization: "Bearer " + token },
+    headers: { authorization: "Bearer " + token }
   };
   return header;
 };
@@ -31,7 +31,11 @@ const getTasksRequest = async () => {
     const response = await axios.get(taskUri, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
-    throw new Error(error.response?.data?.message);
+    if (error.response?.status === 401) {
+      localStorage.removeItem("user"); // Clear invalid user data
+      window.location.href = "/login"; // Redirect to login
+    }
+    throw new Error(error.response?.data?.message || "An error occurred while fetching tasks.");
   }
 };
 
@@ -50,7 +54,7 @@ const deleteTasksRequest = async (tasksToDelete) => {
   try {
     const response = await axios.delete(taskUri, {
       ...header,
-      data: tasksToDelete,
+      data: tasksToDelete
     });
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
@@ -68,4 +72,11 @@ const editTaskRequest = async (updatedTask) => {
   }
 };
 
-export { getTasksRequest, addTaskRequest, deleteTasksRequest, editTaskRequest, updateLocalStorage, getDataFromLocalStorage };
+export {
+  getTasksRequest,
+  addTaskRequest,
+  deleteTasksRequest,
+  editTaskRequest,
+  updateLocalStorage,
+  getDataFromLocalStorage
+};

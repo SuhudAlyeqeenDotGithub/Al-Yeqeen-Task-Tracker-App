@@ -1,31 +1,30 @@
-// bring in jwt
 const jwt = require("jsonwebtoken");
-const User = require("../mongooseModels/userModel");
 
 const authenticateUser = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || authHeader === "") {
-    res.status(401);
-    return next(new Error("Authorization header is missing in the request"));
-  }
-
-  const token = authHeader.split("Bearer ")[1];
-
-  if (!token) {
-    res.status(401);
-    return next(new Error("User access token is not found"));
-  }
-
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const authHeader = req.headers.authorization;
 
+    // Check if the Authorization header exists
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Authorization header is missing or malformed" });
+    }
+
+    // Extract the token
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Access token is missing" });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    // Attach the userId to the request object
     req.userId = decoded.userId;
-    res.status(200);
 
     next();
   } catch (err) {
-    return next(new Error("Token is invalid"));
+    const message = err.name === "TokenExpiredError" ? "Token has expired" : "Invalid token";
+    return res.status(401).json({ message });
   }
 };
 

@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, loginUser } from "./authThunks";
+import { getDataFromLocalStorage } from "../taskState/taskLinkToBackend";
 
 const initialState = {
-  user: null,
+  user: getDataFromLocalStorage("user", null),
   isSuccess: false,
   isLoading: false,
   isError: false,

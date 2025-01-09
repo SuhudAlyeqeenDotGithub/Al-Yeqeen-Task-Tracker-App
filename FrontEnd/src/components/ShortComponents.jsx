@@ -8,10 +8,7 @@ export const RecentTasks = () => {
   );
 };
 
-export const RegularParagraph = ({
-  children,
-  styling = "text-sm text-blue-900 font-semibold",
-}) => {
+export const RegularParagraph = ({ children, styling = "text-sm text-blue-900 font-semibold" }) => {
   return <p className={styling}>{children}</p>;
 };
 
@@ -21,15 +18,15 @@ export const TaskStatusChip = ({ children }) => {
   useEffect(() => {
     if (children === "Completed") {
       setChipStyling(
-        `bg-green-200 border border-green-700 text-green-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`,
+        `bg-green-200 border border-green-700 text-green-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`
       );
     } else if (children === "In Progress") {
       setChipStyling(
-        `bg-yellow-200 border border-yellow-700 text-yellow-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`,
+        `bg-yellow-200 border border-yellow-700 text-yellow-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`
       );
     } else {
       setChipStyling(
-        `bg-blue-200 border border-blue-700 text-blue-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`,
+        `bg-blue-200 border border-blue-700 text-blue-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`
       );
     }
   }, [children]);
