@@ -11,6 +11,7 @@ const getDataFromLocalStorage = (key, defaultVal) => {
 
 const getUpdatedTaskAndUpdateLocalStorage = (response) => {
   const tasks = response.data.userTasks;
+  updateLocalStorage("tasks", tasks);
   return tasks;
 };
 
@@ -42,9 +43,15 @@ const getTasksRequest = async () => {
 const addTaskRequest = async (taskToAdd) => {
   const header = getHeader();
   try {
+    console.log("Adding tasks", taskToAdd);
     const response = await axios.post(taskUri, taskToAdd, header);
+    console.log("getting tasks", response);
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("user"); // Clear invalid user data
+      window.location.href = "/login"; // Redirect to login
+    }
     throw new Error(error.response?.data?.message);
   }
 };
@@ -58,6 +65,10 @@ const deleteTasksRequest = async (tasksToDelete) => {
     });
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("user"); // Clear invalid user data
+      window.location.href = "/login"; // Redirect to login
+    }
     throw new Error(error.response?.data?.message);
   }
 };
@@ -68,6 +79,10 @@ const editTaskRequest = async (updatedTask) => {
     const response = await axios.put(taskUri, updatedTask, header);
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("user"); // Clear invalid user data
+      window.location.href = "/login"; // Redirect to login
+    }
     throw new Error(error.response?.data?.message);
   }
 };

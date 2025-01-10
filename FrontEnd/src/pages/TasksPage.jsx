@@ -8,7 +8,7 @@ import {
   setEditDialogTaskFromViewIsOpen,
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
-  setDeleteTaskFromView,
+  setDeleteTaskFromView
 } from "../reduxFeatures/dialogSlice";
 
 import AllPurposeCheckBox from "../components/AllPurposeCheckBox";
@@ -31,12 +31,10 @@ function TasksPage() {
     editTaskDialogFromViewIsOpen,
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
-    deleteTaskFromView,
+    deleteTaskFromView
   } = useSelector((state) => state.dialog);
 
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
-
- 
 
   const location = useLocation();
 
@@ -45,18 +43,14 @@ function TasksPage() {
       dispatch(resetTasks());
       dispatch(getTasks());
     } catch (error) {}
-  }, [location, tasksData]);
-
-  // function
-  // handleAddTask
-  //
+  }, [location]);
 
   const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
 
   const dispatch = useDispatch();
 
   const taskContainerStyle =
-    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 flex flex-wrap w-2/5 max-w-2/4 min-w-96 items-center justify-center hover:bg-blue-50";
+    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 ml-2 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
 
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
@@ -151,14 +145,18 @@ function TasksPage() {
     const taskObjForDisplay = {
       ...rawtaskObj,
       taskStartDate: formatDate(rawtaskObj.taskStartDate),
-      taskDueDate: formatDate(rawtaskObj.taskDueDate),
+      taskDueDate: formatDate(rawtaskObj.taskDueDate)
     };
 
     const taskObjForEdit = {
       ...rawtaskObj,
       taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
-      taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate),
+      taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate)
     };
+
+    const todayDate = formatDateToDefault(new Date())
+
+    
 
     const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObjForDisplay;
 
@@ -170,10 +168,11 @@ function TasksPage() {
         }}
         className={taskContainerStyle}
       >
-        <div
-          onClick={(event) => event.stopPropagation()}
-          className="row-span-2 flex basis-1/10 mr-4 items-center justify-self-center"
-        >
+        <div className="mr-2">
+          <div className={`${taskObjForEdit.taskDueDate > todayDate ? "bg-green-600" : "bg-red-600"} w-3 h-3 rounded-full justify-center`}></div>
+        </div>
+
+        <div onClick={(event) => event.stopPropagation()} className="flex flex-col mr-4">
           <AllPurposeCheckBox
             inputId={index}
             inputName={index}
@@ -185,15 +184,12 @@ function TasksPage() {
           />
         </div>
 
-        <div className="basis-3/4 flex flex-wrap justify-center items-center space-y-5 max-w-full">
-          <div className="flex max-w-full">
-            <p className="mr-10 max-w-full">{taskName}</p>
-            <TaskStatusChip>{taskStatus}</TaskStatusChip>
-          </div>
-
-          <div className="flex max-w-full">
-            <p className="mr-10 max-w-full">Start Date: {taskStartDate} </p>
-            <p>Start Time: {taskStartTime}</p>
+        <div className="w-full flex flex-col">
+          <div className=" basis-3/4 flex flex-row items-center justify-between max-w-full">
+            <div className="max-w-[300px] w-full">{taskName}</div>
+            <div className="max-w-md">
+              <TaskStatusChip>{taskStatus}</TaskStatusChip>
+            </div>
           </div>
         </div>
 

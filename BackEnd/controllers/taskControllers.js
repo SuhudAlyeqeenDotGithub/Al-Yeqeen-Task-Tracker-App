@@ -21,7 +21,7 @@ const getTasks = asyncHandler(async (req, res) => {
 const addTask = asyncHandler(async (req, res) => {
   const { taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = req.body;
 
-  if (!taskName || !taskStatus) {
+  if (!taskName || !taskStatus || taskStatus === "" || taskName === "") {
     res.status(400);
     throw new Error("Please fill in the mandatory fields (task name and task status)");
   }
@@ -44,7 +44,7 @@ const addTask = asyncHandler(async (req, res) => {
 
     res.status(200).json({ message: "Task added Successfully", userTasks });
   } catch (error) {
-    throw new Error(`The task ${taskName} creation failed`);
+    throw new Error(error.message ?? error ?? "Error adding task");
   }
 });
 

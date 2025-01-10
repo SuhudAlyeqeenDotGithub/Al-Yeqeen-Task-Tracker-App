@@ -5,14 +5,11 @@ import {
   setEditDialogTaskFromViewIsOpen,
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
-  setDeleteTaskFromView,
+  setDeleteTaskFromView
 } from "../reduxFeatures/dialogSlice";
 
 import AllPurposeContainer from "./AllPurposeContainer";
-import {
-  disableScroll,
-  enableScroll,
-} from "../UtilityFunctions/UtilityFunctions";
+import { disableScroll, enableScroll } from "../UtilityFunctions/UtilityFunctions";
 
 import { editIcon, deleteIcon, closeIcon } from "./icons";
 import { RegularParagraph, TaskStatusChip } from "./ShortComponents";
@@ -26,20 +23,12 @@ const ViewTaskDialog = ({ taskData }) => {
     editTaskDialogFromViewIsOpen,
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
-    deleteTaskFromView,
+    deleteTaskFromView
   } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
 
-  const {
-    taskId,
-    taskName,
-    taskDescription,
-    taskStartDate,
-    taskDueDate,
-    taskStartTime,
-    taskDueTime,
-    taskStatus,
-  } = taskData || {};
+  const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } =
+    taskData || {};
 
   const handleCloseViewTask = () => {
     if (viewTaskDialogIsOpen === true) {
@@ -59,9 +48,7 @@ const ViewTaskDialog = ({ taskData }) => {
 
   const handleDeleteTaskFromView = () => {
     if (!deleteTaskDialogIsOpen && !deleteTaskFromView) {
-      const dataNeededToDelete = [
-        `Task Id: ${taskData.taskId} || Task Name: ${taskName}`,
-      ];
+      const dataNeededToDelete = [`Task Id: ${taskData.taskId} || Task Name: ${taskName}`];
       dispatch(setViewTaskDataToExport(dataNeededToDelete));
       dispatch(setDeleteTaskDialogIsOpen(true));
 
@@ -73,24 +60,22 @@ const ViewTaskDialog = ({ taskData }) => {
 
   const dialogueStyling = ` ${
     deleteTaskFromView ? "border-none bg-blue-100 bg-opacity-90" : "bg-white"
-  } ${scrollBarStyling} pl-6 pr-6 pt-2 pb-8 z-40 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue-300 shadow-lg max-w-md min-w-[400px] flex flex-wrap h-full min-h-[400] max-h-[600px]`;
+  } ${scrollBarStyling} pl-6 pr-6 pt-2 pb-8 z-40 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue-300 shadow-lg max-w-[400px] min-w-[400px] flex flex-col min-h-[400] max-h-[600px]`;
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
   const buttonStyling = `justify-center text-blue-900 hover:text-white text-xl p-2 rounded-lg`;
   const gridStyling = `w-full flex flex-wrap  gap-x-24`;
-  const allPurposeLabelStyling = "w-full text-sm text-blue-900 font-semibold"
-  const pairDateTimeStyling = "flex flex-row-reverse gap-x-8"
+  const allPurposeLabelStyling = "w-full text-sm text-blue-900 font-semibold";
+  const pairDateTimeStyling = "flex flex-row-reverse gap-x-8";
 
   return (
     viewTaskDialogIsOpen && (
       <>
         {editTaskDialogIsOpen && <EditTaskDialog taskData={taskData} />}
-        {deleteTaskFromView && (
-          <DeleteTaskDialog tasksToDelete={viewTaskDataToExport} />
-        )}
+        {deleteTaskFromView && <DeleteTaskDialog tasksToDelete={viewTaskDataToExport} />}
         <div className={overlayStyling} onClick={handleCloseViewTask}></div>
         <AllPurposeContainer containerStyling={dialogueStyling}>
           <div className="flex flex-col gap-8">
-            <header className="gap-2 mb-5">
+            <div className="gap-2">
               <div className="flex flex-row w-full items-center">
                 <RegularParagraph styling="w-full pb-4 text-blue-900 text-xl font-bold">
                   Your Task Status
@@ -111,25 +96,20 @@ const ViewTaskDialog = ({ taskData }) => {
                   >
                     {editIcon}
                   </button>
-                  <button
-                    title="close"
-                    className={`hover:bg-red-500 ${buttonStyling}`}
-                    onClick={handleCloseViewTask}
-                  >
+                  <button title="close" className={`hover:bg-red-500 ${buttonStyling}`} onClick={handleCloseViewTask}>
                     {closeIcon}
                   </button>
                 </div>
               </div>
               <div className="flex flex-wrap gap-x-20 items-center w-full mt-2">
                 <TaskStatusChip>{taskStatus}</TaskStatusChip>
-                <RegularParagraph>Task Id: {taskId}</RegularParagraph>
               </div>
-            </header>
+            </div>
 
             <div className={gridStyling}>
               <RegularParagraph>Task Name: {taskName}</RegularParagraph>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col gap-3">
               <RegularParagraph>Task Description</RegularParagraph>
               <RegularParagraph
                 styling={`${scrollBarStyling} overflow-auto text-sm max-h-[150px] text-blue-900 font-semibold border border-blue-900 shadow-inner shadow-gray-200 rounded-md p-4`}
