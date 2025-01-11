@@ -13,6 +13,8 @@ const EditTaskDialog = ({ taskData }) => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(taskData);
+  const [onSubmitNameIssueMessage, setOnSubmitNameIssueMessage] = useState(false);
+  const [onSubmitEmptyStatusMessage, setOnSubmitEmptyStatusMessage] = useState(false);
 
   const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } =
     formData;
@@ -65,7 +67,7 @@ const EditTaskDialog = ({ taskData }) => {
               onchangeFunction={handleFormData}
             />
             <AllPurposeLabel labelStyling={validationStyling}>
-              {taskName === "" ? "Please enter a task name" : ""}
+              {taskName === "" || onSubmitNameIssueMessage ? "Please enter a task name" : taskName.length > 84 || onSubmitNameIssueMessage ? "Task name is too long" : ""}
             </AllPurposeLabel>
           </div>
           <textarea
@@ -143,7 +145,7 @@ const EditTaskDialog = ({ taskData }) => {
             </option>
           </select>
           <AllPurposeLabel labelStyling={validationStyling}>
-            {taskStatus === "" ? "Please select a task status" : ""}
+          {taskStatus === "" || onSubmitEmptyStatusMessage ? "Please select a task status" : ""}
           </AllPurposeLabel>
           <button type="submit" className={buttonStyling} onClick={closeDialog}>
             Save Task

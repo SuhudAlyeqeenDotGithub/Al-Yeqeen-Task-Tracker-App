@@ -33,11 +33,16 @@ const NewTaskDialog = () => {
 
   const { taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } = formData;
 
-  const [onSubmitEmptyNameMessage, setOnSubmitEmptyNameMessage] = useState(false);
+  const [onSubmitNameIssueMessage, setOnSubmitNameIssueMessage] = useState(false);
   const [onSubmitEmptyStatusMessage, setOnSubmitEmptyStatusMessage] = useState(false);
   // function
   // handleAddTask
   //if name field is empty set message to true and return
+  const getDatePlusDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 
   const closeDialog = () => {
     if (newTaskDialogIsOpen === true) {
@@ -48,17 +53,40 @@ const NewTaskDialog = () => {
 
   const handleAddTask = async (e) => {
     e.preventDefault();
-    if (taskName === "" || taskStatus === "") {
-      setOnSubmitEmptyNameMessage(true);
+    if (taskName === "" || taskName.length > 84) {
+      setOnSubmitNameIssueMessage(true);
+      return;
+    } else if (taskStatus === "") {
       setOnSubmitEmptyStatusMessage(true);
       return;
+    }
+
+    let formDataToSubmit;
+
+    if (taskStartDate === "" || taskDueDate === "" || taskStartTime === "" || taskDueTime === "") {
+      const filledBlankFormData = {
+        ...formData,
+        taskStartDate: formData.taskStartDate === "" ? new Date() : formData.taskStartDate,
+        taskDueDate:
+          formData.taskDueDate === "" && formData.taskStartDate === ""
+            ? getDatePlusDays(new Date(), 2)
+            : formData.taskDueDate === "" && formData.taskStartDate !== ""
+            ? getDatePlusDays(formData.taskStartDate, 2)
+            : formData.taskDueDate,
+        taskStartTime: formData.taskStartTime === "" ? "00:00" : formData.taskStartTime,
+        taskDueTime: formData.taskDueTime === "" ? "00:00" : formData.taskDueTime
+      };
+
+      formDataToSubmit = filledBlankFormData;
+    } else {
+      formDataToSubmit = formData;
     }
 
     dispatch(resetTasks());
 
     if (newTaskDialogIsOpen) {
       try {
-        const tasks = await dispatch(addTask(formData)).unwrap();
+        const tasks = await dispatch(addTask(formDataToSubmit)).unwrap();
         if (tasks) {
           dispatch(setNewTaskDialogIsOpen(false));
           enableScroll();
@@ -72,7 +100,7 @@ const NewTaskDialog = () => {
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex justify-center items-center`;
   const textAreaStyling = `shadow-sm border border-blue-800 placeholder-blue-900 text-blue-900 text-sm font-semibold border border-blue-500 w-full p-2 rounded focus:border-2 border-blue-500 outline-none`;
   const buttonStyling = `${
-    taskName === "" ? "" : ""
+    taskName === "" || taskName.length > 84 ? "hidden" : ""
   } bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
   const optionStyling = `font-semibold hover:bg-blue-900`;
   const dateTimeDivStyling = "grid grid-cols-2 grid-rows-1 gap-x-6 min-w-full";
@@ -101,7 +129,11 @@ const NewTaskDialog = () => {
                 onchangeFunction={handleFormData}
               />
               <AllPurposeLabel labelStyling={validationStyling}>
-                {taskName === "" || onSubmitEmptyNameMessage ? "Please enter a task name" : ""}
+                {taskName === "" || onSubmitNameIssueMessage
+                  ? "Please enter a task name"
+                  : taskName.length > 84 || onSubmitNameIssueMessage
+                  ? "Task name is too long"
+                  : ""}
               </AllPurposeLabel>
             </div>
             <textarea

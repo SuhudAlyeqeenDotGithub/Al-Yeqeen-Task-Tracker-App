@@ -12,9 +12,7 @@ const getTasks = createAsyncThunk("getTasks", async (_, ThunkApi) => {
 
 const addTask = createAsyncThunk("addTask", async (taskToAdd, ThunkApi) => {
   try {
-    console.log("Adding tasks")
     const tasks = await addTaskRequest(taskToAdd);
-    console.log("added task and getting tasks", tasks)
     return tasks;
   } catch (error) {
     ThunkApi.rejectWithValue(error.message);

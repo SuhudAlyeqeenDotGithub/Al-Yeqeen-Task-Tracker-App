@@ -43,9 +43,7 @@ const getTasksRequest = async () => {
 const addTaskRequest = async (taskToAdd) => {
   const header = getHeader();
   try {
-    console.log("Adding tasks", taskToAdd);
     const response = await axios.post(taskUri, taskToAdd, header);
-    console.log("getting tasks", response);
     return getUpdatedTaskAndUpdateLocalStorage(response);
   } catch (error) {
     if (error.response?.status === 401) {
