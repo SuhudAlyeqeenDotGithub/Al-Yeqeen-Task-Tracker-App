@@ -49,7 +49,6 @@ function TasksPage() {
 
   const dispatch = useDispatch();
 
-
   const taskContainerStyle =
     "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 ml-2 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;

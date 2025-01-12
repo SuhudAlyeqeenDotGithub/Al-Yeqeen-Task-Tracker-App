@@ -13,8 +13,8 @@ const formatDate = (date) => {
 
 const formatDateToDefault = (date) => {
   const dateObj = new Date(date);
-  const dateDay = dateObj.getDate()
-  const dateMonth = dateObj.getMonth()
+  const dateDay = String(dateObj.getDate()).padStart(2, "0");
+  const dateMonth = String(dateObj.getMonth() + 1).padStart(2, "0");
   const dateYear = dateObj.getFullYear()
 
   const formattedDate = `${dateYear}-${dateMonth}-${dateDay}`

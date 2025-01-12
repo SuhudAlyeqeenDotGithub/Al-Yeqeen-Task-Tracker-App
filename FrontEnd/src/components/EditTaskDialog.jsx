@@ -6,6 +6,8 @@ import AllPurposeInput from "./allPurposeInput";
 import { enableScroll } from "../UtilityFunctions/UtilityFunctions";
 import AllPurposeLabel from "./AllPurposeLabel";
 import { closeIcon } from "./icons";
+import { editTask } from "../reduxFeatures/taskState/taskThunk";
+import { resetTasks } from "../reduxFeatures/taskState/taskSlice";
 
 const EditTaskDialog = ({ taskData }) => {
   const { editTaskDialogIsOpen, editTaskDialogFromViewIsOpen } = useSelector((state) => state.dialog);
@@ -31,6 +33,51 @@ const EditTaskDialog = ({ taskData }) => {
       dispatch(setEditTaskDialogIsOpen(false));
       dispatch(setEditDialogTaskFromViewIsOpen(false));
       enableScroll();
+    }
+  };
+
+  const handleEditTask = async (e) => {
+    e.preventDefault();
+    if (taskName === "" || taskName.length > 84) {
+      setOnSubmitNameIssueMessage(true);
+      return;
+    } else if (taskStatus === "") {
+      setOnSubmitEmptyStatusMessage(true);
+      return;
+    }
+
+    let formDataToSubmit;
+
+    if (taskStartDate === "" || taskDueDate === "" || taskStartTime === "" || taskDueTime === "") {
+      const filledBlankFormData = {
+        ...formData,
+        taskStartDate: formData.taskStartDate === "" ? new Date() : formData.taskStartDate,
+        taskDueDate:
+          formData.taskDueDate === "" && formData.taskStartDate === ""
+            ? getDatePlusDays(new Date(), 2)
+            : formData.taskDueDate === "" && formData.taskStartDate !== ""
+            ? getDatePlusDays(formData.taskStartDate, 2)
+            : formData.taskDueDate,
+        taskStartTime: formData.taskStartTime === "" ? "00:00" : formData.taskStartTime,
+        taskDueTime: formData.taskDueTime === "" ? "00:00" : formData.taskDueTime
+      };
+
+      formDataToSubmit = filledBlankFormData;
+    } else {
+      formDataToSubmit = formData;
+    }
+
+    dispatch(resetTasks());
+
+    if (editTaskDialogIsOpen || editTaskDialogFromViewIsOpen) {
+      try {
+        const tasks = await dispatch(editTask(formDataToSubmit)).unwrap();
+        if (tasks) {
+          dispatch(setEditTaskDialogIsOpen(false));
+      dispatch(setEditDialogTaskFromViewIsOpen(false));
+      enableScroll();
+        }
+      } catch (error) {}
     }
   };
 

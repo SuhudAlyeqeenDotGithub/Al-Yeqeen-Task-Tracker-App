@@ -1,0 +1,33 @@
+[33mbc46504[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mreduxBranch[m[33m, [m[1;31morigin/reduxBranch[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33m4da3e2b[m HEAD@{1}: commit: Added default task date and time if they are originally filled as empty by the user. Added a validation for task name length to the new task dialog
+[33mbc46504[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mreduxBranch[m[33m, [m[1;31morigin/reduxBranch[m[33m)[m HEAD@{2}: commit: Fixed misalignment in the task container and the status dropdown for the new and edit task dialog
+[33mfafc4f2[m HEAD@{3}: commit: Added a task status chip to the task container and fixed some misalignment in the edit and new task dialog
+[33m3654ae9[m HEAD@{4}: commit: Fixed the misalignment in the view task dialog
+[33ma36538f[m HEAD@{5}: commit: Added a date formatter for both the display date and supported build in date
+[33m89d320f[m HEAD@{6}: commit: Fixed a bug in fetching the latest user token to get their tasks
+[33mb96054a[m HEAD@{7}: commit: Added a route protector to the login page to redirect users back to their tasks if they have not logged out yet
+[33md166711[m HEAD@{8}: commit: Updated the redux task Slice and create the async thunk CRUD functions to update the state
+[33mc67ace8[m HEAD@{9}: commit: Created the tasks request services to the back end and the task slice for the redux state
+[33m9db54ae[m HEAD@{10}: commit: Added validation to sign in and login page, connected the back end with both so that user can register and login from the front end
+[33mdcae86c[m HEAD@{11}: pull: Fast-forward
+[33m2233fe0[m HEAD@{12}: commit: Started Auth Redux
+[33mcf79c7c[m HEAD@{13}: commit: Fixed a bug in the delete from view dialog
+[33m3f3c64b[m HEAD@{14}: commit: Changed global state management from usecontext to redux
+[33mfa58f50[m HEAD@{15}: checkout: moving from useContextBranch to reduxBranch
+[33m922bdb1[m[33m ([m[1;31morigin/main[m[33m, [m[1;32museContextBranch[m[33m)[m HEAD@{16}: checkout: moving from reduxBranch to useContextBranch
+[33mfa58f50[m HEAD@{17}: commit: Created a dialog slice file
+[33m922bdb1[m[33m ([m[1;31morigin/main[m[33m, [m[1;32museContextBranch[m[33m)[m HEAD@{18}: checkout: moving from useContextBranch to reduxBranch
+[33m922bdb1[m[33m ([m[1;31morigin/main[m[33m, [m[1;32museContextBranch[m[33m)[m HEAD@{19}: Branch: renamed refs/heads/main to refs/heads/useContextBranch
+[33m922bdb1[m[33m ([m[1;31morigin/main[m[33m, [m[1;32museContextBranch[m[33m)[m HEAD@{21}: commit: Reduced the space between task objects
+[33m93a296c[m HEAD@{22}: commit: Fixed a bug of error handling for missing token in the auth middleware and completed the function definition of task controllers for the task routes
+[33m3322a71[m HEAD@{23}: commit: Added the function that will authenticate a user using their token. The function will be invoked as a middleware to protect routes
+[33mda0b9cd[m HEAD@{24}: commit: Created user routes and register and login user controller function. created the token generator function and password hashing
+[33m8f74cd6[m HEAD@{25}: commit: Created and added the user login and register route to the server
+[33m1591e14[m HEAD@{26}: commit: Created mongoose model for users, tasks and deletedTasks. Created file that will hold middlewares, routes and controllers for tasks, users and authentication actions
+[33m738d62f[m HEAD@{27}: commit: Re-add FrontEnd folder as a regular directory
+[33m5b6e3ee[m HEAD@{28}: commit: Remove FrontEnd as a submodule
+[33m27474d1[m HEAD@{29}: commit: Re- add FrontEnd folder
+[33mbd735f6[m HEAD@{30}: commit: Remove submodule reference for FrontEnd
+[33mcad4b9c[m HEAD@{31}: Branch: renamed refs/heads/master to refs/heads/main
+[33mcad4b9c[m HEAD@{33}: commit: Added the server file, routes layout and contoller functions fot the routes.
+[33m1de01f4[m HEAD@{34}: commit (initial): Initial commit for the combined front and back end folder
