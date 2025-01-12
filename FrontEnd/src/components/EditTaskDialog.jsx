@@ -74,8 +74,8 @@ const EditTaskDialog = ({ taskData }) => {
         const tasks = await dispatch(editTask(formDataToSubmit)).unwrap();
         if (tasks) {
           dispatch(setEditTaskDialogIsOpen(false));
-      dispatch(setEditDialogTaskFromViewIsOpen(false));
-      enableScroll();
+          dispatch(setEditDialogTaskFromViewIsOpen(false));
+          enableScroll();
         }
       } catch (error) {}
     }
@@ -114,7 +114,11 @@ const EditTaskDialog = ({ taskData }) => {
               onchangeFunction={handleFormData}
             />
             <AllPurposeLabel labelStyling={validationStyling}>
-              {taskName === "" || onSubmitNameIssueMessage ? "Please enter a task name" : taskName.length > 84 || onSubmitNameIssueMessage ? "Task name is too long" : ""}
+              {taskName === "" || onSubmitNameIssueMessage
+                ? "Please enter a task name"
+                : taskName.length > 84 || onSubmitNameIssueMessage
+                ? "Task name is too long"
+                : ""}
             </AllPurposeLabel>
           </div>
           <textarea
@@ -192,9 +196,9 @@ const EditTaskDialog = ({ taskData }) => {
             </option>
           </select>
           <AllPurposeLabel labelStyling={validationStyling}>
-          {taskStatus === "" || onSubmitEmptyStatusMessage ? "Please select a task status" : ""}
+            {taskStatus === "" || onSubmitEmptyStatusMessage ? "Please select a task status" : ""}
           </AllPurposeLabel>
-          <button type="submit" className={buttonStyling} onClick={closeDialog}>
+          <button type="submit" className={buttonStyling} onClick={handleEditTask}>
             Save Task
           </button>
         </form>

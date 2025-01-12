@@ -106,12 +106,16 @@ function TasksPage() {
 
   const handleEditTaskFromNavButton = () => {
     if (onlyOneCheckIsTrue) {
-      const taskToEdit = regularCheckBoxStatus.indexOf(true);
-      setEditTaskData(
-        tasksData.find((taskData) => {
-          return taskData.taskId === taskToEdit;
-        })
-      );
+      const taskToEditIndex = regularCheckBoxStatus.indexOf(true);
+      const taskToEdit = tasksData.find((taskData, index) => {
+        return index === taskToEditIndex;
+      });
+      const taskToEditForEditDialog = {
+        ...taskToEdit,
+        taskStartDate: formatDateToDefault(taskToEdit.taskStartDate),
+        taskDueDate: formatDateToDefault(taskToEdit.taskDueDate)
+      };
+      setEditTaskData(taskToEditForEditDialog);
       dispatch(setEditTaskDialogIsOpen(true));
     }
   };
@@ -123,7 +127,7 @@ function TasksPage() {
       const tasksToDeleteLookUp = regularCheckBoxStatus
         .map((checkedBox, index) => {
           if (checkedBox === true) {
-            const foundTask = tasksData.find((task) => task.taskId === index);
+            const foundTask = tasksData.find((task, taskIndex) => taskIndex === index);
 
             if (foundTask) {
               return `Task Id: ${index} || Task Name: ${foundTask.taskName}`;
@@ -142,12 +146,6 @@ function TasksPage() {
   };
 
   const tasksToDisplay = tasksData.map((rawtaskObj, index) => {
-    const taskObjForDisplay = {
-      ...rawtaskObj,
-      taskStartDate: formatDate(rawtaskObj.taskStartDate),
-      taskDueDate: formatDate(rawtaskObj.taskDueDate)
-    };
-
     const taskObjForEdit = {
       ...rawtaskObj,
       taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
@@ -156,13 +154,13 @@ function TasksPage() {
 
     const todayDate = formatDateToDefault(new Date());
 
-    const { taskName, taskStartDate, taskStartTime, taskStatus } = taskObjForDisplay;
+    const { taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
 
     return (
       <div
         key={index}
         onClick={() => {
-          showViewTaskDialog(taskObjForDisplay);
+          showViewTaskDialog(rawtaskObj);
         }}
         className={taskContainerStyle}
       >

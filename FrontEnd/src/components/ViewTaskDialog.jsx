@@ -9,12 +9,11 @@ import {
 } from "../reduxFeatures/dialogSlice";
 
 import AllPurposeContainer from "./AllPurposeContainer";
-import { disableScroll, enableScroll } from "../UtilityFunctions/UtilityFunctions";
-
 import { editIcon, deleteIcon, closeIcon } from "./icons";
 import { RegularParagraph, TaskStatusChip } from "./ShortComponents";
 import EditTaskDialog from "./EditTaskDialog";
 import DeleteTaskDialog from "./deleteTaskDialog";
+import { disableScroll, formatDate, formatDateToDefault, enableScroll } from "../UtilityFunctions/UtilityFunctions";
 
 const ViewTaskDialog = ({ taskData }) => {
   const {
@@ -27,8 +26,14 @@ const ViewTaskDialog = ({ taskData }) => {
   } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
 
+  const taskObjForDisplay = {
+    ...taskData,
+    taskStartDate: formatDate(taskData.taskStartDate),
+    taskDueDate: formatDate(taskData.taskDueDate)
+  };
+
   const { taskId, taskName, taskDescription, taskStartDate, taskDueDate, taskStartTime, taskDueTime, taskStatus } =
-    taskData || {};
+    taskObjForDisplay || {};
 
   const handleCloseViewTask = () => {
     if (viewTaskDialogIsOpen === true) {
@@ -39,7 +44,12 @@ const ViewTaskDialog = ({ taskData }) => {
 
   const handleEditTaskFromView = () => {
     if (editTaskDialogIsOpen === false) {
-      dispatch(setViewTaskDataToExport(taskData));
+      const taskToEditForEditDialog = {
+        ...taskData,
+        taskStartDate: formatDateToDefault(taskData.taskStartDate),
+        taskDueDate: formatDateToDefault(taskData.taskDueDate)
+      };
+      dispatch(setViewTaskDataToExport(taskToEditForEditDialog));
       dispatch(setEditTaskDialogIsOpen(true));
       dispatch(setEditDialogTaskFromViewIsOpen(true));
       dispatch(setViewTaskDialogIsOpen(false));
@@ -70,7 +80,7 @@ const ViewTaskDialog = ({ taskData }) => {
   return (
     viewTaskDialogIsOpen && (
       <>
-        {editTaskDialogIsOpen && <EditTaskDialog taskData={taskData} />}
+        {editTaskDialogIsOpen && <EditTaskDialog taskData={viewTaskDataToExport} />}
         {deleteTaskFromView && <DeleteTaskDialog tasksToDelete={viewTaskDataToExport} />}
         <div className={overlayStyling} onClick={handleCloseViewTask}></div>
         <AllPurposeContainer containerStyling={dialogueStyling}>
