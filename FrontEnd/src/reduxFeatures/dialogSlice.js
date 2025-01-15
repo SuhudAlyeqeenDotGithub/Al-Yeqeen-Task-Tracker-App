@@ -8,6 +8,7 @@ const initialState = {
   viewTaskDataToExport: {},
   deleteTaskDialogIsOpen: false,
   deleteTaskFromView: false,
+  regularCheckBoxStatus: []
 };
 
 const dialogSlice = createSlice({
@@ -35,7 +36,10 @@ const dialogSlice = createSlice({
     setDeleteTaskFromView: (state, action) => {
       state.deleteTaskFromView = action.payload;
     },
-  },
+    setRegularCheckBoxStatus: (state, action) => {
+      state.regularCheckBoxStatus = action.payload;
+    }
+  }
 });
 
 export const {
@@ -46,6 +50,7 @@ export const {
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
   setDeleteTaskFromView,
+  setRegularCheckBoxStatus
 } = dialogSlice.actions;
 
 export default dialogSlice.reducer;

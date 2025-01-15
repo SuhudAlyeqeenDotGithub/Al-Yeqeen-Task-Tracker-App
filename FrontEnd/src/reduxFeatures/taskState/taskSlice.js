@@ -28,14 +28,12 @@ const taskSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = true;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.tasks = action.payload ?? getDataFromLocalStorage("tasks", []);
+        state.tasks = [...action.payload] ?? getDataFromLocalStorage("tasks", []);
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(getTasks.rejected, (state, action) => {
         state.isSuccess = false;
@@ -47,14 +45,12 @@ const taskSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = true;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state.tasks = action.payload;
+        state.tasks = [...action.payload];
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(addTask.rejected, (state, action) => {
         state.isSuccess = false;
@@ -66,14 +62,12 @@ const taskSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = true;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(deleteTasks.fulfilled, (state, action) => {
-        state.tasks = action.payload;
+        state.tasks = [...action.payload];
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(deleteTasks.rejected, (state, action) => {
         state.isSuccess = false;
@@ -85,14 +79,12 @@ const taskSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = true;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(editTask.fulfilled, (state, action) => {
         state.tasks = action.payload;
         state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
-        state.errorMessage = false;
       })
       .addCase(editTask.rejected, (state, action) => {
         state.isSuccess = false;

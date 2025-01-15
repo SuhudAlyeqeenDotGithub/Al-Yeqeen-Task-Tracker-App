@@ -95,14 +95,14 @@ const editTask = asyncHandler(async (req, res) => {
 const deleteTasks = asyncHandler(async (req, res) => {
   // get the id or ids of tasks to be deleted
   //{tasksToDelete: [task1, task2, task3]}
-  const { tasksToDelete } = req.body;
-
-  console.log("Request body:", tasksToDelete);
+  const tasksToDelete = req.body;
 
   if (!Array.isArray(tasksToDelete) || tasksToDelete.length === 0) {
     res.status(404);
     throw new Error("There is no task to delete");
   }
+
+  const userId = req.userId;
 
   try {
     const deletedTasks = await Task.deleteMany({ _id: { $in: tasksToDelete } });
@@ -114,7 +114,8 @@ const deleteTasks = asyncHandler(async (req, res) => {
       userTasks
     });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting tasks", error });
+    res.status(500);
+    throw new Error(err.message);
   }
 
   // locate the tasks in the database

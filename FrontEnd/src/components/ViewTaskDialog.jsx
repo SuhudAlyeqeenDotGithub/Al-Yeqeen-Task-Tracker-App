@@ -58,8 +58,6 @@ const ViewTaskDialog = ({ taskData }) => {
 
   const handleDeleteTaskFromView = () => {
     if (!deleteTaskDialogIsOpen && !deleteTaskFromView) {
-      const dataNeededToDelete = [`Task Id: ${taskData.taskId} || Task Name: ${taskName}`];
-      dispatch(setViewTaskDataToExport(dataNeededToDelete));
       dispatch(setDeleteTaskDialogIsOpen(true));
 
       dispatch(setDeleteTaskFromView(true));
@@ -81,7 +79,7 @@ const ViewTaskDialog = ({ taskData }) => {
     viewTaskDialogIsOpen && (
       <>
         {editTaskDialogIsOpen && <EditTaskDialog taskData={viewTaskDataToExport} />}
-        {deleteTaskFromView && <DeleteTaskDialog tasksToDelete={viewTaskDataToExport} />}
+        {deleteTaskFromView && <DeleteTaskDialog tasksToDelete={[taskData]} />}
         <div className={overlayStyling} onClick={handleCloseViewTask}></div>
         <AllPurposeContainer containerStyling={dialogueStyling}>
           <div className="flex flex-col gap-8">

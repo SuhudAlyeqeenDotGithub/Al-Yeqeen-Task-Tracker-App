@@ -29,6 +29,7 @@ const editTask = createAsyncThunk("editTask", async (updatedTask, ThunkApi) => {
 });
 
 const deleteTasks = createAsyncThunk("deleteTasks", async (tasksToDelete, ThunkApi) => {
+  
   try {
     const tasks = await deleteTasksRequest(tasksToDelete);
     return tasks;

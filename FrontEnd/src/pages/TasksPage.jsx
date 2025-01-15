@@ -9,6 +9,7 @@ import {
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
   setDeleteTaskFromView
+  // setRegularCheckBoxStatus
 } from "../reduxFeatures/dialogSlice";
 
 import AllPurposeCheckBox from "../components/AllPurposeCheckBox";
@@ -22,6 +23,7 @@ import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFuncti
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import { TaskStatusChip } from "../components/ShortComponents";
+import { use } from "react";
 
 function TasksPage() {
   const {
@@ -32,39 +34,78 @@ function TasksPage() {
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
     deleteTaskFromView
+    // regularCheckBoxStatus
   } = useSelector((state) => state.dialog);
-
-  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
-
-  const location = useLocation();
-
-  useEffect(() => {
-    try {
-      dispatch(resetTasks());
-      dispatch(getTasks());
-    } catch (error) {}
-  }, [location]);
-
-  const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
 
   const dispatch = useDispatch();
 
+  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
+  // console.log("tasksData", tasksData);
+
+  const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   try {
+  //     dispatch(resetTasks());
+  //     dispatch(getTasks());
+  //   } catch (error) {}
+  // }, [location]);
+
   const taskContainerStyle =
-    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-2 ml-2 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
+    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
 
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
-  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(Array(tasksData.length).fill(false));
+  const [regularCheckBoxStatusO, setRegularCheckBoxStatusO] = useState(
+    tasksData.map((task) => ({
+      [task._id]: { checked: false }
+    }))
+  );
+
+  useEffect(() => {
+    console.log("task data just changed length is", tasksData.length);
+    setRegularCheckBoxStatusO(
+      tasksData.map((task) => ({
+        [task._id]: { checked: false }
+      }))
+    );
+  }, [tasksData.length]);
+
+  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(
+    regularCheckBoxStatusO
+      .map((taskStatusObj) => {
+        return Object.values(taskStatusObj).map((value) => value.checked);
+      })
+      .flat()
+  );
+
+  // useEffect(() => {
+  //   setRegularCheckBoxStatus(
+  //     regularCheckBoxStatusO
+  //       .map((taskStatusObj) => {
+  //         return Object.values(taskStatusObj).map((value) => value.checked);
+  //       })
+  //       .flat()
+  //   );
+  // }, [regularCheckBoxStatusO]);
+
+  console.log("tasks length", tasksData.length);
+  console.log("statuses original", regularCheckBoxStatusO);
+  console.log("statuses reflector", regularCheckBoxStatus);
+
   const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
 
   const oneOrMoreRegBoxIsTrue = regularCheckBoxStatus.some((checkStatus) => checkStatus === true);
   const onlyOneCheckIsTrue = regularCheckBoxStatus.filter((checkStatus) => checkStatus === true).length === 1;
 
-  const handleRegularCheckBoxOnchange = (event, index) => {
+  const handleRegularCheckBoxOnchange = (event, taskId) => {
     event.stopPropagation();
-    const updatedStatuses = [...regularCheckBoxStatus];
-    updatedStatuses[index] = !updatedStatuses[index];
-    setRegularCheckBoxStatus(updatedStatuses);
+    const updatedStatuses = [...regularCheckBoxStatusO];
+    const index = updatedStatuses.findIndex((statusOb) => Object.keys(statusOb)[0] === taskId);
+    const taskStatus = updatedStatuses.find((statusOb) => Object.keys(statusOb)[0] === taskId)[taskId].checked;
+    updatedStatuses[index] = { [taskId]: { checked: !taskStatus } };
+    setRegularCheckBoxStatusO(updatedStatuses);
   };
 
   const noTaskMessage = (
@@ -74,7 +115,11 @@ function TasksPage() {
   );
   const handleSelectAllCheck = () => {
     setSelectAllCheckBoxStatus(!selectAllCheckStatus);
-    setRegularCheckBoxStatus(Array(tasksData.length).fill(!selectAllCheckStatus));
+    const updatedStatuses = Array.from(tasksData, (taskStatusObj) => ({
+      [taskStatusObj._id]: { checked: !selectAllCheckStatus }
+    }));
+
+    setRegularCheckBoxStatusO(updatedStatuses);
   };
 
   const [viewTaskData, setViewTaskData] = useState({});
@@ -130,7 +175,7 @@ function TasksPage() {
             const foundTask = tasksData.find((task, taskIndex) => taskIndex === index);
 
             if (foundTask) {
-              return `Task Id: ${index} || Task Name: ${foundTask.taskName}`;
+              return foundTask;
             } else {
               return null; // Return null if the task isn't found
             }
@@ -154,11 +199,14 @@ function TasksPage() {
 
     const todayDate = formatDateToDefault(new Date());
 
-    const { taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
+    const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
+    const taskCheckStatus = regularCheckBoxStatusO.find((statusObj) => Object.keys(statusObj)[0] === taskId);
+    // console.log("found id", taskId);
+    // console.log("checkstatusfoid", taskCheckStatus[taskId].checked);
 
     return (
       <div
-        key={index}
+        key={taskId}
         onClick={() => {
           showViewTaskDialog(rawtaskObj);
         }}
@@ -171,19 +219,17 @@ function TasksPage() {
             } w-3 h-3 rounded-full justify-center`}
           ></div>
         </div>
-
         <div onClick={(event) => event.stopPropagation()} className="flex flex-col mr-4">
           <AllPurposeCheckBox
-            inputId={index}
-            inputName={index}
-            inputValue={index}
+            inputId={taskId}
+            inputName={taskId}
+            inputValue={taskId}
             onchangeFunction={handleRegularCheckBoxOnchange}
-            checked={regularCheckBoxStatus[index]}
+            checked={taskCheckStatus[taskId].checked}
             isRegularCheckbox={true}
-            index={index}
+            checkBoxIdentity={taskId}
           />
         </div>
-
         <div className="w-full flex flex-col">
           <div className=" basis-3/4 flex flex-row items-center justify-between max-w-full">
             <div className="max-w-[300px] w-full">{taskName}</div>
@@ -192,7 +238,6 @@ function TasksPage() {
             </div>
           </div>
         </div>
-
         <button
           title="edit"
           className="ml-4 hover:text-white hover:bg-blue-900 text-xl p-2 rounded-lg justify-center items-center"
@@ -228,7 +273,9 @@ function TasksPage() {
       )}
       {viewTaskDialogIsOpen && <ViewTaskDialog taskData={viewTaskData} />}
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
-      <div className=" sticky top-52 bg-white shadow-sm border border-blue-800  p-4 rounded flex flex-wrap items-center w-4/5 justify-self-center">
+      {/* top task controller */}
+
+      <div className=" sticky top-52 bg-white shadow-sm border border-blue-800 p-4 rounded flex flex-wrap items-center w-4/5 justify-self-center">
         <div className="row-span-2 flex ml-10 items-center justify-self-center">
           <AllPurposeCheckBox
             inputId="selectAll"
@@ -241,7 +288,9 @@ function TasksPage() {
         </div>
 
         <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
-          <p>{oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} Tasks Selected`}</p>
+          <p>
+            {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes === 1 ? "task" : "tasks"} Selected`}
+          </p>
         </div>
 
         <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 w-1/2 justify-center">
@@ -256,13 +305,13 @@ function TasksPage() {
         <button
           onClick={showNewTaskDialog}
           title="Add Task"
-          className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800  hover:text-white hover:border-none"
+          className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
         >
           Add Task {addIcon}
         </button>
       </div>
 
-      <div className=" mt-4 flex flex-wrap justify-center items-center">
+      <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
         {tasksData.length < 1 ? noTaskMessage : tasksToDisplay}
       </div>
     </div>

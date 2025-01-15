@@ -67,7 +67,7 @@ const deleteTasksRequest = async (tasksToDelete) => {
       localStorage.removeItem("user"); // Clear invalid user data
       window.location.href = "/login"; // Redirect to login
     }
-    throw new Error(error.response?.data?.message);
+    throw new Error(error.response?.data?.message ?? "An error occurred while deleting tasks.");
   }
 };
 

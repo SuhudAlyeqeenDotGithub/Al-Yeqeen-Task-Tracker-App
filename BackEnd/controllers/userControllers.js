@@ -5,7 +5,10 @@ const bcrypt = require("bcrypt");
 
 //register user controller
 const registerUser = asyncHandler(async (req, res) => {
-  const { userName, userEmail, userPassword, userConfirmPassword } = req.body;
+  const dataBody = req.body;
+
+  const formattedDataBody = { ...dataBody, userEmail: dataBody.userEmail.toLowerCase() };
+  const { userName, userEmail, userPassword, userConfirmPassword } = formattedDataBody;
 
   //check if all fields are not empty
   // //check if the 2 passwords are equal
@@ -21,9 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userEmailExists = await User.findOne({ userEmail });
   if (userEmailExists) {
     res.status(409);
-    throw new Error(
-      `You currently have an account with this email ${userEmail}. Please log in using that`
-    );
+    throw new Error(`You currently have an account with this email ${userEmail}. Please log in using that`);
   }
 
   //get the password and hash it
@@ -33,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     userName,
     userEmail,
-    userPassword: hashedPassword,
+    userPassword: hashedPassword
   });
 
   // send a message of 201 of account creation success
@@ -44,14 +45,17 @@ const registerUser = asyncHandler(async (req, res) => {
       userId: user.id,
       userName: user.userName,
       userEmail: user.userEmail,
-      userToken,
+      userToken
     });
   }
 });
 
 //loginUserController
 const loginUser = asyncHandler(async (req, res) => {
-  const { userEmail, userPassword } = req.body;
+  const dataBody = req.body;
+
+  const formattedDataBody = { ...dataBody, userEmail: dataBody.userEmail.toLowerCase() };
+  const { userEmail, userPassword } = formattedDataBody;
 
   // check if email and password are not empty
   if (!userEmail || !userPassword) {
@@ -64,16 +68,11 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(400);
-    throw new Error(
-      "This email is not registered with us. Please create an account..."
-    );
+    throw new Error("This email is not registered with us. Please create an account...");
   }
 
   //compare the hashed password with the entered password
-  const passwordIsCorrect = await bcrypt.compare(
-    userPassword,
-    user.userPassword
-  );
+  const passwordIsCorrect = await bcrypt.compare(userPassword, user.userPassword);
 
   if (!passwordIsCorrect) {
     res.status(400);
@@ -86,13 +85,13 @@ const loginUser = asyncHandler(async (req, res) => {
     userId: user.id,
     userName: user.userName,
     userEmail: user.userEmail,
-    userToken,
+    userToken
   });
 });
 
 //generate jwt token
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: "3h" });
+  return jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: "3d" });
 };
 
 module.exports = { registerUser, loginUser };

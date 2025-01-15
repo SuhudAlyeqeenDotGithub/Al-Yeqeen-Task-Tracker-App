@@ -1,21 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
+import { deleteTasks } from "../reduxFeatures/taskState/taskThunk";
+import { resetTasks } from "../reduxFeatures/taskState/taskSlice";
 import {
   setDeleteTaskDialogIsOpen,
   setDeleteTaskFromView,
-  setViewTaskDialogIsOpen,
+  setViewTaskDialogIsOpen
 } from "../reduxFeatures/dialogSlice";
 import { useState } from "react";
 import AllPurposeContainer from "./AllPurposeContainer";
-import {
-  disableScroll,
-  enableScroll,
-} from "../UtilityFunctions/UtilityFunctions";
+import { disableScroll, enableScroll } from "../UtilityFunctions/UtilityFunctions";
 import { RegularParagraph } from "./ShortComponents";
 
 const DeleteTaskDialog = ({ tasksToDelete }) => {
-  const { deleteTaskDialogIsOpen, viewTaskDialogIsOpen } = useSelector(
-    (state) => state.dialog
-  );
+  const { deleteTaskDialogIsOpen, viewTaskDialogIsOpen } = useSelector((state) => state.dialog);
 
   const dispatch = useDispatch();
 
@@ -31,27 +28,31 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
     closeDialog();
   }
 
-  function deleteTasks() {
-    alert(
-      `You have just deleted some tasks ... ${JSON.stringify(tasksToDelete)}`
-    );
-    closeDialog();
+  async function handleDeleteTasks() {
+    dispatch(resetTasks());
 
-    if (viewTaskDialogIsOpen) {
-      dispatch(setViewTaskDialogIsOpen(false));
-    }
+    try {
+      const tasksIds = tasksToDelete.map((task) => {
+        return task._id;
+      });
+
+      const tasks = await dispatch(deleteTasks(tasksIds)).unwrap();
+      if (tasks) {
+        closeDialog();
+        dispatch(setViewTaskDialogIsOpen(false));
+      }
+    } catch (error) {}
   }
 
   const tasksToDisplay = tasksToDelete.map((task) => {
-    return task.split("||")[0];
+    return task.taskName;
   });
 
   const fourTaskToDisplay = tasksToDisplay.slice(0, 4).join(", ");
 
   const [seeMoreIsClicked, setSeeMoreIsClicked] = useState(false);
   const [seeLessIsClicked, setSeeLessIsClicked] = useState(true);
-  const [taskLengthToDisplay, setTaskLengthToDisplay] =
-    useState(fourTaskToDisplay);
+  const [taskLengthToDisplay, setTaskLengthToDisplay] = useState(fourTaskToDisplay);
 
   const handleSeeMore = () => {
     setSeeMoreIsClicked(true);
@@ -92,18 +93,12 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
 
             <div className="w-full">
               {seeLessIsClicked ? (
-                <button
-                  className={seeMoreSeeLessStyling}
-                  onClick={handleSeeMore}
-                >
+                <button className={seeMoreSeeLessStyling} onClick={handleSeeMore}>
                   {" "}
                   See More...
                 </button>
               ) : (
-                <button
-                  className={seeMoreSeeLessStyling}
-                  onClick={handleSeeLess}
-                >
+                <button className={seeMoreSeeLessStyling} onClick={handleSeeLess}>
                   {" "}
                   See Less...
                 </button>
@@ -113,7 +108,7 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
 
           <div className="w-full flex flex-row justify-center gap-x-10 mt-5">
             <button
-              onClick={deleteTasks}
+              onClick={handleDeleteTasks}
               className={`hover:text-white hover:bg-red-500 hover:border-none ${buttonStyling}`}
             >
               Delete

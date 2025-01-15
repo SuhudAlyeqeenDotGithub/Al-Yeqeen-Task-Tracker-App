@@ -35,6 +35,7 @@ const NewTaskDialog = () => {
 
   const [onSubmitNameIssueMessage, setOnSubmitNameIssueMessage] = useState(false);
   const [onSubmitEmptyStatusMessage, setOnSubmitEmptyStatusMessage] = useState(false);
+
   // function
   // handleAddTask
   //if name field is empty set message to true and return
@@ -76,7 +77,6 @@ const NewTaskDialog = () => {
         taskStartTime: formData.taskStartTime === "" ? "00:00" : formData.taskStartTime,
         taskDueTime: formData.taskDueTime === "" ? "00:00" : formData.taskDueTime
       };
-
       formDataToSubmit = filledBlankFormData;
     } else {
       formDataToSubmit = formData;
@@ -87,6 +87,7 @@ const NewTaskDialog = () => {
     if (newTaskDialogIsOpen) {
       try {
         const tasks = await dispatch(addTask(formDataToSubmit)).unwrap();
+        
         if (tasks) {
           dispatch(setNewTaskDialogIsOpen(false));
           enableScroll();
