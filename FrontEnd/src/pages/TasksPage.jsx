@@ -14,7 +14,7 @@ import {
 
 import AllPurposeCheckBox from "../components/AllPurposeCheckBox";
 import { editIcon, deleteIcon, addIcon } from "../components/icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
@@ -23,7 +23,6 @@ import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFuncti
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import { TaskStatusChip } from "../components/ShortComponents";
-import { use } from "react";
 
 function TasksPage() {
   const {
@@ -39,60 +38,51 @@ function TasksPage() {
 
   const dispatch = useDispatch();
 
-  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
-  // console.log("tasksData", tasksData);
-
   const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
-  const location = useLocation();
+  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
-  // useEffect(() => {
-  //   try {
-  //     dispatch(resetTasks());
-  //     dispatch(getTasks());
-  //   } catch (error) {}
-  // }, [location]);
+
+  // fetchses the latest tasks every time the location or path is loaded/refreshed
+  const location = useLocation();
+  useEffect(() => {
+    try {
+      dispatch(resetTasks());
+      dispatch(getTasks());
+    } catch (error) {}
+  }, [location]);
 
   const taskContainerStyle =
     "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
 
+  // defines the state of the select all checkbox
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
-  const [regularCheckBoxStatusO, setRegularCheckBoxStatusO] = useState(
-    tasksData.map((task) => ({
-      [task._id]: { checked: false }
-    }))
-  );
 
-  useEffect(() => {
-    console.log("task data just changed length is", tasksData.length);
-    setRegularCheckBoxStatusO(
+  // defines the initial status objects for each task
+  const initialTaskStatuses = useMemo(
+    () =>
       tasksData.map((task) => ({
         [task._id]: { checked: false }
-      }))
-    );
-  }, [tasksData.length]);
-
-  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(
-    regularCheckBoxStatusO
-      .map((taskStatusObj) => {
-        return Object.values(taskStatusObj).map((value) => value.checked);
-      })
-      .flat()
+      })),
+    [tasksData]
   );
+  //store the mapped status objects in a state
 
-  // useEffect(() => {
-  //   setRegularCheckBoxStatus(
-  //     regularCheckBoxStatusO
-  //       .map((taskStatusObj) => {
-  //         return Object.values(taskStatusObj).map((value) => value.checked);
-  //       })
-  //       .flat()
-  //   );
-  // }, [regularCheckBoxStatusO]);
+  const [regularCheckBoxStatusO, setRegularCheckBoxStatusO] = useState(initialTaskStatuses);
 
-  console.log("tasks length", tasksData.length);
-  console.log("statuses original", regularCheckBoxStatusO);
-  console.log("statuses reflector", regularCheckBoxStatus);
+  // extracts the exact boolean statuses from the status objects as a flat array
+  const extractedStatuses = useMemo(
+    () =>
+      regularCheckBoxStatusO
+        .map((taskStatusObj) => {
+          return Object.values(taskStatusObj).map((value) => value.checked);
+        })
+        .flat(),
+    [regularCheckBoxStatusO]
+  );
+  // stores the extracted boolean statuses in a state
+  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(extractedStatuses);
+
 
   const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
 
@@ -200,9 +190,9 @@ function TasksPage() {
     const todayDate = formatDateToDefault(new Date());
 
     const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
-    const taskCheckStatus = regularCheckBoxStatusO.find((statusObj) => Object.keys(statusObj)[0] === taskId);
-    // console.log("found id", taskId);
-    // console.log("checkstatusfoid", taskCheckStatus[taskId].checked);
+    const regularCheckBoxStatusObjects = tasksData.length === regularCheckBoxStatusO.length ? regularCheckBoxStatusO : initialTaskStatuses;
+    const taskCheckStatus = regularCheckBoxStatusObjects.find((statusObj) => Object.keys(statusObj)[0] === taskId);
+
 
     return (
       <div
@@ -253,6 +243,7 @@ function TasksPage() {
   const topEditButtonLogic = onlyOneCheckIsTrue ? "" : "hidden";
   const deleteButtonStyle = `${regularButtonStyle} ${deleteButtonShowLogic}`;
   const editButtonStyle = `${regularButtonStyle} ${topEditButtonLogic}`;
+  const loader = (<div className="flex flex-col justify-center items-center space-y-5"><div className="w-10 h-10 border-4 border-blue-800 border-t-transparent rounded-full animate-spin"></div><AllPurposeLabel>{userName} We are loading your tasks...</AllPurposeLabel></div>)
 
   useEffect(() => {
     const checkedBoxes = regularCheckBoxStatus.filter((status) => status === true).length;
@@ -261,7 +252,7 @@ function TasksPage() {
 
   return (
     <div>
-      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
+          <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
         Hello {userName}, Let's add some tasks and complete some
       </h1>
 
@@ -312,7 +303,7 @@ function TasksPage() {
       </div>
 
       <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
-        {tasksData.length < 1 ? noTaskMessage : tasksToDisplay}
+      {isLoading ? loader : tasksData.length < 1 ? noTaskMessage : tasksToDisplay }
       </div>
     </div>
   );
