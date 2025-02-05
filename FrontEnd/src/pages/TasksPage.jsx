@@ -41,12 +41,10 @@ function TasksPage() {
   const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
-
   // fetchses the latest tasks every time the location or path is loaded/refreshed
   const location = useLocation();
   useEffect(() => {
     try {
-      dispatch(resetTasks());
       dispatch(getTasks());
     } catch (error) {}
   }, [location]);
@@ -61,9 +59,12 @@ function TasksPage() {
   // defines the initial status objects for each task
   const initialTaskStatuses = useMemo(
     () =>
-      tasksData.map((task) => ({
-        [task._id]: { checked: false }
-      })),
+      tasksData.map((task) => {
+        console.log("iniatial task status created");
+        return {
+          [task._id]: { checked: false }
+        };
+      }),
     [tasksData]
   );
   //store the mapped status objects in a state
@@ -81,19 +82,16 @@ function TasksPage() {
     [regularCheckBoxStatusO]
   );
   // stores the extracted boolean statuses in a state
-  const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(extractedStatuses);
+  // const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(extractedStatuses);
 
-
-  const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
-
-  const oneOrMoreRegBoxIsTrue = regularCheckBoxStatus.some((checkStatus) => checkStatus === true);
-  const onlyOneCheckIsTrue = regularCheckBoxStatus.filter((checkStatus) => checkStatus === true).length === 1;
+  const oneOrMoreRegBoxIsTrue = extractedStatuses.some((checkStatus) => checkStatus === true);
+  const onlyOneCheckIsTrue = extractedStatuses.filter((checkStatus) => checkStatus === true).length === 1;
 
   const handleRegularCheckBoxOnchange = (event, taskId) => {
     event.stopPropagation();
     const updatedStatuses = [...regularCheckBoxStatusO];
     const index = updatedStatuses.findIndex((statusOb) => Object.keys(statusOb)[0] === taskId);
-    const taskStatus = updatedStatuses.find((statusOb) => Object.keys(statusOb)[0] === taskId)[taskId].checked;
+    const taskStatus = updatedStatuses[index][taskId].checked;
     updatedStatuses[index] = { [taskId]: { checked: !taskStatus } };
     setRegularCheckBoxStatusO(updatedStatuses);
   };
@@ -180,79 +178,94 @@ function TasksPage() {
     }
   };
 
-  const tasksToDisplay = tasksData.map((rawtaskObj, index) => {
-    const taskObjForEdit = {
-      ...rawtaskObj,
-      taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
-      taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate)
-    };
+  const tasksToDisplay = useMemo(
+    () =>
+      tasksData.map((rawtaskObj, index) => {
+        const taskObjForEdit = {
+          ...rawtaskObj,
+          taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
+          taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate)
+        };
 
-    const todayDate = formatDateToDefault(new Date());
+        const todayDate = formatDateToDefault(new Date());
 
-    const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
-    const regularCheckBoxStatusObjects = tasksData.length === regularCheckBoxStatusO.length ? regularCheckBoxStatusO : initialTaskStatuses;
-    const taskCheckStatus = regularCheckBoxStatusObjects.find((statusObj) => Object.keys(statusObj)[0] === taskId);
+        const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
 
+        if (regularCheckBoxStatusO.length !== tasksData.length) {
+          setRegularCheckBoxStatusO(initialTaskStatuses);
+        }
+        const statusArrayToUse =
+          regularCheckBoxStatusO.length === tasksData.length ? regularCheckBoxStatusO : initialTaskStatuses;
+        const taskCheckStatus = statusArrayToUse.find((statusObj) => Object.keys(statusObj)[0] === taskId);
 
-    return (
-      <div
-        key={taskId}
-        onClick={() => {
-          showViewTaskDialog(rawtaskObj);
-        }}
-        className={taskContainerStyle}
-      >
-        <div className="mr-2">
+        return (
           <div
-            className={`${
-              taskObjForEdit.taskDueDate < todayDate && taskStatus !== "Completed" ? "bg-red-600" : "bg-green-600"
-            } w-3 h-3 rounded-full justify-center`}
-          ></div>
-        </div>
-        <div onClick={(event) => event.stopPropagation()} className="flex flex-col mr-4">
-          <AllPurposeCheckBox
-            inputId={taskId}
-            inputName={taskId}
-            inputValue={taskId}
-            onchangeFunction={handleRegularCheckBoxOnchange}
-            checked={taskCheckStatus[taskId].checked}
-            isRegularCheckbox={true}
-            checkBoxIdentity={taskId}
-          />
-        </div>
-        <div className="w-full flex flex-col">
-          <div className=" basis-3/4 flex flex-row items-center justify-between max-w-full">
-            <div className="max-w-[300px] w-full">{taskName}</div>
-            <div className="max-w-md">
-              <TaskStatusChip>{taskStatus}</TaskStatusChip>
+            key={taskId}
+            onClick={() => {
+              showViewTaskDialog(rawtaskObj);
+            }}
+            className={taskContainerStyle}
+          >
+            <div className="mr-2">
+              <div
+                className={`${
+                  taskObjForEdit.taskDueDate < todayDate && taskStatus !== "Completed" ? "bg-red-600" : "bg-green-600"
+                } w-3 h-3 rounded-full justify-center`}
+              ></div>
             </div>
+            <div onClick={(event) => event.stopPropagation()} className="flex flex-col mr-4">
+              <AllPurposeCheckBox
+                inputId={taskId}
+                inputName={taskId}
+                inputValue={taskId}
+                onchangeFunction={handleRegularCheckBoxOnchange}
+                checked={taskCheckStatus[taskId].checked}
+                isRegularCheckbox={true}
+                checkBoxIdentity={taskId}
+              />
+            </div>
+            <div className="w-full flex flex-col">
+              <div className=" basis-3/4 flex flex-row items-center justify-between max-w-full">
+                <div className="max-w-[300px] w-full">{taskName}</div>
+                <div className="max-w-md">
+                  <TaskStatusChip>{taskStatus}</TaskStatusChip>
+                </div>
+              </div>
+            </div>
+            <button
+              title="edit"
+              className="ml-4 hover:text-white hover:bg-blue-900 text-xl p-2 rounded-lg justify-center items-center"
+              onClick={(event) => showEditTaskDialog(event, taskObjForEdit)}
+            >
+              {editIcon}
+            </button>
           </div>
-        </div>
-        <button
-          title="edit"
-          className="ml-4 hover:text-white hover:bg-blue-900 text-xl p-2 rounded-lg justify-center items-center"
-          onClick={(event) => showEditTaskDialog(event, taskObjForEdit)}
-        >
-          {editIcon}
-        </button>
-      </div>
-    );
-  });
+        );
+      }),
+    [regularCheckBoxStatusO, tasksData]
+  );
 
   const deleteButtonShowLogic = oneOrMoreRegBoxIsTrue ? "" : "hidden";
   const topEditButtonLogic = onlyOneCheckIsTrue ? "" : "hidden";
   const deleteButtonStyle = `${regularButtonStyle} ${deleteButtonShowLogic}`;
   const editButtonStyle = `${regularButtonStyle} ${topEditButtonLogic}`;
-  const loader = (<div className="flex flex-col justify-center items-center space-y-5"><div className="w-10 h-10 border-4 border-blue-800 border-t-transparent rounded-full animate-spin"></div><AllPurposeLabel>{userName} We are loading your tasks...</AllPurposeLabel></div>)
+  const loader = (
+    <div className="flex flex-col justify-center items-center space-y-5">
+      <div className="w-10 h-10 border-4 border-blue-800 border-t-transparent rounded-full animate-spin"></div>
+      <AllPurposeLabel>Please wait {userName} whilst we load your tasks.........</AllPurposeLabel>
+    </div>
+  );
+
+  const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
 
   useEffect(() => {
-    const checkedBoxes = regularCheckBoxStatus.filter((status) => status === true).length;
+    const checkedBoxes = extractedStatuses.filter((status) => status === true).length;
     setCountCheckedBoxes(checkedBoxes);
-  }, [regularCheckBoxStatus]);
+  }, [regularCheckBoxStatusO]);
 
   return (
     <div>
-          <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
+      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
         Hello {userName}, Let's add some tasks and complete some
       </h1>
 
@@ -279,9 +292,7 @@ function TasksPage() {
         </div>
 
         <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
-          <p>
-            {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes === 1 ? "task" : "tasks"} Selected`}
-          </p>
+          <p>{oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}</p>
         </div>
 
         <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 w-1/2 justify-center">
@@ -303,7 +314,7 @@ function TasksPage() {
       </div>
 
       <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
-      {isLoading ? loader : tasksData.length < 1 ? noTaskMessage : tasksToDisplay }
+        {isLoading ? loader : tasksData.length < 1 ? noTaskMessage : tasksToDisplay}
       </div>
     </div>
   );

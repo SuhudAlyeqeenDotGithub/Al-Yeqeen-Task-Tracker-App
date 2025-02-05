@@ -88,7 +88,6 @@ const NewTaskDialog = () => {
       try {
         const tasks = await dispatch(addTask(formDataToSubmit)).unwrap();
         if (tasks) {
-          console.log("closing dialog");
           dispatch(setNewTaskDialogIsOpen(false));
           enableScroll();
         }
