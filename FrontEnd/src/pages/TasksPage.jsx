@@ -139,7 +139,7 @@ function TasksPage() {
 
   const handleEditTaskFromNavButton = () => {
     if (onlyOneCheckIsTrue) {
-      const taskToEditIndex = regularCheckBoxStatus.indexOf(true);
+      const taskToEditIndex = extractedStatuses.indexOf(true);
       const taskToEdit = tasksData.find((taskData, index) => {
         return index === taskToEditIndex;
       });
@@ -157,7 +157,7 @@ function TasksPage() {
 
   const handleDeleteFromNav = () => {
     if (oneOrMoreRegBoxIsTrue) {
-      const tasksToDeleteLookUp = regularCheckBoxStatus
+      const tasksToDeleteLookUp = extractedStatuses
         .map((checkedBox, index) => {
           if (checkedBox === true) {
             const foundTask = tasksData.find((task, taskIndex) => taskIndex === index);
