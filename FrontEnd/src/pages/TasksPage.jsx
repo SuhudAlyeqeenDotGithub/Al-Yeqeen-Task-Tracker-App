@@ -204,8 +204,12 @@ function TasksPage() {
     }
   };
 
-  const clearSort = () => {setFilterInputs((prev) => ({ ...prev, sortOption: "" }))}
-  const clearFilter = () => {setFilterInputs((prev) => ({ ...prev, filterOption: "" }))}
+  const clearSort = () => {
+    setFilterInputs((prev) => ({ ...prev, sortOption: "" }));
+  };
+  const clearFilter = () => {
+    setFilterInputs((prev) => ({ ...prev, filterOption: "" }));
+  };
   const filterSelectStyling =
     "font-semibold outline-none text-blue-900 rounded-md text-center border border-blue-800 p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
   const searchInputStyling =
@@ -216,7 +220,7 @@ function TasksPage() {
   const filterNav = (
     <div className="w-full flex flex-row space-x-8 space-y-1">
       <div className={selectDivStyling}>
-        {sortOption !== "" ? (<FaTimes title="clear Sort" onClick={clearSort} className={clearFilterIconStyle} />) : ""}
+        {sortOption !== "" ? <FaTimes title="clear Sort" onClick={clearSort} className={clearFilterIconStyle} /> : ""}
         <select className={filterSelectStyling} name="sortOption" value={sortOption} onChange={handleFilterInputs}>
           <option className={optionStyling} value="" disabled>
             Sort By
@@ -237,8 +241,12 @@ function TasksPage() {
       </div>
 
       <div className={selectDivStyling}>
-      {filterOption !== "" ? <FaTimes title="clear Filter" onClick={clearFilter} className={clearFilterIconStyle} /> : ""}
-        
+        {filterOption !== "" ? (
+          <FaTimes title="clear Filter" onClick={clearFilter} className={clearFilterIconStyle} />
+        ) : (
+          ""
+        )}
+
         <select className={filterSelectStyling} name="filterOption" value={filterOption} onChange={handleFilterInputs}>
           <option className={optionStyling} value="" disabled>
             Filter By
@@ -364,8 +372,8 @@ function TasksPage() {
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       {/* top task controller */}
 
-      <div className=" sticky top-52  min-w-[20%] bg-white border border-blue-800 hover:bg-blue-50 shadow-sm shadow-blue-900 p-4 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
-        <div className="flex flex-row w-full p-4 space-x-4 rounded-md">
+      <div className=" sticky top-52 w-[50%] min-w-[5%] bg-white border border-blue-800 shadow-sm shadow-blue-900 py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
+        <div className="flex flex-row w-full py-4 space-x-4 rounded-md">
           <div className="w-full flex flex-row">{filterNav}</div>
           <div className="w-[70%] min-w-[200px] flex flex-row items-center space-x-2">
             <FaSearch className="text-blue-800 text-3xl " />
@@ -380,8 +388,8 @@ function TasksPage() {
           </div>
         </div>
 
-        <div className="flex flex-row w-full ">
-          <div className="flex ml-10 items-center justify-self-center ">
+        <div className="flex flex-row w-full">
+          <div className="flex items-center justify-self-center ">
             <AllPurposeCheckBox
               inputId="selectAll"
               inputName="selectAll"
@@ -392,28 +400,28 @@ function TasksPage() {
             />
           </div>
 
-          <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
-            <p>
-              {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
-            </p>
-          </div>
+          <p className="row-span-2 text-blue-900 font-semibold w-[20%] flex ml-10 items-center">
+            {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
+          </p>
 
-          <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 justify-center">
-            <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
-              Delete {deleteIcon}
-            </button>
-            <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
-              Edit {editIcon}
+          <div className=" w-full flex flex-row space-x-10 justify-between">
+            <div className="flex flex-row items-center w-[50%] space-x-4 justify-center">
+              <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
+                Delete {deleteIcon}
+              </button>
+              <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
+                Edit {editIcon}
+              </button>
+            </div>
+
+            <button
+              onClick={showNewTaskDialog}
+              title="Add Task"
+              className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
+            >
+              Add Task {addIcon}
             </button>
           </div>
-
-          <button
-            onClick={showNewTaskDialog}
-            title="Add Task"
-            className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
-          >
-            Add Task {addIcon}
-          </button>
         </div>
       </div>
 
