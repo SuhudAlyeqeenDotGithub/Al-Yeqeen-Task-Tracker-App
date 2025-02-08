@@ -99,13 +99,13 @@ function TasksPage() {
   // defines the initial status objects for each task
   const initialTaskStatuses = useMemo(
     () =>
-      tasksData.map((task) => {
+      dataToMap.map((task) => {
         console.log("iniatial task status created");
         return {
           [task._id]: { checked: false }
         };
       }),
-    [tasksData]
+    [dataToMap]
   );
   //store the mapped status objects in a state
 
@@ -180,7 +180,7 @@ function TasksPage() {
   const handleEditTaskFromNavButton = () => {
     if (onlyOneCheckIsTrue) {
       const taskToEditIndex = extractedStatuses.indexOf(true);
-      const taskToEdit = tasksData.find((taskData, index) => {
+      const taskToEdit = dataToMap.find((taskData, index) => {
         return index === taskToEditIndex;
       });
       const taskToEditForEditDialog = {
@@ -200,7 +200,7 @@ function TasksPage() {
       const tasksToDeleteLookUp = extractedStatuses
         .map((checkedBox, index) => {
           if (checkedBox === true) {
-            const foundTask = tasksData.find((task, taskIndex) => taskIndex === index);
+            const foundTask = dataToMap.find((task, taskIndex) => taskIndex === index);
 
             if (foundTask) {
               return foundTask;
