@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, addTask, deleteTasks, editTask } from "../reduxFeatures/taskState/taskThunk";
-import { resetTasks } from "../reduxFeatures/taskState/taskSlice";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import {
   setNewTaskDialogIsOpen,
   setViewTaskDialogIsOpen,
@@ -23,6 +23,7 @@ import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFuncti
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import { TaskStatusChip } from "../components/ShortComponents";
+import AllPurposeInput from "../components/allPurposeInput";
 
 function TasksPage() {
   const {
@@ -50,8 +51,33 @@ function TasksPage() {
   }, [location]);
 
   const taskContainerStyle =
-    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-800 shadow-sm mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
+    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-200 shadow-sm shadow-blue-900 mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
   const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
+
+  const [filterInputs, setFilterInputs] = useState({ sortOption: "", filterOption: "", searchTaskInput: "" });
+
+  const { sortOption, filterOption, searchTaskInput } = filterInputs;
+
+  const handleFilterInputs = (e) => {
+    setFilterInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(filterInputs);
+  };
+
+  const dataToMap = useMemo(() => {
+    if (!tasksData || tasksData.length === 0) return [];
+    const sorted = [...tasksData];
+    if (sortOption === "Oldest Start Date") {
+      return sorted.sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
+    } else if (sortOption === "Newest Start Date") {
+      return sorted.sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
+    } else if (sortOption === "Oldest Due Date") {
+      return sorted.sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
+    } else if (sortOption === "Newest Due Date") {
+      return sorted.sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
+    } else {
+      return sorted;
+    }
+  }, [sortOption, tasksData]);
 
   // defines the state of the select all checkbox
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
@@ -178,9 +204,65 @@ function TasksPage() {
     }
   };
 
+  const clearSort = () => {setFilterInputs((prev) => ({ ...prev, sortOption: "" }))}
+  const clearFilter = () => {setFilterInputs((prev) => ({ ...prev, filterOption: "" }))}
+  const filterSelectStyling =
+    "font-semibold outline-none text-blue-900 rounded-md text-center border border-blue-800 p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
+  const searchInputStyling =
+    "shadow-sm placeholder-blue-900 text-blue-900 rounded-lg border border-blue-800 text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-500 outline-none";
+  const optionStyling = "font-semibold text-center";
+  const clearFilterIconStyle = "text-blue-900 text-xl rounded-md hover:text-white hover:bg-blue-800";
+  const selectDivStyling = "flex flex-row space-x-2 items-center";
+  const filterNav = (
+    <div className="w-full flex flex-row space-x-8 space-y-1">
+      <div className={selectDivStyling}>
+        {sortOption !== "" ? (<FaTimes title="clear Sort" onClick={clearSort} className={clearFilterIconStyle} />) : ""}
+        <select className={filterSelectStyling} name="sortOption" value={sortOption} onChange={handleFilterInputs}>
+          <option className={optionStyling} value="" disabled>
+            Sort By
+          </option>
+          <option className={optionStyling} value="Oldest Start Date">
+            Oldest Start Date
+          </option>
+          <option className={optionStyling} value="Newest Start Date">
+            Newest Start Date
+          </option>
+          <option className={optionStyling} value="Oldest Due Date">
+            Oldest Due Date
+          </option>
+          <option className={optionStyling} value="Newest Due Date">
+            Newest Due Date
+          </option>
+        </select>
+      </div>
+
+      <div className={selectDivStyling}>
+      {filterOption !== "" ? <FaTimes title="clear Filter" onClick={clearFilter} className={clearFilterIconStyle} /> : ""}
+        
+        <select className={filterSelectStyling} name="filterOption" value={filterOption} onChange={handleFilterInputs}>
+          <option className={optionStyling} value="" disabled>
+            Filter By
+          </option>
+          <option className={optionStyling} value="Date Range">
+            Date Range
+          </option>
+          <option className={optionStyling} value="Completed">
+            Completed
+          </option>
+          <option className={optionStyling} value="In Progress">
+            In Progress
+          </option>
+          <option className={optionStyling} value="Terminated">
+            Terminated
+          </option>
+        </select>
+      </div>
+    </div>
+  );
+
   const tasksToDisplay = useMemo(
     () =>
-      tasksData.map((rawtaskObj, index) => {
+      dataToMap.map((rawtaskObj, index) => {
         const taskObjForEdit = {
           ...rawtaskObj,
           taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
@@ -189,13 +271,13 @@ function TasksPage() {
 
         const todayDate = formatDateToDefault(new Date());
 
-        const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus } = rawtaskObj;
+        const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus, taskDueDate } = rawtaskObj;
 
-        if (regularCheckBoxStatusO.length !== tasksData.length) {
+        if (regularCheckBoxStatusO.length !== dataToMap.length) {
           setRegularCheckBoxStatusO(initialTaskStatuses);
         }
         const statusArrayToUse =
-          regularCheckBoxStatusO.length === tasksData.length ? regularCheckBoxStatusO : initialTaskStatuses;
+          regularCheckBoxStatusO.length === dataToMap.length ? regularCheckBoxStatusO : initialTaskStatuses;
         const taskCheckStatus = statusArrayToUse.find((statusObj) => Object.keys(statusObj)[0] === taskId);
 
         return (
@@ -206,6 +288,9 @@ function TasksPage() {
             }}
             className={taskContainerStyle}
           >
+            <div>
+              startDate: {formatDate(taskStartDate)} <hr /> endDate: {formatDate(taskDueDate)}
+            </div>
             <div className="mr-2">
               <div
                 className={`${
@@ -264,7 +349,7 @@ function TasksPage() {
   }, [regularCheckBoxStatusO]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
         Hello {userName}, Let's add some tasks and complete some
       </h1>
@@ -279,38 +364,57 @@ function TasksPage() {
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       {/* top task controller */}
 
-      <div className=" sticky top-52 bg-white shadow-sm border border-blue-800 p-4 rounded flex flex-wrap items-center w-4/5 justify-self-center">
-        <div className="row-span-2 flex ml-10 items-center justify-self-center">
-          <AllPurposeCheckBox
-            inputId="selectAll"
-            inputName="selectAll"
-            inputValue="selectAll"
-            onchangeFunction={handleSelectAllCheck}
-            checked={selectAllCheckStatus}
-            isRegularCheckbox={false}
-          />
+      <div className=" sticky top-52  min-w-[20%] bg-white border border-blue-800 hover:bg-blue-50 shadow-sm shadow-blue-900 p-4 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
+        <div className="flex flex-row w-full p-4 space-x-4 rounded-md">
+          <div className="w-full flex flex-row">{filterNav}</div>
+          <div className="w-[70%] min-w-[200px] flex flex-row items-center space-x-2">
+            <FaSearch className="text-blue-800 text-3xl " />
+            <AllPurposeInput
+              styling={searchInputStyling}
+              inputType="input"
+              inputPlaceHolder="Search Task Name ..."
+              inputValue={searchTaskInput}
+              inputName="searchTaskInput"
+              onchangeFunction={handleFilterInputs}
+            ></AllPurposeInput>
+          </div>
         </div>
 
-        <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
-          <p>{oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}</p>
-        </div>
+        <div className="flex flex-row w-full ">
+          <div className="flex ml-10 items-center justify-self-center ">
+            <AllPurposeCheckBox
+              inputId="selectAll"
+              inputName="selectAll"
+              inputValue="selectAll"
+              onchangeFunction={handleSelectAllCheck}
+              checked={selectAllCheckStatus}
+              isRegularCheckbox={false}
+            />
+          </div>
 
-        <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 w-1/2 justify-center">
-          <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
-            Delete {deleteIcon}
+          <div className="row-span-2 text-blue-900 font-semibold flex ml-10 items-center justify-self-center">
+            <p>
+              {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
+            </p>
+          </div>
+
+          <div className="pl-10 grow flex flex-wrap space-x-10 mr-10 justify-center">
+            <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
+              Delete {deleteIcon}
+            </button>
+            <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
+              Edit {editIcon}
+            </button>
+          </div>
+
+          <button
+            onClick={showNewTaskDialog}
+            title="Add Task"
+            className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
+          >
+            Add Task {addIcon}
           </button>
-          <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
-            Edit {editIcon}
-          </button>
         </div>
-
-        <button
-          onClick={showNewTaskDialog}
-          title="Add Task"
-          className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
-        >
-          Add Task {addIcon}
-        </button>
       </div>
 
       <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
