@@ -60,24 +60,38 @@ function TasksPage() {
 
   const handleFilterInputs = (e) => {
     setFilterInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(filterInputs);
   };
 
   const dataToMap = useMemo(() => {
     if (!tasksData || tasksData.length === 0) return [];
     const sorted = [...tasksData];
+
     if (sortOption === "Oldest Start Date") {
-      return sorted.sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
+      const result = sorted.sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
+      return result;
     } else if (sortOption === "Newest Start Date") {
-      return sorted.sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
+      const result = sorted.sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
+      return result;
     } else if (sortOption === "Oldest Due Date") {
-      return sorted.sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
+      const result = sorted.sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
+      return result;
     } else if (sortOption === "Newest Due Date") {
-      return sorted.sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
+      const result = sorted.sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
+      return result;
+    } else if (filterOption === "Completed") {
+      const result = sorted.filter((task) => task.taskStatus === "Completed");
+      return result;
+    } else if (filterOption === "In Progress") {
+      const result = sorted.filter((task) => task.taskStatus === "In Progress");
+      return result;
+    } else if (filterOption === "Terminated") {
+      const result = sorted.filter((task) => task.taskStatus === "Terminated");
+      return result;
     } else {
-      return sorted;
+      const result = sorted;
+      return result;
     }
-  }, [sortOption, tasksData]);
+  }, [filterInputs, tasksData]);
 
   // defines the state of the select all checkbox
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
@@ -213,12 +227,12 @@ function TasksPage() {
   const filterSelectStyling =
     "font-semibold outline-none text-blue-900 rounded-md text-center border border-blue-800 p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
   const searchInputStyling =
-    "shadow-sm placeholder-blue-900 text-blue-900 rounded-lg border border-blue-800 text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-500 outline-none";
+    "flex flex-row shadow-sm placeholder-blue-900 text-blue-900 rounded-lg border border-blue-800 text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-500 outline-none";
   const optionStyling = "font-semibold text-center";
   const clearFilterIconStyle = "text-blue-900 text-xl rounded-md hover:text-white hover:bg-blue-800";
   const selectDivStyling = "flex flex-row space-x-2 items-center";
   const filterNav = (
-    <div className="w-full flex flex-row space-x-8 space-y-1">
+    <div className="w-full flex flex-wrap sm:flex-nowrap gap-x-6 gap-2">
       <div className={selectDivStyling}>
         {sortOption !== "" ? <FaTimes title="clear Sort" onClick={clearSort} className={clearFilterIconStyle} /> : ""}
         <select className={filterSelectStyling} name="sortOption" value={sortOption} onChange={handleFilterInputs}>
@@ -335,7 +349,7 @@ function TasksPage() {
           </div>
         );
       }),
-    [regularCheckBoxStatusO, tasksData]
+    [regularCheckBoxStatusO, filterInputs, tasksData]
   );
 
   const deleteButtonShowLogic = oneOrMoreRegBoxIsTrue ? "" : "hidden";
@@ -372,11 +386,14 @@ function TasksPage() {
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       {/* top task controller */}
 
-      <div className=" sticky top-52 w-[50%] min-w-[5%] bg-white border border-blue-800 shadow-sm shadow-blue-900 py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
-        <div className="flex flex-row w-full py-4 space-x-4 rounded-md">
-          <div className="w-full flex flex-row">{filterNav}</div>
-          <div className="w-[70%] min-w-[200px] flex flex-row items-center space-x-2">
-            <FaSearch className="text-blue-800 text-3xl " />
+      <div className=" sticky top-52 bg-white border w-[50%] border-blue-800 shadow-sm shadow-blue-900 py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
+        <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
+          {/* Filter Navigation */}
+          {filterNav}
+
+          {/* Search Input */}
+          <div className="w-full sm:w-[70%] max-w-full flex flex-row items-center space-x-2">
+            <FaSearch className="text-blue-800 text-3xl shrink-0" />
             <AllPurposeInput
               styling={searchInputStyling}
               inputType="input"
@@ -384,7 +401,7 @@ function TasksPage() {
               inputValue={searchTaskInput}
               inputName="searchTaskInput"
               onchangeFunction={handleFilterInputs}
-            ></AllPurposeInput>
+            />
           </div>
         </div>
 
@@ -426,7 +443,7 @@ function TasksPage() {
       </div>
 
       <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
-        {isLoading ? loader : tasksData.length < 1 ? noTaskMessage : tasksToDisplay}
+        {isLoading ? loader : dataToMap.length < 1 ? noTaskMessage : tasksToDisplay}
       </div>
     </div>
   );
