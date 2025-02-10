@@ -62,36 +62,64 @@ function TasksPage() {
     setFilterInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const dataToMap = useMemo(() => {
-    if (!tasksData || tasksData.length === 0) return [];
-    const sorted = [...tasksData];
+  const [dataToMap, setDataToMap] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [sortedData, setSortedData] = useState([]);
 
-    if (sortOption === "Oldest Start Date") {
-      const result = sorted.sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
-      return result;
-    } else if (sortOption === "Newest Start Date") {
-      const result = sorted.sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
-      return result;
-    } else if (sortOption === "Oldest Due Date") {
-      const result = sorted.sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
-      return result;
-    } else if (sortOption === "Newest Due Date") {
-      const result = sorted.sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
-      return result;
-    } else if (filterOption === "Completed") {
-      const result = sorted.filter((task) => task.taskStatus === "Completed");
-      return result;
-    } else if (filterOption === "In Progress") {
-      const result = sorted.filter((task) => task.taskStatus === "In Progress");
-      return result;
-    } else if (filterOption === "Terminated") {
-      const result = sorted.filter((task) => task.taskStatus === "Terminated");
+  const proccessedFilteredData = useMemo(() => {
+    if (!tasksData || tasksData.length === 0) {
+      return [];
+    }
+    const dataToFilter = sortOption !== "" ? sortedData : tasksData;
+
+    if (filterOption === "") {
+      if (sortOption !== "") {
+        return tasksData;
+      }
+      const result = dataToFilter;
       return result;
     } else {
-      const result = sorted;
+      const result = dataToFilter.filter((task) => task.taskStatus === filterOption);
       return result;
     }
   }, [filterInputs, tasksData]);
+
+  useEffect(() => {
+    setFilteredData(proccessedFilteredData);
+    setDataToMap(proccessedFilteredData);
+  }, [proccessedFilteredData]);
+
+  const processedSortedData = useMemo(() => {
+    if (!tasksData || tasksData.length === 0) {
+      return [];
+    }
+
+    const dataToSort = filteredData !== "" ? filteredData : tasksData;
+
+    if (sortOption === "") {
+      const result = dataToSort;
+      return result;
+    } else if (sortOption === "Oldest Start Date") {
+      const result = [...dataToSort].sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
+      return result;
+    } else if (sortOption === "Newest Start Date") {
+      const result = [...dataToSort].sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
+      return result;
+    } else if (sortOption === "Oldest Due Date") {
+      const result = [...dataToSort].sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
+      return result;
+    } else if (sortOption === "Newest Due Date") {
+      const result = [...dataToSort].sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
+      return result;
+    }
+  }, [sortOption, tasksData]);
+
+  useEffect(() => {
+    setSortedData(processedSortedData);
+    setDataToMap(processedSortedData);
+  }, [processedSortedData]);
+
+  console.log(dataToMap);
 
   // defines the state of the select all checkbox
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
@@ -143,7 +171,7 @@ function TasksPage() {
   );
   const handleSelectAllCheck = () => {
     setSelectAllCheckBoxStatus(!selectAllCheckStatus);
-    const updatedStatuses = Array.from(tasksData, (taskStatusObj) => ({
+    const updatedStatuses = Array.from(dataToMap, (taskStatusObj) => ({
       [taskStatusObj._id]: { checked: !selectAllCheckStatus }
     }));
 
@@ -154,6 +182,10 @@ function TasksPage() {
   const [editTaskData, setEditTaskData] = useState({});
 
   const showViewTaskDialog = (taskData) => {
+    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
+      alert("Please clear the filter, sort or search input before performing this action");
+      return;
+    }
     if (viewTaskDialogIsOpen === false) {
       setViewTaskData(taskData);
       dispatch(setViewTaskDialogIsOpen(true));
@@ -162,6 +194,10 @@ function TasksPage() {
   };
 
   const showEditTaskDialog = (event, taskObj) => {
+    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
+      alert("Please clear the filter, sort or search input before performing this action");
+      return;
+    }
     event.stopPropagation();
     if (editTaskDialogIsOpen === false) {
       setEditTaskData(taskObj);
@@ -171,6 +207,10 @@ function TasksPage() {
   };
 
   const showNewTaskDialog = () => {
+    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
+      alert("Please clear the filter, sort or search input before performing this action");
+      return;
+    }
     if (newTaskDialogIsOpen === false) {
       dispatch(setNewTaskDialogIsOpen(true));
       disableScroll();
@@ -178,6 +218,10 @@ function TasksPage() {
   };
 
   const handleEditTaskFromNavButton = () => {
+    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
+      alert("Please clear the filter, sort or search input before performing this action");
+      return;
+    }
     if (onlyOneCheckIsTrue) {
       const taskToEditIndex = extractedStatuses.indexOf(true);
       const taskToEdit = dataToMap.find((taskData, index) => {
@@ -196,6 +240,10 @@ function TasksPage() {
   const [tasksToDelete, setTasksToDelete] = useState([]);
 
   const handleDeleteFromNav = () => {
+    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
+      alert("Please clear the filter, sort or search input before performing this action");
+      return;
+    }
     if (oneOrMoreRegBoxIsTrue) {
       const tasksToDeleteLookUp = extractedStatuses
         .map((checkedBox, index) => {
@@ -349,7 +397,7 @@ function TasksPage() {
           </div>
         );
       }),
-    [regularCheckBoxStatusO, filterInputs, tasksData]
+    [regularCheckBoxStatusO, dataToMap, tasksData]
   );
 
   const deleteButtonShowLogic = oneOrMoreRegBoxIsTrue ? "" : "hidden";
