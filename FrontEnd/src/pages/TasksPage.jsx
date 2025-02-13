@@ -84,64 +84,24 @@ function TasksPage() {
     setFilterInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // const [dataToMap, setDataToMap] = useState([...tasksData]);
-  // const [filteredData, setFilteredData] = useState([]);
-  // const [sortedData, setSortedData] = useState([]);
-
-  // const proccessedFilteredData = useMemo(() => {
-  //   if (!tasksData || tasksData.length === 0) {
-  //     return [];
-  //   }
-  //   const dataToFilter = sortOption !== "" ? sortedData : tasksData;
-
-  //   if (filterOption === "") {
-  //     if (sortOption !== "") {
-  //       return tasksData;
-  //     }
-  //     const result = dataToFilter;
-  //     return result;
-  //   } else {
-  //     const result = dataToFilter.filter((task) => task.taskStatus === filterOption);
-  //     return result;
-  //   }
-  // }, [filterInputs, tasksData]);
-
-  // useEffect(() => {
-  //   setFilteredData(proccessedFilteredData);
-  //   setDataToMap(proccessedFilteredData);
-  // }, [proccessedFilteredData]);
-
-  // const processedSortedData = useMemo(() => {
-  //   if (!tasksData || tasksData.length === 0) {
-  //     return [];
-  //   }
-
-  //   const dataToSort = filteredData !== "" ? filteredData : tasksData;
-
-  //   if (sortOption === "") {
-  //     const result = dataToSort;
-  //     return result;
-  //   } else if (sortOption === "Oldest Start Date") {
-  //     const result = [...dataToSort].sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
-  //     return result;
-  //   } else if (sortOption === "Newest Start Date") {
-  //     const result = [...dataToSort].sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
-  //     return result;
-  //   } else if (sortOption === "Oldest Due Date") {
-  //     const result = [...dataToSort].sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
-  //     return result;
-  //   } else if (sortOption === "Newest Due Date") {
-  //     const result = [...dataToSort].sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
-  //     return result;
-  //   }
-  // }, [sortOption, tasksData]);
-
-  // useEffect(() => {
-  //   setSortedData(processedSortedData);
-  //   setDataToMap(processedSortedData);
-  // }, [processedSortedData]);
 
   const [filterSortStore, setFilterSortStore] = useState([...tasksData]);
+
+  const proccessedFilteredData = useMemo(() => {
+    const dataToFilter = sortOption === "" ? tasksData : filterSortStore;
+   
+    if(filterOption === ""){
+      return tasksData
+    }
+
+    const dataToFilterAfterFilter = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+    return dataToFilterAfterFilter.filter((task) => task.taskStatus === filterOption);
+  }, [filterOption, tasksData]);
+
+  
+  useEffect(() => {
+    setFilterSortStore(proccessedFilteredData);
+  }, [proccessedFilteredData]);
 
   const processedSortedData = useMemo(() => {
     const dataToSort = filterOption === "" ? [...tasksData] : filterSortStore;
@@ -169,21 +129,14 @@ function TasksPage() {
       );
       return result;
     }
-  }, [filterInputs, tasksData]);
+  }, [sortOption, tasksData]);
 
-  const proccessedFilteredData = useMemo(() => {
-    const dataToFilter = sortOption === "" ? tasksData : filterSortStore;
-   
-    return dataToFilter.filter((task) => task.taskStatus === filterOption);
-  }, [filterInputs, tasksData]);
-
-  useEffect(() => {
-    setFilterSortStore(proccessedFilteredData);
-  }, [proccessedFilteredData]);
-
+ 
   useEffect(() => {
     setFilterSortStore(processedSortedData);
   }, [processedSortedData]);
+
+
 
   // defines the state of the select all checkbox
   const [selectAllCheckStatus, setSelectAllCheckBoxStatus] = useState(false);
