@@ -61,6 +61,8 @@ function TasksPage() {
   });
 
   const { sortOption, filterOption, searchTaskInput } = filterInputs;
+  const [filterDates, setFilterDates] = useState({ filterStartDate: "", filterEndDate: "" });
+  const { filterStartDate, filterEndDate } = filterDates;
 
   const handleFilterInputs = (e) => {
     setFilterInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -81,6 +83,7 @@ function TasksPage() {
 
   useEffect(() => {
     setFilterSortStore(proccessedFilteredData);
+    console.log(filterInputs);
   }, [proccessedFilteredData]);
 
   const processedSortedData = useMemo(() => {
@@ -109,15 +112,15 @@ function TasksPage() {
   }, [processedSortedData]);
 
   const processSearchData = useMemo(() => {
-       if (searchTaskInput === "") {
-        return tasksData
-       }
+    if (searchTaskInput === "") {
+      return tasksData;
+    }
 
-       const dataToSearchAfterSearch = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+    const dataToSearchAfterSearch = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
 
-       return dataToSearchAfterSearch.filter((task) => task.taskName.toLowerCase().includes(searchTaskInput.toLowerCase()));
-
-
+    return dataToSearchAfterSearch.filter((task) =>
+      task.taskName.toLowerCase().includes(searchTaskInput.toLowerCase())
+    );
   }, [searchTaskInput]);
 
   useEffect(() => {
@@ -166,9 +169,21 @@ function TasksPage() {
     setRegularCheckBoxStatusO(updatedStatuses);
   };
 
+  const noTaskMessText = `Hi ${userName}😊, You have no task yet. Let's start adding tasks`;
+  const dateFilterText = `Please select a date range to filter tasks and click filter`;
+  const noResultFoundText = `No result found for the filter or search`;
+
+  const noTaskAllMessage =
+    tasksData.length < 1
+      ? noTaskMessText
+      : searchTaskInput !== "" || filterOption !== "Date Range"
+      ? noResultFoundText
+      : filterOption && (filterStartDate === "" || filterStartDate === "")
+      ? dateFilterText
+      : noTaskMessText;
   const noTaskMessage = (
     <div className="flex flex-wrap justify-center ml-6 mr-6">
-      <AllPurposeLabel>Hi {userName}😊, You have no task yet. Let's start adding tasks</AllPurposeLabel>
+      <AllPurposeLabel>{noTaskAllMessage}</AllPurposeLabel>
     </div>
   );
   const handleSelectAllCheck = () => {
@@ -183,13 +198,7 @@ function TasksPage() {
   const [viewTaskData, setViewTaskData] = useState({});
   const [editTaskData, setEditTaskData] = useState({});
 
-  const clearFilterText = "Please clear the filter, sort or search input before performing this action";
-
   const showViewTaskDialog = (taskData) => {
-    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
-      setClearFilterMessage(true);
-      return;
-    }
     if (viewTaskDialogIsOpen === false) {
       setViewTaskData(taskData);
       dispatch(setViewTaskDialogIsOpen(true));
@@ -198,10 +207,6 @@ function TasksPage() {
   };
 
   const showEditTaskDialog = (event, taskObj) => {
-    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
-      setClearFilterMessage(true);
-      return;
-    }
     event.stopPropagation();
     if (editTaskDialogIsOpen === false) {
       setEditTaskData(taskObj);
@@ -211,10 +216,6 @@ function TasksPage() {
   };
 
   const showNewTaskDialog = () => {
-    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
-      setClearFilterMessage(true);
-      return;
-    }
     if (newTaskDialogIsOpen === false) {
       dispatch(setNewTaskDialogIsOpen(true));
       disableScroll();
@@ -222,10 +223,6 @@ function TasksPage() {
   };
 
   const handleEditTaskFromNavButton = () => {
-    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
-      setClearFilterMessage(true);
-      return;
-    }
     if (onlyOneCheckIsTrue) {
       const taskToEditIndex = extractedStatuses.indexOf(true);
       const taskToEdit = filterSortStore.find((taskData, index) => {
@@ -244,10 +241,6 @@ function TasksPage() {
   const [tasksToDelete, setTasksToDelete] = useState([]);
 
   const handleDeleteFromNav = () => {
-    if (filterOption !== "" || sortOption !== "" || searchTaskInput !== "") {
-      setClearFilterMessage(true);
-      return;
-    }
     if (oneOrMoreRegBoxIsTrue) {
       const tasksToDeleteLookUp = extractedStatuses
         .map((checkedBox, index) => {
@@ -276,6 +269,28 @@ function TasksPage() {
   const clearFilter = () => {
     setFilterInputs((prev) => ({ ...prev, filterOption: "" }));
   };
+  const handleDateFilter = () => {
+    const dataToFilter = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+
+    const filteredData = dataToFilter.filter((task) => {
+      const taskStart = new Date(task.taskStartDate);
+      const taskEnd = new Date(task.taskDueDate);
+      const filterStart = new Date(filterStartDate);
+      const filterEnd = new Date(filterEndDate);
+
+      return (
+        taskStart >= filterStart && // Task starts within range
+        taskEnd <= filterEnd // Task ends within range
+      );
+    });
+
+    setFilterSortStore(filteredData);
+  };
+
+  const handleFilterDatesInput = (e) => {
+    setFilterDates((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const filterSelectStyling =
     "font-semibold outline-none text-blue-900 rounded-md text-center border border-blue-800 p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
   const searchInputStyling =
@@ -283,6 +298,39 @@ function TasksPage() {
   const optionStyling = "font-semibold text-center";
   const clearFilterIconStyle = "text-blue-900 text-xl rounded-md hover:text-white hover:bg-blue-800";
   const selectDivStyling = "flex flex-row space-x-2 items-center";
+
+  const dateInputStyling =
+    "shadow-sm placeholder-blue-900 text-blue-900 text-sm font-semibold border border-blue-800 text-center p-2 rounded focus:border-2 border-blue-500 outline-none";
+  const filterByDateDialog = (
+    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-blue-800 rounded-md py-2 bg-blue-50 absolute bottom-1 left-60 z-40">
+      <AllPurposeLabel>Tasks Between</AllPurposeLabel>
+      <AllPurposeInput
+        styling={dateInputStyling}
+        inputType="date"
+        inputPlaceHolder=""
+        inputValue={filterStartDate}
+        inputName="filterStartDate"
+        onchangeFunction={handleFilterDatesInput}
+      />
+      <AllPurposeLabel>And</AllPurposeLabel>
+      <AllPurposeInput
+        styling={dateInputStyling}
+        inputType="date"
+        inputPlaceHolder=""
+        inputValue={filterEndDate}
+        inputName="filterEndDate"
+        onchangeFunction={handleFilterDatesInput}
+      />
+      <div className="flex flex-row gap-x-2 mt-2">
+        <button className="bg-blue-900 p-2 rounded-md text-white hover:bg-blue-800" onClick={handleDateFilter}>
+          Filter
+        </button>
+        <button className="bg-red-700 p-2 rounded-md text-white  hover:bg-red-800" onClick={clearFilter}>
+          Cancel
+        </button>{" "}
+      </div>
+    </div>
+  );
   const filterNav = (
     <div className="w-full flex flex-wrap sm:flex-nowrap gap-x-6 gap-2">
       <div className={selectDivStyling}>
@@ -331,6 +379,7 @@ function TasksPage() {
           </option>
         </select>
       </div>
+      {filterOption === "Date Range" ? filterByDateDialog : ""}
     </div>
   );
 
@@ -362,9 +411,9 @@ function TasksPage() {
             }}
             className={taskContainerStyle}
           >
-            <div>
+            {/* <div>
               startDate: {formatDate(taskStartDate)} <hr /> endDate: {formatDate(taskDueDate)}
-            </div>
+            </div> */}
             <div className="mr-2">
               <div
                 className={`${
@@ -439,9 +488,9 @@ function TasksPage() {
       {/* top task controller */}
 
       <div className=" sticky top-52 bg-white border w-[50%] border-blue-800 shadow-sm shadow-blue-900 py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
-        <p className="text-red-900 text-sm">{clearFilterMessage ? clearFilterText : ""}</p>
         <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
           {/* Filter Navigation */}
+
           {filterNav}
 
           {/* Search Input */}
