@@ -18,7 +18,7 @@ import { useState, useEffect, useMemo } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
-import { useLocation } from "react-router-dom";
+import { data, useLocation } from "react-router-dom";
 import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
@@ -176,10 +176,10 @@ function TasksPage() {
   const noTaskAllMessage =
     tasksData.length < 1
       ? noTaskMessText
-      : searchTaskInput !== "" || filterOption !== "Date Range"
-      ? noResultFoundText
-      : filterOption && (filterStartDate === "" || filterStartDate === "")
+      : filterOption === "Start Date Range" || filterOption === "Due Date Range"
       ? dateFilterText
+      : filterSortStore.length < 1
+      ? noResultFoundText
       : noTaskMessText;
   const noTaskMessage = (
     <div className="flex flex-wrap justify-center ml-6 mr-6">
@@ -272,19 +272,22 @@ function TasksPage() {
   const handleDateFilter = () => {
     const dataToFilter = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
 
-    const filteredData = dataToFilter.filter((task) => {
-      const taskStart = new Date(task.taskStartDate);
-      const taskEnd = new Date(task.taskDueDate);
-      const filterStart = new Date(filterStartDate);
-      const filterEnd = new Date(filterEndDate);
-
-      return (
-        taskStart >= filterStart && // Task starts within range
-        taskEnd <= filterEnd // Task ends within range
+    if (filterOption === "Start Date Range") {
+      const filteredDate = dataToFilter.filter(
+        (task) =>
+          new Date(task.taskStartDate) >= new Date(filterStartDate) &&
+          new Date(task.taskStartDate) <= new Date(filterEndDate)
       );
-    });
+      setFilterSortStore(filteredDate);
+    } else if (filterOption === "Due Date Range") {
+      const filteredDate = dataToFilter.filter(
+        (task) =>
+          new Date(task.taskDueDate) >= new Date(filterStartDate) &&
+          new Date(task.taskDueDate) <= new Date(filterEndDate)
+      );
 
-    setFilterSortStore(filteredData);
+      setFilterSortStore(filteredDate);
+    }
   };
 
   const handleFilterDatesInput = (e) => {
@@ -365,9 +368,6 @@ function TasksPage() {
           <option className={optionStyling} value="" disabled>
             Filter By
           </option>
-          <option className={optionStyling} value="Date Range">
-            Date Range
-          </option>
           <option className={optionStyling} value="Completed">
             Completed
           </option>
@@ -377,9 +377,16 @@ function TasksPage() {
           <option className={optionStyling} value="Terminated">
             Terminated
           </option>
+          <option className={optionStyling} value="Start Date Range">
+            Start Date Range
+          </option>
+          <option className={optionStyling} value="Due Date Range">
+            Due Date Range
+          </option>
+         
         </select>
       </div>
-      {filterOption === "Date Range" ? filterByDateDialog : ""}
+      {filterOption === "Start Date Range" || filterOption === "Due Date Range" ? filterByDateDialog : ""}
     </div>
   );
 
@@ -411,9 +418,9 @@ function TasksPage() {
             }}
             className={taskContainerStyle}
           >
-            {/* <div>
+            <div>
               startDate: {formatDate(taskStartDate)} <hr /> endDate: {formatDate(taskDueDate)}
-            </div> */}
+            </div>
             <div className="mr-2">
               <div
                 className={`${
