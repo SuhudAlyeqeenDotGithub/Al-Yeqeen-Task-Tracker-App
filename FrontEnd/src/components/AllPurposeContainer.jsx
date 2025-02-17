@@ -1,6 +1,6 @@
 const AllPurposeContainer = ({ containerStyling, children }) => {
   return (
-    <div className={`border-blue-800 ${containerStyling}`}>{children}</div>
+    <div className={` border border-[#0B1869] rounded-md ${containerStyling}`}>{children}</div>
   );
 };
 

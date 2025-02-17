@@ -8,7 +8,7 @@ export const RecentTasks = () => {
   );
 };
 
-export const RegularParagraph = ({ children, styling = "text-sm text-blue-900 font-semibold" }) => {
+export const RegularParagraph = ({ children, styling = "text-sm text-[#0B1869] font-semibold" }) => {
   return <p className={styling}>{children}</p>;
 };
 
@@ -26,7 +26,7 @@ export const TaskStatusChip = ({ children }) => {
       );
     } else {
       setChipStyling(
-        `bg-blue-200 border border-blue-700 text-blue-800 font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`
+        `bg-blue-200 border border-blue-700 text-[#0B1869] font-semibold shadow rounded-xl pl-2 pr-2 pt-1 pb-1`
       );
     }
   }, [children]);

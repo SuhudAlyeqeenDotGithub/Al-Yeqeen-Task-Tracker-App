@@ -81,16 +81,16 @@ const EditTaskDialog = ({ taskData }) => {
     }
   };
 
-  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-blue-900`;
+  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-[#0B1869]`;
   const dialogueStyling = `${scrollBarStyling}  bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pl-8 pr-8 pt-2 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col pb-8 min-h-[400px] max-h-[650px]`;
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex justify-center items-center`;
-  const textAreaStyling = `shadow-sm border border-blue-800 placeholder-blue-900 text-blue-900 text-sm font-semibold border border-blue-500 w-full p-2 rounded focus:border-2 border-blue-500 outline-none`;
+  const textAreaStyling = `shadow-sm border border-[#0B1869] placeholder-[#0B1869] text-[#0B1869] text-sm font-semibold border border-blue-500 w-full p-2 rounded focus:border-2 border-blue-500 outline-none`;
   const buttonStyling = `${
     taskName === "" ? "hidden" : ""
-  } bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
-  const optionStyling = `font-semibold hover:bg-blue-900`;
+  } bg-[#0B1869] text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-[#0B1869]`;
+  const optionStyling = `font-semibold hover:bg-[#0B1869]`;
   const dateTimeDivStyling = "grid grid-cols-2 grid-rows-1 gap-x-6 min-w-full";
-  const closeButtonStyling = `justify-self-end text-blue-900 hover:text-white text-xl p-2 rounded-lg`;
+  const closeButtonStyling = `justify-self-end text-[#0B1869] hover:text-white text-xl p-2 rounded-lg`;
   const validationStyling = "text-red-500 font-semibold mb-5 text-center text-[12px]";
 
   const whatToRender = (
@@ -98,7 +98,7 @@ const EditTaskDialog = ({ taskData }) => {
       <div className={overlayStyling}> </div>
       <AllPurposeContainer containerStyling={dialogueStyling}>
         <div className="w-full flex flex-row mb-8">
-          <h1 className="w-full pt-2 text-blue-900 text-2xl font-bold">Edit Task</h1>
+          <h1 className="w-full pt-2 text-[#0B1869] text-2xl font-bold">Edit Task</h1>
           <button className={`hover:bg-red-500 ${closeButtonStyling}`} onClick={closeDialog}>
             {closeIcon}
           </button>

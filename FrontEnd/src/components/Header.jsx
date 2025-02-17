@@ -10,7 +10,7 @@ import { resetUser } from "../reduxFeatures/authenticationState/authSlice";
 import { resetTasks } from "../reduxFeatures/taskState/taskSlice";
 
 function Header() {
-  const linkClass = "text-blue-900 font-semibold hover:bg-blue-800 p-2 rounded-md hover:text-white";
+  const linkClass = "text-[#0B1869] font-semibold hover:bg-[#0B1869] p-2 rounded-md hover:text-white";
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,10 +28,15 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 bg-white pb-8">
-      <div className="flex justify-center mb-5 mt-5">
-        <ToDoLogo />
+    <header className="flex sticky top-0 py-8 items-center justify-between px-20 bg-white">
+
+      <div className="flex justify-center">
+        <Link title="Al-Yeqeen Task Tracker Home" to="/">
+          <ToDoLogo logoStyling="h-[100px] w-[200px] py-2" />
+        </Link>
       </div>
+
+      <Navigation />
 
       <div className="pr-8">
         <ul className="flex justify-end">
@@ -42,8 +47,6 @@ function Header() {
           </li>
         </ul>
       </div>
-
-      <Navigation />
     </header>
   );
 }

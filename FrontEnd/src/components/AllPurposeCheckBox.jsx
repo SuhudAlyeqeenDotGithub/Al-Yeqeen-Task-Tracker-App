@@ -7,7 +7,7 @@ function AllPurposeCheckBox({
   isRegularCheckbox,
   checkBoxIdentity,
 }) {
-  const classNameFormatting = `w-8 h-8 accent-blue-800 ring-1 ring-offset-1 ring-blue-900`;
+  const classNameFormatting = `w-8 h-8 accent-[#0B1869] ring-1 ring-offset-1 ring-[#0B1869]`;
 
   const handleChange = (event) => {
     event.stopPropagation();

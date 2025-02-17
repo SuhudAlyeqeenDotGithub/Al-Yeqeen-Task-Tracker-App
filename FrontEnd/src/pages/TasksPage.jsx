@@ -18,7 +18,7 @@ import { useState, useEffect, useMemo } from "react";
 import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
-import { data, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
@@ -51,8 +51,8 @@ function TasksPage() {
   }, [location]);
 
   const taskContainerStyle =
-    "cursor-pointer gap-2 text-blue-900 font-semibold p-2 bg-white border border-blue-200 shadow-sm shadow-blue-900 mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
-  const regularButtonStyle = `cursor-pointer text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800  row-span-2 flex items-center justify-center hover:bg-blue-800  hover:text-white hover:border-none gap-2`;
+    "cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
+  const regularButtonStyle = `cursor-pointer text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869]  row-span-2 flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
 
   const [filterInputs, setFilterInputs] = useState({
     sortOption: "",
@@ -83,7 +83,6 @@ function TasksPage() {
 
   useEffect(() => {
     setFilterSortStore(proccessedFilteredData);
-    console.log(filterInputs);
   }, [proccessedFilteredData]);
 
   const processedSortedData = useMemo(() => {
@@ -295,17 +294,17 @@ function TasksPage() {
   };
 
   const filterSelectStyling =
-    "font-semibold outline-none text-blue-900 rounded-md text-center border border-blue-800 p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
+    "font-semibold outline-none text-[#0B1869] rounded-md text-center border border-[#0B1869] p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
   const searchInputStyling =
-    "flex flex-row shadow-sm placeholder-blue-900 text-blue-900 rounded-lg border border-blue-800 text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-500 outline-none";
+    "flex flex-row shadow-sm placeholder-[#0B1869] text-[#0B1869] rounded-lg border border-[#0B1869] text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-[#0B1869] outline-none";
   const optionStyling = "font-semibold text-center";
-  const clearFilterIconStyle = "text-blue-900 text-xl rounded-md hover:text-white hover:bg-blue-800";
+  const clearFilterIconStyle = "text-[#0B1869] text-xl rounded-md hover:text-white hover:bg-[#0B1869]";
   const selectDivStyling = "flex flex-row space-x-2 items-center";
 
   const dateInputStyling =
-    "shadow-sm placeholder-blue-900 text-blue-900 text-sm font-semibold border border-blue-800 text-center p-2 rounded focus:border-2 border-blue-500 outline-none";
+    "shadow-sm placeholder-[#0B1869] text-[#0B1869] text-sm font-semibold border border-[#0B1869] text-center p-2 rounded focus:border-2 border-blue-500 outline-none";
   const filterByDateDialog = (
-    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-blue-800 rounded-md py-2 bg-blue-50 absolute bottom-1 left-60 z-40">
+    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-[#0B1869] rounded-md py-2 bg-blue-50 absolute bottom-1 left-60 z-40">
       <AllPurposeLabel>Tasks Between</AllPurposeLabel>
       <AllPurposeInput
         styling={dateInputStyling}
@@ -325,7 +324,7 @@ function TasksPage() {
         onchangeFunction={handleFilterDatesInput}
       />
       <div className="flex flex-row gap-x-2 mt-2">
-        <button className="bg-blue-900 p-2 rounded-md text-white hover:bg-blue-800" onClick={handleDateFilter}>
+        <button className="bg-[#0B1869] p-2 rounded-md text-white hover:bg-[#0B1869]" onClick={handleDateFilter}>
           Filter
         </button>
         <button className="bg-red-700 p-2 rounded-md text-white  hover:bg-red-800" onClick={clearFilter}>
@@ -383,7 +382,6 @@ function TasksPage() {
           <option className={optionStyling} value="Due Date Range">
             Due Date Range
           </option>
-         
         </select>
       </div>
       {filterOption === "Start Date Range" || filterOption === "Due Date Range" ? filterByDateDialog : ""}
@@ -418,9 +416,9 @@ function TasksPage() {
             }}
             className={taskContainerStyle}
           >
-            <div>
+            {/* <div>
               startDate: {formatDate(taskStartDate)} <hr /> endDate: {formatDate(taskDueDate)}
-            </div>
+            </div> */}
             <div className="mr-2">
               <div
                 className={`${
@@ -449,7 +447,7 @@ function TasksPage() {
             </div>
             <button
               title="edit"
-              className="ml-4 hover:text-white hover:bg-blue-900 text-xl p-2 rounded-lg justify-center items-center"
+              className="ml-4 hover:text-white hover:bg-[#0B1869] text-xl p-2 rounded-lg justify-center items-center"
               onClick={(event) => showEditTaskDialog(event, taskObjForEdit)}
             >
               {editIcon}
@@ -466,7 +464,7 @@ function TasksPage() {
   const editButtonStyle = `${regularButtonStyle} ${topEditButtonLogic}`;
   const loader = (
     <div className="flex flex-col justify-center items-center space-y-5">
-      <div className="w-10 h-10 border-4 border-blue-800 border-t-transparent rounded-full animate-spin"></div>
+      <div className="w-10 h-10 border-4 border-[#0B1869] border-t-transparent rounded-full animate-spin"></div>
       <AllPurposeLabel>Please wait {userName} whilst we load your tasks.........</AllPurposeLabel>
     </div>
   );
@@ -480,10 +478,6 @@ function TasksPage() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-blue-900 font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
-        Hello {userName}, Let's add some tasks and complete some
-      </h1>
-
       {newTaskDialogIsOpen && <NewTaskDialog />}
       {editTaskDialogIsOpen && (
         <EditTaskDialog
@@ -494,64 +488,69 @@ function TasksPage() {
       {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       {/* top task controller */}
 
-      <div className=" sticky top-52 bg-white border w-[50%] border-blue-800 shadow-sm shadow-blue-900 py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
-        <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
-          {/* Filter Navigation */}
+      <div className="sticky top-[164px] w-full flex flex-col items-center justify-center bg-white">
+        <h1 className="text-[#0B1869] font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
+          Hello {userName}, Let's add some tasks and complete some
+        </h1>
+        <div className="bg-white border w-[50%] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
+          <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
+            {/* Filter Navigation */}
 
-          {filterNav}
+            {filterNav}
 
-          {/* Search Input */}
-          <div className="w-full sm:w-[70%] max-w-full flex flex-row items-center space-x-2">
-            <FaSearch className="text-blue-800 text-3xl shrink-0" />
-            <AllPurposeInput
-              styling={searchInputStyling}
-              inputType="input"
-              inputPlaceHolder="Search Task Name ..."
-              inputValue={searchTaskInput}
-              inputName="searchTaskInput"
-              onchangeFunction={handleFilterInputs}
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-row w-full">
-          <div className="flex items-center justify-self-center ">
-            <AllPurposeCheckBox
-              inputId="selectAll"
-              inputName="selectAll"
-              inputValue="selectAll"
-              onchangeFunction={handleSelectAllCheck}
-              checked={selectAllCheckStatus}
-              isRegularCheckbox={false}
-            />
+            {/* Search Input */}
+            <div className="w-full sm:w-[70%] max-w-full flex flex-row items-center space-x-2">
+              <FaSearch className="text-[#0B1869] text-3xl shrink-0" />
+              <AllPurposeInput
+                styling={searchInputStyling}
+                inputType="input"
+                inputPlaceHolder="Search Task Name ..."
+                inputValue={searchTaskInput}
+                inputName="searchTaskInput"
+                onchangeFunction={handleFilterInputs}
+              />
+            </div>
           </div>
 
-          <p className="row-span-2 text-blue-900 font-semibold w-[20%] flex ml-10 items-center">
-            {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
-          </p>
-
-          <div className=" w-full flex flex-row space-x-10 justify-between">
-            <div className="flex flex-row items-center w-[50%] space-x-4 justify-center">
-              <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
-                Delete {deleteIcon}
-              </button>
-              <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
-                Edit {editIcon}
-              </button>
+          <div className="flex flex-row w-full">
+            <div className="flex items-center justify-self-center ">
+              <AllPurposeCheckBox
+                inputId="selectAll"
+                inputName="selectAll"
+                inputValue="selectAll"
+                onchangeFunction={handleSelectAllCheck}
+                checked={selectAllCheckStatus}
+                isRegularCheckbox={false}
+              />
             </div>
 
-            <button
-              onClick={showNewTaskDialog}
-              title="Add Task"
-              className="text-blue-900 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-blue-800 hover:bg-blue-800 hover:text-white hover:border-none"
-            >
-              Add Task {addIcon}
-            </button>
+            <p className="row-span-2 text-[#0B1869] font-semibold w-[20%] flex ml-10 items-center">
+              {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
+            </p>
+
+            <div className=" w-full flex flex-row space-x-10 justify-between">
+              <div className="flex flex-row items-center w-[50%] space-x-4 justify-center">
+                <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
+                  Delete {deleteIcon}
+                </button>
+                <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
+                  Edit {editIcon}
+                </button>
+              </div>
+
+              <button
+                onClick={showNewTaskDialog}
+                title="Add Task"
+                className="text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] hover:bg-[#0B1869] hover:text-white hover:border-none"
+              >
+                Add Task {addIcon}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className=" m-4 flex flex-wrap justify-center items-cente p-4">
+      <div className="flex flex-wrap justify-center items-cente p-4 gap-2">
         {isLoading ? loader : filterSortStore.length < 1 ? noTaskMessage : tasksToDisplay}
       </div>
     </div>

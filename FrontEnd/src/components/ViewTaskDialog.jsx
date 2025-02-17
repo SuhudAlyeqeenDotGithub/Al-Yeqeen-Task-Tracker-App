@@ -64,15 +64,15 @@ const ViewTaskDialog = ({ taskData }) => {
     }
   };
 
-  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-blue-900`;
+  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-[#0B1869]`;
 
   const dialogueStyling = ` ${
     deleteTaskFromView ? "border-none bg-blue-100 bg-opacity-90" : "bg-white"
   } ${scrollBarStyling} pl-6 pr-6 pt-2 pb-8 z-40 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue-300 shadow-lg max-w-[400px] min-w-[400px] flex flex-col min-h-[400] max-h-[600px]`;
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
-  const buttonStyling = `justify-center text-blue-900 hover:text-white text-xl p-2 rounded-lg`;
+  const buttonStyling = `justify-center text-[#0B1869] hover:text-white text-xl p-2 rounded-lg`;
   const gridStyling = `w-full flex flex-wrap  gap-x-24`;
-  const allPurposeLabelStyling = "w-full text-sm text-blue-900 font-semibold";
+  const allPurposeLabelStyling = "w-full text-sm text-[#0B1869] font-semibold";
   const pairDateTimeStyling = "flex flex-row-reverse gap-x-8";
 
   return (
@@ -85,21 +85,21 @@ const ViewTaskDialog = ({ taskData }) => {
           <div className="flex flex-col gap-8">
             <div className="gap-2">
               <div className="flex flex-row w-full items-center">
-                <RegularParagraph styling="w-full pb-4 text-blue-900 text-xl font-bold">
+                <RegularParagraph styling="w-full pb-4 text-[#0B1869] text-xl font-bold">
                   Your Task Status
                 </RegularParagraph>
 
                 <div className="w-full flex flex-wrap justify-end gap-2 mb-5">
                   <button
                     title="delete"
-                    className={`hover:bg-blue-900 ${buttonStyling}`}
+                    className={`hover:bg-[#0B1869] ${buttonStyling}`}
                     onClick={handleDeleteTaskFromView}
                   >
                     {deleteIcon}
                   </button>
                   <button
                     title="edit"
-                    className={`hover:bg-blue-900 ${buttonStyling}`}
+                    className={`hover:bg-[#0B1869] ${buttonStyling}`}
                     onClick={handleEditTaskFromView}
                   >
                     {editIcon}
@@ -120,7 +120,7 @@ const ViewTaskDialog = ({ taskData }) => {
             <div className="flex flex-col gap-3">
               <RegularParagraph>Task Description</RegularParagraph>
               <RegularParagraph
-                styling={`${scrollBarStyling} overflow-auto text-sm max-h-[150px] text-blue-900 font-semibold border border-blue-900 shadow-inner shadow-gray-200 rounded-md p-4`}
+                styling={`${scrollBarStyling} overflow-auto text-sm max-h-[150px] text-[#0B1869] font-semibold border border-[#0B1869] shadow-inner shadow-gray-200 rounded-md p-4`}
               >
                 {taskDescription}
               </RegularParagraph>

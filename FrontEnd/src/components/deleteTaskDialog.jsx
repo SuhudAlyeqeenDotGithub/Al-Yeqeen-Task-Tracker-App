@@ -66,28 +66,28 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
     setTaskLengthToDisplay(fourTaskToDisplay);
   };
 
-  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-blue-900`;
+  const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-[#0B1869]`;
 
   const dialogueStyling = ` ${scrollBarStyling} bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-wrap justify-center items-center min-h-[200px] max-h-[400px] gap-1`;
   const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
-  const buttonStyling = `justify-center w-20 border border-blue-900 shadow text-blue-900 text-md font-semibold p-2 rounded-lg`;
+  const buttonStyling = `justify-center w-20 border border-[#0B1869] shadow text-[#0B1869] text-md font-semibold p-2 rounded-lg`;
 
-  const seeMoreSeeLessStyling = "text-sm text-blue-900 font-semibold";
+  const seeMoreSeeLessStyling = "text-sm text-[#0B1869] font-semibold";
 
   return (
     deleteTaskDialogIsOpen && (
       <>
         <div className={overlayStyling}></div>
         <AllPurposeContainer containerStyling={dialogueStyling}>
-          <RegularParagraph styling="text-blue-900 font-bold text-xl w-full text-center mb-5">
+          <RegularParagraph styling="text-[#0B1869] font-bold text-xl w-full text-center mb-5">
             Head Ups !
           </RegularParagraph>
-          <RegularParagraph styling="text-md text-blue-900 font-semibold">
+          <RegularParagraph styling="text-md text-[#0B1869] font-semibold">
             Are you sure you want to delete the below task(s)?
           </RegularParagraph>
 
           <div
-            className={`${scrollBarStyling} w-full ml-5 mr-5 border border-blue-900 p-2 flex flex-wrap rounded-md mt-5 max-h-[200px]`}
+            className={`${scrollBarStyling} w-full ml-5 mr-5 border border-[#0B1869] p-2 flex flex-wrap rounded-md mt-5 max-h-[200px]`}
           >
             <RegularParagraph>{taskLengthToDisplay}</RegularParagraph>
 
@@ -115,7 +115,7 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
             </button>
             <button
               onClick={cancelDelete}
-              className={`hover:text-white hover:bg-blue-900 hover:border-none ${buttonStyling}`}
+              className={`hover:text-white hover:bg-[#0B1869] hover:border-none ${buttonStyling}`}
             >
               Cancel
             </button>

@@ -68,8 +68,8 @@ const SignUpPage = () => {
 
   const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
-  const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-blue-900`;
-  const hoverUnderline = "text-sm mt-4 text-blue-900 text-center font-semibold hover:underline";
+  const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-[#0B1869] text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-[#0B1869]`;
+  const hoverUnderline = "text-sm mt-4 text-[#0B1869] text-center font-semibold hover:underline";
 
   return (
     <div className={signUpBackground}>
@@ -77,9 +77,9 @@ const SignUpPage = () => {
         <Logo logoStyling="w-30 h-28" />
 
         <div className="w-full flex flex-col mt-4 mb-2">
-          <p className="text-blue-900 text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>
+          <p className="text-[#0B1869] text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-blue-900 font-semibold mb-5 text-center text-sm">Please Enter Your Sign-Up Details</AllPurposeLabel>
+          <AllPurposeLabel labelStyling="text-[#0B1869] font-semibold mb-5 text-center text-sm">Please Enter Your Sign-Up Details</AllPurposeLabel>
 
           <AllPurposeLabel labelStyling={validationStyling}>{onSubmitError ? "Invalid Email or Passwords" : errorMessage}</AllPurposeLabel>
         </div>
