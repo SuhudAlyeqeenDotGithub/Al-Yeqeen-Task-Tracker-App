@@ -15,7 +15,7 @@ function DashboardPage() {
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
   const dashboardEntityStyle =
-    "shadow-lg shadow-200 p-4 rounded-md bg-white flex flex-col sm:flex-wrap items-center w-full h-full justify-center gap-y-4";
+    "shadow-lg shadow-200 p-4 rounded-md bg-white flex flex-col sm:flex-wrap items-center  w-full h-full justify-center gap-y-4";
   const chartDivStyle =
     "border border-[#0B1869] shadow-lg shadow-blue-200 p-2 rounded-md bg-white w-full items-center justify-center";
   const labelDefaultStyling = " text-[14px] font-semibold";

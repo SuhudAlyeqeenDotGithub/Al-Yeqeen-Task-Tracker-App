@@ -11,8 +11,8 @@ function Navigation() {
 
   return (
     <nav>
-      <ul className="flex space-x-4 justify-center">
-        <li>
+      <ul className="flex sm:flex-wrap space-x-4 justify-center">
+        <li className="whitespace-nowrap">
           <Link
             to="/alyeqeenTaskTracker/mytasks"
             className={`${linkClass} ${isActivePage("/alyeqeenTaskTracker/mytasks")}`}
@@ -20,7 +20,7 @@ function Navigation() {
             My Tasks
           </Link>
         </li>
-        <li>
+        <li className="whitespace-nowrap">
           <Link
             to="/alyeqeenTaskTracker/dashboard"
             className={`${linkClass} ${isActivePage("/alyeqeenTaskTracker/dashboard")}`}

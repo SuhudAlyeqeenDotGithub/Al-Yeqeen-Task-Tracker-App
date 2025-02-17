@@ -1,4 +1,4 @@
-import ToDoLogo from "./ToDoLogo";
+import {ToDoLogo} from "./ToDoLogo";
 import Navigation from "./Navigation";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,9 +28,9 @@ function Header() {
   };
 
   return (
-    <header className="flex sticky top-0 py-8 items-center justify-between px-20 bg-white">
+    <header className="flex flex-wrap sticky top-0 py-8 items-center lg:justify-between justify-center px-32 bg-white gap-4">
 
-      <div className="flex justify-center">
+      <div className="justify-center flex-shrink-0">
         <Link title="Al-Yeqeen Task Tracker Home" to="/">
           <ToDoLogo logoStyling="h-[100px] w-[200px] py-2" />
         </Link>
@@ -40,7 +40,7 @@ function Header() {
 
       <div className="pr-8">
         <ul className="flex justify-end">
-          <li>
+          <li className="whitespace-nowrap">
             <button title="Logout" onClick={handleLogout} className={linkClass}>
               Log Out <FontAwesomeIcon icon={faSignInAlt} size="1x" />
             </button>

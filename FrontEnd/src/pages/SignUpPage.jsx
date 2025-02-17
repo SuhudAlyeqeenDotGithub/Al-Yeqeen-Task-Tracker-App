@@ -1,6 +1,6 @@
 import AllPurposeContainer from "../components/AllPurposeContainer";
 import AllPurposeLabel from "../components/AllPurposeLabel";
-import Logo from "../components/ToDoLogo";
+import {ToDoLogo} from "../components/ToDoLogo";
 import AllPurposeInput from "../components/allPurposeInput";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -74,7 +74,7 @@ const SignUpPage = () => {
   return (
     <div className={signUpBackground}>
       <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
-        <Logo logoStyling="w-30 h-28" />
+        <ToDoLogo logoStyling="w-30 h-28" />
 
         <div className="w-full flex flex-col mt-4 mb-2">
           <p className="text-[#0B1869] text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>

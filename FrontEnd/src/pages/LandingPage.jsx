@@ -1,15 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import AllPurposeLabel from "../components/AllPurposeLabel";
+import LandingPageSection1 from "../components/LandingPageSection1";
+import LandingPageSection2 from "../components/LandingPageSection2";
 
 function LandingPage() {
+  
   return (
-    <div>
-      Hi Welcome to Alyeqeen Task Tracker
-      <br />
-      <Link to="/login">Have an Account Already? Log in</Link>
-      <br />
-      <Link to="/signup">Have no Account? Register</Link>
+    <div className="text-[#060242]">
+     <LandingPageSection1 />
+     <LandingPageSection2 />
     </div>
   );
 }
