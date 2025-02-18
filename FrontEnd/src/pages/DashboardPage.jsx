@@ -15,9 +15,9 @@ function DashboardPage() {
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
   const dashboardEntityStyle =
-    "shadow-lg shadow-200 p-4 rounded-md bg-white flex flex-col sm:flex-wrap items-center  w-full h-full justify-center gap-y-4";
+    "shadow-lg shadow-200 p-4 rounded-md flex flex-col sm:flex-wrap items-center w-full h-full justify-center gap-y-4";
   const chartDivStyle =
-    "border border-[#0B1869] shadow-lg shadow-blue-200 p-2 rounded-md bg-white w-full items-center justify-center";
+    "border hover:border-2  shadow-lg p-2 rounded-md bg-white w-full items-center justify-center";
   const labelDefaultStyling = " text-[14px] font-semibold";
   const bigTextStyling = "text-[44px] font-semibold";
   const innerBoxStyling = "w-[50%] text-center";
@@ -40,9 +40,9 @@ function DashboardPage() {
 
   return (
     <div>
-      <div className="flex flex-col gap-y-8 px-10 py-10 rounded-md border border-[#0B1869] shadow-md mx-20 mt-5">
+      <div className="flex flex-col gap-y-8 px-10 py-10 rounded-md border shadow-md mx-20 mt-5 bg-gradient-to-r from-blue-200 to-green-50">
         <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 mr-6 min-w-[100%]">
-          <div className={`${dashboardEntityStyle} bg-blue-900 text-white`}>
+          <div className={`${dashboardEntityStyle} bg-blue-800 text-white`}>
             <AllPurposeLabel labelStyling={labelDefaultStyling}>Total Tasks</AllPurposeLabel>
             <div>
               <AllPurposeLabel labelStyling={bigTextStyling}>{tasksData.length}</AllPurposeLabel>

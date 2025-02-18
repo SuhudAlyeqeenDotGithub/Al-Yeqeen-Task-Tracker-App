@@ -120,7 +120,7 @@ const ViewTaskDialog = ({ taskData }) => {
             <div className="flex flex-col gap-3">
               <RegularParagraph>Task Description</RegularParagraph>
               <RegularParagraph
-                styling={`${scrollBarStyling} overflow-auto text-sm max-h-[150px] text-[#0B1869] font-semibold border border-[#0B1869] shadow-inner shadow-gray-200 rounded-md p-4`}
+                styling={`${scrollBarStyling} overflow-auto text-sm max-h-[150px] text-[#0B1869] font-semibold border rounded-md p-4`}
               >
                 {taskDescription}
               </RegularParagraph>
