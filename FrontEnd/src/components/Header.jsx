@@ -28,7 +28,7 @@ function Header() {
   };
 
   return (
-    <header className="flex flex-wrap sticky top-0 items-center lg:justify-between justify-center px-32 pt-16 pb-8 bg-white z-50">
+    <header className="flex flex-wrap  top-0 items-center lg:justify-between justify-center px-32 pt-16 pb-8 bg-white z-50">
 
       <div className="justify-center flex-shrink-0">
         <Link title="Al-Yeqeen Task Tracker Home" to="/">

@@ -69,7 +69,7 @@ const DeleteTaskDialog = ({ tasksToDelete }) => {
   const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-[#0B1869]`;
 
   const dialogueStyling = ` ${scrollBarStyling} bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-wrap justify-center items-center min-h-[200px] max-h-[400px] gap-1`;
-  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
+  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-50 flex items-center`;
   const buttonStyling = `justify-center w-20 border border-[#0B1869] shadow text-[#0B1869] text-md font-semibold p-2 rounded-lg`;
 
   const seeMoreSeeLessStyling = "text-sm text-[#0B1869] font-semibold";

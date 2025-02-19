@@ -4,7 +4,7 @@ import LandingPageSection2 from "../components/LandingPageSection2";
 function LandingPage() {
   
   return (
-    <div className="text-[#060242]">
+    <div className="text-[#02132D]">
      <LandingPageSection1 />
      <LandingPageSection2 />
     </div>

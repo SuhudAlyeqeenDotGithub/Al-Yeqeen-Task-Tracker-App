@@ -69,7 +69,7 @@ const ViewTaskDialog = ({ taskData }) => {
   const dialogueStyling = ` ${
     deleteTaskFromView ? "border-none bg-blue-100 bg-opacity-90" : "bg-white"
   } ${scrollBarStyling} pl-6 pr-6 pt-2 pb-8 z-40 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue-300 shadow-lg max-w-[400px] min-w-[400px] flex flex-col min-h-[400] max-h-[600px]`;
-  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex items-center`;
+  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-30 flex items-center`;
   const buttonStyling = `justify-center text-[#0B1869] hover:text-white text-xl p-2 rounded-lg`;
   const gridStyling = `w-full flex flex-wrap  gap-x-24`;
   const allPurposeLabelStyling = "w-full text-sm text-[#0B1869] font-semibold";

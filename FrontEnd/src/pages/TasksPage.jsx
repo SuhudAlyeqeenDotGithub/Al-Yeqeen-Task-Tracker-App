@@ -589,7 +589,7 @@ function TasksPage() {
       )}
       {/* top task controller */}
 
-      <div className="sticky top-[195px] w-full flex flex-col items-center justify-center bg-white z-40">
+      <div className="top-[195px] w-full flex flex-col items-center justify-center bg-white z-20">
         <h1 className="text-[#0B1869] font-semibold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2 transform hover:scale-110">
           Hello {userName}, Let's add some tasks and complete some
         </h1>

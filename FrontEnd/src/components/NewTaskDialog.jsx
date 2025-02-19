@@ -97,7 +97,7 @@ const NewTaskDialog = () => {
 
   const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-blue-900`;
   const dialogueStyling = `${scrollBarStyling}  bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pl-8 pr-8 pt-2 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col pb-8 min-h-[400px] max-h-[650px]`;
-  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-10 flex justify-center items-center`;
+  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-50 flex justify-center items-center`;
   const textAreaStyling = `shadow-sm border border-blue-800 placeholder-blue-900 text-blue-900 text-sm font-semibold border border-blue-500 w-full p-2 rounded focus:border-2 border-blue-500 outline-none`;
   const buttonStyling = `${
     taskName === "" || taskName.length > 84 ? "hidden" : ""

@@ -5,9 +5,9 @@ import Carousel from "./Carousel";
 const LandingPageSection1 = () => {
   const topHeroTexts = [
     "A Practical Task Tracker to Help You Stay Productive Without the Extra Complexity.",
-    "Designed for Simplicity—Easily Manage Your Tasks and Stay on Top of Your Day.",
+    "Designed for Simplicity - Easily Manage Your Tasks and Stay on Top of Your Day.",
     "Stay Focused and Organised with a No-Nonsense Task Tracker That Works for You.",
-    "A Simple and Effective Way to Keep Track of Your Daily Tasks Without the Hassle."
+    "A Simple and Effective Way to Keep Track of Your Daily Tasks Without the Hassle.",
   ];
   const linkClass = "text-[#02132D] text-md font-semibold hover:bg-[#02132D] p-2 rounded-md hover:text-white";
   const whiteButtonStyling =
@@ -47,7 +47,7 @@ const LandingPageSection1 = () => {
             <Carousel textArray={topHeroTexts} duration={parseInt("5000")} />
           </div>
 
-          <div className="flex items-center justify-center font-semibold whitespace-nowrap border-y-2 border-[#060242] py-4 mr-52 h-[60px] w-[500px]">
+          <div className="flex items-center justify-center text-[#02132D] font-semibold whitespace-nowrap border-y-2 border-[#060242] py-4 mr-52 h-[60px] w-[500px]">
             Effortless Task Management at Your Fingertips
           </div>
 
@@ -68,8 +68,7 @@ const LandingPageSection1 = () => {
           </div>
 
           <div
-            className="flex gap-x-10 justify-center h-[5
-              0px]"
+            className="flex gap-x-10 justify-center h-[50px]"
           >
             <Link to="/signup">
               <button title="Register" type="button" className={blueButtonStyling}>

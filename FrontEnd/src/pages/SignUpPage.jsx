@@ -1,6 +1,6 @@
 import AllPurposeContainer from "../components/AllPurposeContainer";
 import AllPurposeLabel from "../components/AllPurposeLabel";
-import {ToDoLogo} from "../components/ToDoLogo";
+import { ToDoLogo } from "../components/ToDoLogo";
 import AllPurposeInput from "../components/allPurposeInput";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ const SignUpPage = () => {
     userName: "",
     userEmail: "",
     userPassword: "",
-    userConfirmPassword: "",
+    userConfirmPassword: ""
   });
 
   const { userName, userEmail, userPassword, userConfirmPassword } = formData;
@@ -31,7 +31,7 @@ const SignUpPage = () => {
   const handleFormData = (e) => {
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     }));
   };
 
@@ -68,20 +68,28 @@ const SignUpPage = () => {
 
   const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
-  const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-[#0B1869] text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-[#0B1869]`;
+  const buttonStyling = `${
+    hideSubmitBtn ? "hidden" : ""
+  } bg-[#0B1869] text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-[#0B1869]`;
   const hoverUnderline = "text-sm mt-4 text-[#0B1869] text-center font-semibold hover:underline";
 
   return (
     <div className={signUpBackground}>
       <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
-        <ToDoLogo logoStyling="w-30 h-28" />
+        <Link title="Al-Yeqeen Task Tracker Home" to="/">
+          <ToDoLogo logoStyling="w-30 h-28" />
+        </Link>
 
         <div className="w-full flex flex-col mt-4 mb-2">
           <p className="text-[#0B1869] text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-[#0B1869] font-semibold mb-5 text-center text-sm">Please Enter Your Sign-Up Details</AllPurposeLabel>
+          <AllPurposeLabel labelStyling="text-[#0B1869] font-semibold mb-5 text-center text-sm">
+            Please Enter Your Sign-Up Details
+          </AllPurposeLabel>
 
-          <AllPurposeLabel labelStyling={validationStyling}>{onSubmitError ? "Invalid Email or Passwords" : errorMessage}</AllPurposeLabel>
+          <AllPurposeLabel labelStyling={validationStyling}>
+            {onSubmitError ? "Invalid Email or Passwords" : errorMessage}
+          </AllPurposeLabel>
         </div>
 
         <form className="w-full space-y-4" onSubmit={handleRegisterUser}>
@@ -107,7 +115,9 @@ const SignUpPage = () => {
             />
 
             <AllPurposeLabel labelStyling={validationStyling}>
-              {(!userEmail.includes("@") || !userEmail.includes(".")) && userEmail.length > 0 ? "Submit Disabled: Please enter a valid email" : ""}
+              {(!userEmail.includes("@") || !userEmail.includes(".")) && userEmail.length > 0
+                ? "Submit Disabled: Please enter a valid email"
+                : ""}
             </AllPurposeLabel>
           </div>
 
@@ -136,7 +146,9 @@ const SignUpPage = () => {
               onchangeFunction={handleFormData}
             />
             <AllPurposeLabel labelStyling={validationStyling}>
-              {userConfirmPassword !== "" && userConfirmPassword !== userPassword ? "Submit Disabled: Password are not matching" : ""}
+              {userConfirmPassword !== "" && userConfirmPassword !== userPassword
+                ? "Submit Disabled: Password are not matching"
+                : ""}
             </AllPurposeLabel>
           </div>
 
