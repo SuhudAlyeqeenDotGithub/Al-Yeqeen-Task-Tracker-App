@@ -24,7 +24,7 @@ const LandingPageSection2 = () => {
       {/* div 3 button */}
       <div className="mt-10">
         <Link to="/signup">
-          <button title="Register" type="button" className="border-2 rounded-md p-4 hover:text-lg font-semibold">
+          <button title="Register" type="button" className="border-2 rounded-md p-4 font-semibold transform hover:scale-110">
             Try it Now - It's Free
           </button>
         </Link>

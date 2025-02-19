@@ -68,8 +68,8 @@ function TasksPage() {
   }, [location]);
 
   const taskContainerStyle =
-    "cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between hover:bg-blue-50";
-  const regularButtonStyle = `cursor-pointer text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869]  row-span-2 flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
+    "transform hover:scale-95 cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between";
+  const regularButtonStyle = `cursor-pointer text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] shadow-md flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
 
   const [filterInputs, setFilterInputs] = useState({
     sortOption: "",
@@ -342,12 +342,12 @@ function TasksPage() {
   const optionStyling = "font-semibold text-center";
   const clearFilterIconStyle =
     "text-[#0B1869] text-xl rounded-md hover:text-white hover:bg-[#0B1869]";
-  const selectDivStyling = "flex flex-row space-x-2 items-center";
+  const selectDivStyling = "flex flex-row gap-x-2 items-center";
 
   const dateInputStyling =
     "shadow-sm text-[#0B1869] text-sm font-semibold border border-blue-900 text-center p-2 rounded focus:border-2 border-blue-900 outline-none";
   const filterByDateDialog = (
-    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-[#0B1869] rounded-md py-2 bg-blue-50 absolute bottom-1 left-60 z-40">
+    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-[#0B1869] rounded-md py-2 bg-blue-50 absolute right-full mr-1 z-40">
       <AllPurposeLabel>Tasks Between</AllPurposeLabel>
       <AllPurposeInput
         styling={dateInputStyling}
@@ -383,7 +383,7 @@ function TasksPage() {
     </div>
   );
   const filterNav = (
-    <div className="w-full flex flex-wrap sm:flex-nowrap gap-x-6 gap-2">
+    <div className="w-full flex flex-wrap sm:flex-nowrap gap-x-6 gap-2 ">
       <div className={selectDivStyling}>
         {sortOption !== "" ? (
           <FaTimes
@@ -454,10 +454,11 @@ function TasksPage() {
             Due Date Range
           </option>
         </select>
-      </div>
-      {filterOption === "Start Date Range" || filterOption === "Due Date Range"
+        {filterOption === "Start Date Range" || filterOption === "Due Date Range"
         ? filterByDateDialog
         : ""}
+      </div>
+      
     </div>
   );
 
@@ -588,13 +589,13 @@ function TasksPage() {
       )}
       {/* top task controller */}
 
-      <div className="sticky top-[164px] w-full flex flex-col items-center justify-center bg-white">
-        <h1 className="text-[#0B1869] font-semibold flex flex-wrap justify-center text-2xl mb-6 mt-6 ml-6 ">
+      <div className="sticky top-[195px] w-full flex flex-col items-center justify-center bg-white z-40">
+        <h1 className="text-[#0B1869] font-semibold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2 transform hover:scale-110">
           Hello {userName}, Let's add some tasks and complete some
         </h1>
-        <div className="bg-white border w-[50%] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center">
+        <div className="bg-white border w-[50%] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center relative">
           <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
-            {/* Filter Navigation */}
+            {/* Filters*/}
 
             {filterNav}
 
@@ -631,7 +632,7 @@ function TasksPage() {
                 } Selected`}
             </p>
 
-            <div className=" w-full flex flex-row space-x-10 justify-between">
+            <div className="w-full flex flex-row space-x-10 justify-between">
               <div className="flex flex-row items-center w-[50%] space-x-4 justify-center">
                 <button
                   title="delete"
@@ -661,7 +662,7 @@ function TasksPage() {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center items-cente p-4 gap-2">
+      <div className="flex flex-wrap justify-center items-center p-4 gap-2">
         {isLoading
           ? loader
           : filterSortStore.length < 1

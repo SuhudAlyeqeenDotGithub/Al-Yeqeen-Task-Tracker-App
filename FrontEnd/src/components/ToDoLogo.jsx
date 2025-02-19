@@ -1,10 +1,9 @@
-import Logo from "../assets/alyeqeenLogo.png";
 import LandingPageLogo from "../assets/landingpageAlyeqeenLogo.png";
 import TaskTrackerInterface from "../assets/taskTrackerInterface.png";
 
 const ToDoLogo = ({ logoStyling }) => {
   return (
-    <img src={Logo} alt="Al-Yeqeen Task Tracker Logo" className={logoStyling} />
+    <img src={LandingPageLogo} alt="Al-Yeqeen Task Tracker Logo" className={logoStyling} />
   );
 };
 
