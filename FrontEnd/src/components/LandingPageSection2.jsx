@@ -26,7 +26,7 @@ const LandingPageSection2 = () => {
   const taskAccordionTitleStyle =
     "whitespace-nowrap font-bold text-xl flex items-center justify-between rounded gap-x-4";
   const taskAccordionContentStyle = "flex items-center font-semibold h-[150px]";
-  const transparentButtonStyle = "border-2 rounded-md p-4 font-semibold transform hover:scale-110";
+  const transparentButtonStyle = "border-2 border-white rounded-md p-4 font-semibold transform hover:scale-110";
   const imageToDisplay =
     openIndex === 0
       ? friendlyNav
@@ -59,22 +59,22 @@ const LandingPageSection2 = () => {
           <button
             title="Present Videos"
             type="button"
-            className={`${switchMediaBtnStyling} ${mediaType === "Video" ? "bg-[#0b113e] scale-90" : ""}`}
+            className={`${switchMediaBtnStyling} ${mediaType === "Video" ? "border-2 border-white scale-90" : "scale-105"}`}
             onClick={() => {
               handleMediaSwitch("Video");
             }}
           >
-            Videos
+            Video
           </button>
           <button
             title="Present Images"
             type="button"
-            className={`${switchMediaBtnStyling} ${mediaType === "Image" ? " scale-90 bg-[#0b113e]" : ""}`}
+            className={`${switchMediaBtnStyling} ${mediaType === "Image" ? "border-2 border-white scale-90" : "scale-105"}`}
             onClick={() => {
               handleMediaSwitch("Image");
             }}
           >
-            Images
+            Image
           </button>
         </div>
       </div>
@@ -95,6 +95,7 @@ const LandingPageSection2 = () => {
               onToggle={() => {
                 handleToggle(index);
               }}
+              borderBottom="border-b-2" borderLeft="border-l-4"
             />
           ))}
         </Accordion>
@@ -104,7 +105,7 @@ const LandingPageSection2 = () => {
         </div>
       </div>
       {/* div 3 button */}
-      <div className="mt5">
+      <div className="mt-5 flex justify-center">
         <Link to="/signup">
           <button title="Register" type="button" className={transparentButtonStyle}>
             Try it Now - It's Free
