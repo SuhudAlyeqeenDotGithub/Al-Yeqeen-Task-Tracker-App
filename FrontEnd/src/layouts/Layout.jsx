@@ -8,14 +8,14 @@ function Layout() {
   const location = useLocation();
 
   return (
-    <>
+    <div className="font-nunito">
       {/* {!pagesToHideOn.includes(location.pathname) && <Header />} */}
       <Header />
       <Outlet />
       {location.pathname === "/alyeqeenTaskTracker" && (
         <Navigate to="/alyeqeenTaskTracker/mytasks" />
       )}
-    </>
+    </div>
   );
 }
 

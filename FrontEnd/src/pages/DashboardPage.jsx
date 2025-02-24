@@ -15,9 +15,9 @@ function DashboardPage() {
   const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
   const dashboardEntityStyle =
-    "shadow-lg shadow-200 p-4 rounded-md flex flex-col sm:flex-wrap items-center w-full h-full justify-center gap-y-4 transform hover:scale-95";
+    "shadow-lg shadow-200 p-4 rounded-md flex flex-col sm:flex-wrap items-center w-full h-full justify-center gap-y-4 transform duration-900 hover:scale-95";
   const chartDivStyle =
-    "border hover:border-2 shadow-lg p-2 rounded-md bg-white w-full items-center justify-center";
+    "border shadow-lg p-2 rounded-md bg-white w-full items-center justify-center  transform duration-900 hover:scale-95";
   const labelDefaultStyling = " text-[14px] font-semibold";
   const bigTextStyling = "text-[44px] font-semibold";
   const innerBoxStyling = "w-[50%] text-center";

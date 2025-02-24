@@ -7,8 +7,8 @@ const AccordionItem = ({ title, content, titleStyle, contentStyle, isOpen, onTog
   return (
     <div className={`px-10 cursor-pointer rounded ${isOpen ? borderLeft : ""}`} onClick={onToggle}>
       <div
-        className={`${borderBottom} flex flex-col gap-y-5 
-       py-10 hover:scale-110`}
+        className={`${borderBottom} flex flex-col
+       py-10 duration-500 hover:scale-105`}
       >
         <h1 className={titleStyle ? titleStyle : defaultTitleStyle}>
           {title}

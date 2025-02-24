@@ -66,7 +66,7 @@ const SignUpPage = () => {
 
   const validationStyling = "text-red-500 font-semibold mb-5 text-center text-[12px]";
 
-  const signUpBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
+  const signUpBackground = `w-full flex flex-col h-screen justify-center items-center font-nunito`;
   const UserIcon = <FontAwesomeIcon icon={faUserAlt} size="1x" />;
   const buttonStyling = `${
     hideSubmitBtn ? "hidden" : ""
@@ -77,13 +77,13 @@ const SignUpPage = () => {
     <div className={signUpBackground}>
       <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
         <Link title="Al-Yeqeen Task Tracker Home" to="/">
-          <ToDoLogo logoStyling="w-30 h-28" />
+          <ToDoLogo logoStyling="w-40 h-20" />
         </Link>
 
         <div className="w-full flex flex-col mt-4 mb-2">
           <p className="text-[#0B1869] text-xl font-bold mb-3 text-center">Sign Up {UserIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-[#0B1869] font-semibold mb-5 text-center text-sm">
+          <AllPurposeLabel labelStyling="text-[#0B1869] font-bold mb-5 text-center text-sm">
             Please Enter Your Sign-Up Details
           </AllPurposeLabel>
 

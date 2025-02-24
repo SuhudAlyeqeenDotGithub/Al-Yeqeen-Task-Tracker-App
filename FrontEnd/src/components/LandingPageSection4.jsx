@@ -12,21 +12,21 @@ const LandingPageSection4 = () => {
     "Al-Yeqeen Bot"
   ];
   const alyeqeenAppContent = [
-    "An ultimate attendance tacker",
-    "An optimised calculator",
-    "An authentic currency converter",
-    "Enjoy Classic Music",
-    "Confirm Assessment tracker",
-    "Original Bot"
+    "A simple and efficient tool for tracking attendance in schools, helping teachers and students stay organised. Also suitable for workplaces that require attendance monitoring.",
+    "A fast and reliable calculator for all your mathematical needs, from basic arithmetic to advanced functions.",
+    "Instantly convert currencies with real-time exchange rates to make international transactions easier.",
+    "A dedicated platform to showcase and stream my music, giving listeners easy access to my latest tracks.",
+    "Designed for schools, this tool helps teachers and students keep track of assessments, scores, and progress effortlessly.",
+    "A smart assistant that introduces users to me and my projects, providing insights and updates in an interactive way."
   ];
   const cardContainerStyling =
-    "flex flex-col gap-y-4 border border-zinc-400 shadow-sm shadow-sky-900 rounded-2xl bg-[#FFFCF9] w-[450px] h-[450px] p-6 mb-6";
+    "flex flex-col justify-between gap-y-4 border border-mydarkblue bg-gradient-to-l from-green-50 to-yellow-50 transform duration-1000 hover:scale-110 hover:shadow-sm shadow-blue-900 rounded-2xl bg-[#FFFCF9] w-[450px] h-[450px] p-6 mb-6";
   const logoStyle = "w-[150px] h-[80px]";
-  const transparentButtonStyle = "text-white bg-blue-900 border-[#02132D] rounded-md p-4 font-semibold transform hover:scale-110";
+  const transparentButtonStyle = "text-mydarkblue border-2 border-[#02132D] rounded-md p-4 font-bold transform hover:scale-110";
   return (
-    <div className="bg-gradient-to-r from-gray-300 to-yellow-50 py-4 px-20 font-semibold text-[#02132D] flex flex-col gap-y-10">
+    <div className="bg-gradient-to-r from-blue-200 to-green-100 py-4 px-20 font-semibold text-[#02132D] flex flex-col gap-y-10">
       <h1 className="font-bold flex items-center justify-center text-[30px]">Al-Yeqeen Apps</h1>
-      <div className="flex gap-x-4 p-6 rounded-lg overflow-auto scrollbar scrollbar-thumb-[#02132D] scrollbar-w-2">
+      <div className="flex gap-x-8 p-6 rounded-lg overflow-auto scrollbar scrollbar-thumb-[#02132D] [&::-webkit-scrollbar-thumb]:rounded-full">
         {alyeqeenAppTitle.map((title, index) => {
           return (
             <AlyeqeenAppCard

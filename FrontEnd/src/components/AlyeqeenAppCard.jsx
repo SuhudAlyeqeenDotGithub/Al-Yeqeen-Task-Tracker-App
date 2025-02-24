@@ -13,6 +13,9 @@ const AlyeqeenAppCard = ({ cardStyling, appLogo, logoAlt, logoStyling, appName, 
           </div>
 
           <p>{appDescription}</p>
+          <button type="button" title={"Try " + appName} className="bg-mydarkblue text-white w-full rounded-md p-4 font-bold">
+            Explore {appName}
+          </button>
         </div>
       </a>
     </>

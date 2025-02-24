@@ -68,7 +68,7 @@ function TasksPage() {
   }, [location]);
 
   const taskContainerStyle =
-    "transform hover:scale-95 cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between";
+    "transform duration-500 hover:scale-95 cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between";
   const regularButtonStyle = `cursor-pointer text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] shadow-md flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
 
   const [filterInputs, setFilterInputs] = useState({
@@ -590,7 +590,7 @@ function TasksPage() {
       {/* top task controller */}
 
       <div className="top-[195px] w-full flex flex-col items-center justify-center bg-white z-20">
-        <h1 className="text-[#0B1869] font-semibold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2 transform hover:scale-110">
+        <h1 className="text-[#0B1869] font-bold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2 transform hover:scale-110">
           Hello {userName}, Let's add some tasks and complete some
         </h1>
         <div className="bg-white border w-[50%] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center relative">

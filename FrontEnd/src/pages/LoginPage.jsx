@@ -69,7 +69,7 @@ const LoginPage = () => {
     }
   };
 
-  const loginBackground = `bg  bg-cover bg-center h-screen w-full flex justify-center items-center`;
+  const loginBackground = `w-full flex flex-col h-screen justify-center items-center font-nunito`;
   const LoginIcon = <FontAwesomeIcon icon={faSignInAlt} size="1x" />;
   const buttonStyling = `${hideSubmitBtn ? "hidden" : ""} bg-[#0B1869] text-white text-sm font-semibold px-4 py-2 rounded w-full hover:bg-[#0B1869] mt-4`;
   const hoverUnderline = "text-sm mt-2 text-[#0B1869] text-center font-semibold hover:underline";
@@ -79,13 +79,13 @@ const LoginPage = () => {
     <div className={loginBackground}>
       <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-[#0B1869] shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
       <Link title="Al-Yeqeen Task Tracker Home" to="/">
-          <ToDoLogo logoStyling="w-30 h-28" />
+          <ToDoLogo logoStyling="w-40 h-20" />
         </Link>
 
         <div className="w-full flex flex-col mt-4 mb-2">
           <p className="text-[#0B1869] text-xl font-bold mb-3 text-center">Log In {LoginIcon}</p>
 
-          <AllPurposeLabel labelStyling="text-[#0B1869] font-semibold  mb-5 text-center text-sm">Please Enter Your Log In Details</AllPurposeLabel>
+          <AllPurposeLabel labelStyling="text-[#0B1869] font-bold  mb-5 text-center text-sm">Please Enter Your Log In Details</AllPurposeLabel>
         </div>
 
         <form className="w-full space-y-4" onSubmit={handleLoginUser}>
