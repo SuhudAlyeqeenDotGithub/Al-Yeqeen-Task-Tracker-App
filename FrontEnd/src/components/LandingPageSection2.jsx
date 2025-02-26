@@ -11,7 +11,7 @@ import taskManagement from "../assets/taskManagement.png";
 import taskPresentation from "../assets/taskPresentation.png";
 import fullInterfaceVideo from "../assets/fullInterfaceVideo.mp4";
 
-
+ 
 const LandingPageSection2 = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const taskAccordionTitleList = ["Friendly Navigation", "Filtering Section", "Task Layout", "Task Operations"];
