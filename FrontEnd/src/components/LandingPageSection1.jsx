@@ -5,8 +5,6 @@ import LandingPageHeader from "../components/LandingPageHeader";
 
 const LandingPageSection1 = () => {
   const topHeroTexts = [
-    "A Practical Task Tracker to Help You Stay Productive Without the Extra Complexity.",
-    "Designed for Simplicity - Easily Manage Your Tasks and Stay on Top of Your Day.",
     "Stay Focused and Organised with a No-Nonsense Task Tracker That Works for You.",
     "A Simple and Effective Way to Keep Track of Your Daily Tasks Without the Hassle."
   ];
@@ -25,56 +23,58 @@ const LandingPageSection1 = () => {
   const blueButtonStyling =
     "flex items-center bg-[#02132D] shadow-md text-white font-semibold p-2 border border-[#02132D] rounded-md hover:scale-110 duration-300 transform ease-in transform hover:scale-110";
   return (
-    <div className="flex flex-col py-10 justify-center items-center bg-gradient-to-r from-blue-300 to-green-100 text-[#02132D] md:h-[100vh]">
-     
-      {/* build the top page to consist of hero and button sections fo 3 main divs */}
- <LandingPageHeader />
-      <div className="flex p-10 items-center justify-center">
-        <div className="md:w-1/2 flex flex-col gap-y-2 justify-center items-center md:mt-20 mt-5">
-          <Carousel textArray={topHeroTexts} duration={3000} />
-          <p className="p-4 font-semibold mb-10 text-amber-700 text-xl">Effortless Task Management at Your Fingertips</p>
-          <div className="flex gap-x-10 justify-center h-[50px]">
-            <Link to="/signup">
-              <button title="Register" type="button" className={blueButtonStyling}>
-                Get Started for Free
-              </button>
-            </Link>
-            <Link to="/login">
-              <button title="Log in" type="button" className={blueButtonStyling}>
-                Log In
-              </button>
-            </Link>
-          </div>
+<div className="relative w-full min-h-[100vh]">
+  {/* Background Video */}
+  <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover">
+    <source src="/fullInterfaceVideo.mp4" type="video/mp4" />
+  </video>
 
-          <div className="mt-10 flex justify-center">
-            <Link to="/login">
-              <button title="Your tasks" type="button" className={whiteButtonStyling}>
-                View Your Tasks
-              </button>
-            </Link>
-          </div>
-        </div>
+  {/* Overlay & Content */}
+  <div className="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-400/90 to-green-100 text-[#02132D] z-10">
+    {/* Header Section */}
+
+    {/* Hero Section */}
+    <div className="flex flex-col gap-10 items-center justify-center bg-teal-400/10 inset-0 absolute pb-5">
+      <div className="mb-10">
+        <LandingPageHeader />
       </div>
 
-      {/* left div */}
-      {/* <div className="flex flex-col gap-y-10 justify-center items-center w-full py-10">
-          <div
-            className={`duration-1000 ${
-              hoverActivated ? "scale-120" : ""
-            } font-kanit h-[150px] flex items-center text-center font-semibold italic whitespace-nowrap border-x-4 rounded-lg bg-gradient-to-l from-green-700 to-blue-900 shadow-md text-white cursor-pointer border-[#060242] px-4 transform`}
-          >
-            Stay Organized. Stay Productive. <br />
-            The Smartest Way to Track & Manage Your Tasks. <br /> Simplify Your Workflow with Al-Yeqeen Task Tracker.
-          </div>
-
+      <div className="md:w-2/3 h-2/3 flex flex-col gap-y-10 justify-center items-center px-5">
+      <div className="flex flex-col justify-center items-center"><Carousel textArray={topHeroTexts} duration={3000} />
+        <p className="p-4 font-semibold text-amber-700 text-xl">
+          Effortless Task Management at Your Fingertips
+        </p></div>
         
-          <div className="ml-20">
-            <button title="Contact Al-Yeqeen" type="button" className={whiteButtonStyling}>
-              Contact Me
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-10">
+          <div className="flex gap-x-10 justify-center">
+          <Link to="/signup">
+            <button title="Register" type="button" className={blueButtonStyling}>
+              Get Started for Free
             </button>
-          </div>
-        </div> */}
+          </Link>
+          <Link to="/login">
+            <button title="Log in" type="button" className={blueButtonStyling}>
+              Log In
+            </button>
+          </Link>
+        </div>
+
+        <div className="flex justify-center">
+          <Link to="/login">
+            <button title="Your tasks" type="button" className={whiteButtonStyling}>
+              View Your Tasks
+            </button>
+          </Link>
+        </div>
+        </div>
+        
+      </div>
     </div>
+  </div>
+</div>
+
   );
 };
 

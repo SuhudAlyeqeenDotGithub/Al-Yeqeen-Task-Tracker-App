@@ -9,7 +9,7 @@ import friendlyNav from "../assets/friendlyNavigation.png";
 import filterSort from "../assets/filtersort.png";
 import taskManagement from "../assets/taskManagement.png";
 import taskPresentation from "../assets/taskPresentation.png";
-import fullInterfaceVideo from "../assets/fullInterfaceVideo.mp4";
+import fullInterfaceVideo from "/fullInterfaceVideo.mp4";
 
  
 const LandingPageSection2 = () => {
