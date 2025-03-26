@@ -3,13 +3,12 @@ import AccordionItem from "./AccordionItem";
 import { AlyeqeenTaskTrackerInterface } from "./ToDoLogo";
 import VideoComponent from "./VideoComponent";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import fullInterface from "../assets/taskTrackerInterface.png";
 import friendlyNav from "../assets/friendlyNavigation.png";
 import filterSort from "../assets/filtersort.png";
 import taskManagement from "../assets/taskManagement.png";
 import taskPresentation from "../assets/taskPresentation.png";
-import fullInterfaceVideo from "/fullInterfaceVideo.mp4";
 
  
 const LandingPageSection2 = () => {
@@ -46,7 +45,7 @@ const LandingPageSection2 = () => {
     setMediaType(media);
   };
 
-  const interfaceVideo = <VideoComponent videoPath={fullInterfaceVideo} className="w-full" />;
+  const interfaceVideo = <VideoComponent videoPath="/fullInterfaceVideo.mp4" className="w-full" />;
   const interfaceImages = <AlyeqeenTaskTrackerInterface className="h-[1000px] w-[500px]" imgPath={imageToDisplay} />;
   const switchMediaBtnStyling = `p-2 font-semibold bg-opacity-50 rounded-md`;
 
