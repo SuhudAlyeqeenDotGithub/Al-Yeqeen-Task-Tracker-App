@@ -26,7 +26,7 @@ const LandingPageSection2 = () => {
   const taskAccordionTitleStyle =
     "whitespace-nowrap font-bold text-xl flex items-center justify-between rounded gap-x-4";
   const taskAccordionContentStyle = "flex items-center font-semibold h-[150px]";
-  const transparentButtonStyle = "border-2 border-white rounded-md p-4 font-semibold transform hover:scale-110";
+  const transparentButtonStyle = "border-2 border-white rounded-md p-4 font-semibold hover:scale-110 duration-300 transform ease-in";
   const imageToDisplay =
     openIndex === 0
       ? friendlyNav

@@ -1,9 +1,9 @@
 import Accordion from "./Accordion";
 import AccordionItem from "./AccordionItem";
 import { AlyeqeenTaskTrackerInterface } from "./ToDoLogo";
-import VideoComponent from "./VideoComponent";
+
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dashboardImage from "../assets/dashboard.png";
 
 const LandingPageSection3 = () => {
@@ -18,8 +18,10 @@ const LandingPageSection3 = () => {
   const taskAccordionTitleStyle =
     "whitespace-nowrap font-bold text-xl flex items-center justify-between rounded gap-x-4";
   const taskAccordionContentStyle = "flex items-center font-semibold h-[150px]";
-  const transparentButtonStyle = "border-2 border-[#02132D] rounded-md p-4 font-bold hover:scale-110";
-  const blueButtonStyle = "rounded-md bg-mydarkblue p-4 text-white font-bold hover:scale-110";
+  const transparentButtonStyle =
+    "border-2 border-[#02132D] rounded-md p-4 font-bold hover:scale-110 duration-300 transform ease-in";
+  const blueButtonStyle =
+    "rounded-md bg-mydarkblue p-4 text-white font-bold hover:scale-110 duration-300 transform ease-in";
 
   const handleToggle = (index) => {
     setOpenIndex((openIndex) => (openIndex === index ? null : index));
@@ -34,7 +36,7 @@ const LandingPageSection3 = () => {
       {/* div one title */}
 
       <div className="flex items-center justify-between">
-        <div className="text-center font-bold text-[30px] w-full">Task Page - Adding & Managing Tasks</div>
+        <div className="text-center font-extrabold text-[30px] w-full">Task Page - Adding & Managing Tasks</div>
       </div>
       <div className="flex items-center justify-between gap-x-10 ">
         {/* task page accordion */}

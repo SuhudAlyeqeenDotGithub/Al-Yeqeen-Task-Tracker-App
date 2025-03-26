@@ -14,7 +14,7 @@ const Carousel = ({ textArray, duration }) => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <p className={`flex justify-center p-2 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0 scale-95"}`}>
+    <p className={`flex p-2 md:text-center font-bold md:text-[45px] text-[30px] duration-300 ${isVisible ? "opacity-100" : "opacity-0 scale-95"}`}>
       {textArray[textIndex]}
     </p>
   );
