@@ -47,10 +47,10 @@ const LandingPageFooter = () => {
   };
 
   return (
-    <div className="text-white font-bold p-5 md:p-20 justify- bg-darkBlue1">
+    <div id="contactme" className="text-white font-bold p-5 md:p-20 justify- bg-darkBlue1">
       <div className="flex flex-col gap-10 md:gap-20 mt-20 items-center justify-center">
         <div className="w-full flex flex-col justify-center items-center">
-          <h1 id="contactme" className="font-extrabold text-[40px] text-center mb-10">
+          <h1 id="contactme" className="font-bold text-[40px] text-center mb-10">
             Contact Me
           </h1>
           <form className="w-full md:w-1/2 flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -100,7 +100,7 @@ const LandingPageFooter = () => {
               <button
                 type="submit"
                 disabled={!senderEmail || !message}
-                className="disabled:bg-red-500/ whitespace-nowrap bg-amber-600 disabled:cursor-not-allowed font-extrabold text-lg mt-5 rounded-md transform duration-100 p-4 hover:scale-105"
+                className="disabled:bg-red-500/ whitespace-nowrap bg-amber-600 disabled:cursor-not-allowed font-bold text-lg mt-5 rounded-md transform duration-100 p-4 hover:scale-105"
                 title="Submit"
               >
                 {senderEmail && message ? "Submit" : "Fill in the form Please"}

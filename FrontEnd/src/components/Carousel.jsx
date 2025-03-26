@@ -15,7 +15,7 @@ const Carousel = ({ textArray, duration }) => {
   }, []);
   return (
     <p
-      className={`flex p-2 md:text-center font-bold xl:text-[45px] text-[30px] duration-300 ${
+      className={`flex p-2 md:text-center font-extrabold xl:text-[45px] text-[30px] duration-300 ${
         isVisible ? "opacity-100" : "opacity-0 scale-95"
       }`}
     >

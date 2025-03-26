@@ -4,7 +4,7 @@ const AlyeqeenAppCard = ({ appName, appDescription, linkTo, image }) => {
   return (
     <>
       <a href={linkTo} target="_blank" rel="noopener noreferrer">
-        <div className="bg-white flex flex-col gap-8 p-4 items-center justify-center transform hover:scale-105 duration-300 w-[400px] h-[600px] rounded-lg border border-gray-400 shadow-md">
+        <div className="bg-white flex flex-col gap-8 p-4 items-center justify-center transform hover:scale-105 duration-300 md:w-[400px] w-[350px] h-[600px] rounded-lg border border-gray-400 shadow-md">
           <div>
             <h1 className="whitespace-nowrap font-extrabold text-xl">{appName}</h1>
           </div>

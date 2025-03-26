@@ -1,10 +1,7 @@
 import Accordion from "./Accordion";
 import AccordionItem from "./AccordionItem";
-import { AlyeqeenTaskTrackerInterface } from "./ToDoLogo";
-
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
 
 const LandingPageSection3 = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -15,55 +12,53 @@ const LandingPageSection3 = () => {
     "Gain valuable insights with visual charts and graphs, making it easy to track task status effortlessly.",
     "Make smarter decisions and stay organised with an intuitive overview of your workflow!"
   ];
-  const taskAccordionTitleStyle =
-    "whitespace-nowrap font-bold text-xl flex items-center justify-between rounded gap-x-4";
-  const taskAccordionContentStyle = "flex items-center font-semibold h-[150px]";
+
+  const taskAccordionContentStyle = "flex items-center font-semibold";
   const transparentButtonStyle =
-    "border-2 border-[#02132D] rounded-md p-4 font-bold hover:scale-110 duration-300 transform ease-in";
+    "border-2 border-[#02132D] whitespace-nowrap rounded-md p-4 font-bold hover:scale-110 duration-300 transform ease-in";
   const blueButtonStyle =
-    "rounded-md bg-mydarkblue p-4 text-white font-bold hover:scale-110 duration-300 transform ease-in";
+    "rounded-md bg-mydarkblue whitespace-nowrap p-4 text-white font-bold hover:scale-110 duration-300 transform ease-in";
 
   const handleToggle = (index) => {
     setOpenIndex((openIndex) => (openIndex === index ? null : index));
   };
 
-  const handleMediaSwitch = (media) => {
-    setMediaType(media);
-  };
-
   return (
-    <div className="flex flex-col bg-gradient-to-r from-cyan-600 to-purple-200 text-[#02132D] px-20 py-10">
+    <div className="flex flex-col bg-gradient-to-r from-cyan-600 to-purple-200 text-[#02132D] md:px-15 gap-10 px-5 py-10">
       {/* div one title */}
 
       <div className="flex items-center justify-between">
-        <div className="text-center font-extrabold text-[30px] w-full">Task Page - Adding & Managing Tasks</div>
+        <h1 className="text-center md:my-5 font-extrabold md:text-[35px] text-[30px] w-full">
+          Task Page - Adding & Managing Tasks
+        </h1>
       </div>
-      <div className="flex items-center justify-between gap-x-10 ">
-        {/* task page accordion */}
 
-        <div className="w-[60%] rounded-xl shadow-lg">
-          <AlyeqeenTaskTrackerInterface className="h-[1000px] w-[500px]" imgPath="/dashboard.png"/>
+      {/* div two */}
+
+      <div className="flex md:flex-row flex-col items-center justify-between gap-5 w-full">
+        {/* task page accordion */}
+        <div className="w-85 md:w-full shadow-lg">
+          <img src="/dashboard.png" />
         </div>
-        <Accordion styling="flex flex-col justify-center rounded-md p-4 w-[40%] h-[700px]">
+        <Accordion styling="flex flex-col justify-center items-center rounded-md w-0 md:w-[70%]">
           {taskAccordionTitleList.map((item, index) => (
             <AccordionItem
               key={index}
               title={taskAccordionTitleList[index]}
               content={taskAccordionContentList[index]}
-              titleStyle={taskAccordionTitleStyle}
               contentStyle={taskAccordionContentStyle}
               isOpen={openIndex === index}
               onToggle={() => {
                 handleToggle(index);
               }}
-              borderBottom="border-b-2 border-[#02132D]"
-              borderLeft="border-l-4 border-[#02132D]"
+              borderBottom="border-b-2"
+              borderLeft="border-l-4"
             />
           ))}
         </Accordion>
       </div>
       {/* div 3 button */}
-      <div className="flex gap-20 mt-5 justify-center">
+      <div className="flex flex-col md:flex gap-5 mt-10 justify-center items-center">
         <Link to="/signup">
           <button title="Register" type="button" className={transparentButtonStyle}>
             Try it Now - It's Free

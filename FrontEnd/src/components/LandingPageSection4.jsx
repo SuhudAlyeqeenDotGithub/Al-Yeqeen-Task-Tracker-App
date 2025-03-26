@@ -1,7 +1,5 @@
 import AlyeqeenAppCard from "./AlyeqeenAppCard";
 
-import { Link } from "react-router-dom";
-
 const LandingPageSection4 = () => {
   const alyeqeenApps = [
     {
@@ -27,25 +25,27 @@ const LandingPageSection4 = () => {
     }
   ];
 
-
   const transparentButtonStyle =
-    "text-mydarkblue border-2 border-[#02132D] rounded-md p-4 font-bold transform hover:scale-110 duration-300";
+    "text-mydarkblue bg-amber-500 rounded-md p-4 font-bold transform hover:scale-105 duration-300 ease-in";
   return (
-    <div className="bg-gradient-to-r from-blue-200 to-green-100 py-10 px-20 font-semibold text-[#02132D] flex flex-col items-center justify-center gap-y-10">
-      <h1 className="flex items-center justify-center text-[30px] font-extrabold">Al-Yeqeen Apps</h1>
-      <div className="flex gap-x-8 p-6 rounded-lg overflow-auto scrollbar scrollbar-thumb-[#02132D] [&::-webkit-scrollbar-thumb]:rounded-full">
-        {alyeqeenApps.map(({ name, description, visitLink, image }) => {
+    <div
+      id="alyeqeenapps"
+      className="bg-gradient-to-r from-blue-200 to-green-100 py-10 md:px-20 font-semibold text-[#02132D] flex flex-col items-center justify-center gap-y-10"
+    >
+      <h1 className="flex items-center justify-center font-extrabold md:text-[35px] text-[30px]">Al-Yeqeen Apps</h1>
+      <div className="flex flex-col md:flex-row gap-8">
+      {alyeqeenApps.map(({ name, description, visitLink, image }) => {
           return (
             <AlyeqeenAppCard key={name} appName={name} appDescription={description} linkTo={visitLink} image={image} />
           );
         })}
       </div>
       <div className="mt-5 flex justify-center">
-        <Link to="/signup">
+        <a href="https://suhud-ayodeji-yekini-portfolio.vercel.app/" target="_blank">
           <button title="Register" type="button" className={transparentButtonStyle}>
             Learn More About Al-Yeqeen
           </button>
-        </Link>
+        </a>
       </div>
     </div>
   );
