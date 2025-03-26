@@ -23,14 +23,11 @@ const LandingPageSection1 = () => {
   const blueButtonStyling =
     "flex items-center bg-[#02132D] shadow-md text-white font-semibold p-2 border border-[#02132D] rounded-md hover:scale-110 duration-300 transform ease-in transform hover:scale-110";
   return (
-<div className="relative w-full min-h-[100vh]">
+<div className="relative w-full min-h-[100vh] bg-[url('/taskTrackerInterface.png')]">
   {/* Background Video */}
-  <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover">
-    <source src="/fullInterfaceVideo.mp4" type="video/mp4" />
-  </video>
 
   {/* Overlay & Content */}
-  <div className="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-400/90 to-green-100 text-[#02132D] z-10">
+  <div className="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-400/95 to-green-200/95 text-[#02132D] z-10">
     {/* Header Section */}
 
     {/* Hero Section */}

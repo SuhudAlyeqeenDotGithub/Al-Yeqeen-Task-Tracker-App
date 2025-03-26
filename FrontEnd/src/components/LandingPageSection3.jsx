@@ -4,7 +4,7 @@ import { AlyeqeenTaskTrackerInterface } from "./ToDoLogo";
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import dashboardImage from "../assets/dashboard.png";
+
 
 const LandingPageSection3 = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -42,7 +42,7 @@ const LandingPageSection3 = () => {
         {/* task page accordion */}
 
         <div className="w-[60%] rounded-xl shadow-lg">
-          <AlyeqeenTaskTrackerInterface className="h-[1000px] w-[500px]" imgPath={dashboardImage} />
+          <AlyeqeenTaskTrackerInterface className="h-[1000px] w-[500px]" imgPath="/dashboard.png"/>
         </div>
         <Accordion styling="flex flex-col justify-center rounded-md p-4 w-[40%] h-[700px]">
           {taskAccordionTitleList.map((item, index) => (
