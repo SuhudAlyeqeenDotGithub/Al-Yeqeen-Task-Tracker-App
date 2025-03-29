@@ -5,11 +5,11 @@ function Navigation() {
   const location = useLocation();
   const isActivePage = (path) => location.pathname === path && "border-b-4 border-[#0B1869]";
 
-  const linkClass = "hover:bg-[#0B1869] text-[#0B1869] font-bold p-2 rounded-md hover:text-white hover:border-none";
+  const linkClass = "hover:bg-[#0B1869] text-[#0B1869] font-semibold p-2 rounded-md hover:text-white hover:border-none";
 
   return (
     <nav>
-      <ul className="flex sm:flex-wrap space-x-4 justify-center">
+      <ul className="flex space-x-4 justify-center">
         <li className="whitespace-nowrap">
           <Link
             to="/alyeqeenTaskTracker/mytasks"

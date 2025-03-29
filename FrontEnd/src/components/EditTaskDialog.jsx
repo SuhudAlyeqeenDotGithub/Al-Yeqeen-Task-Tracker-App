@@ -82,8 +82,8 @@ const EditTaskDialog = ({ taskData }) => {
   };
 
   const scrollBarStyling = `overflow-auto scrollbar scrollbar-thumb-white scrollbar-track-[#0B1869]`;
-  const dialogueStyling = `${scrollBarStyling}  bg-white z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pl-8 pr-8 pt-2 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col pb-8 min-h-[400px] max-h-[650px]`;
-  const overlayStyling = `fixed bg-blue-100 bg-opacity-90 inset-0 border z-30 flex justify-center items-center`;
+  const dialogueStyling = `${scrollBarStyling}  bg-gray-50 z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pl-8 pr-8 pt-2 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col pb-8 min-h-[400px] max-h-[650px]`;
+  const overlayStyling = `fixed inset-0 border z-30 flex justify-center items-center`;
   const textAreaStyling = `shadow-sm border border-blue-900 placeholder-[#0B1869] text-[#0B1869] text-sm font-semibold border border-blue-500 w-full p-2 rounded focus:border-2 border-blue-500 outline-none`;
   const buttonStyling = `${
     taskName === "" ? "hidden" : ""

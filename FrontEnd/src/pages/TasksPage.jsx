@@ -1,10 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getTasks,
-  addTask,
-  deleteTasks,
-  editTask,
-} from "../reduxFeatures/taskState/taskThunk";
+import { getTasks, addTask, deleteTasks, editTask } from "../reduxFeatures/taskState/taskThunk";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import {
   setNewTaskDialogIsOpen,
@@ -13,7 +8,7 @@ import {
   setEditDialogTaskFromViewIsOpen,
   setViewTaskDataToExport,
   setDeleteTaskDialogIsOpen,
-  setDeleteTaskFromView,
+  setDeleteTaskFromView
   // setRegularCheckBoxStatus
 } from "../reduxFeatures/dialogSlice";
 
@@ -24,11 +19,7 @@ import NewTaskDialog from "../components/NewTaskDialog";
 import ViewTaskDialog from "../components/ViewTaskDialog";
 import EditTaskDialog from "../components/EditTaskDialog";
 import { useLocation } from "react-router-dom";
-import {
-  disableScroll,
-  formatDate,
-  formatDateToDefault,
-} from "../UtilityFunctions/UtilityFunctions";
+import { disableScroll, formatDate, formatDateToDefault } from "../UtilityFunctions/UtilityFunctions";
 import DeleteTaskDialog from "../components/deleteTaskDialog";
 import AllPurposeLabel from "../components/AllPurposeLabel";
 import { TaskStatusChip } from "../components/ShortComponents";
@@ -42,22 +33,14 @@ function TasksPage() {
     editTaskDialogFromViewIsOpen,
     viewTaskDataToExport,
     deleteTaskDialogIsOpen,
-    deleteTaskFromView,
+    deleteTaskFromView
     // regularCheckBoxStatus
   } = useSelector((state) => state.dialog);
 
   const dispatch = useDispatch();
 
-  const { userId, userName, userToken } = JSON.parse(
-    localStorage.getItem("user")
-  );
-  const {
-    tasks: tasksData,
-    isSuccess,
-    isLoading,
-    isError,
-    errorMessage,
-  } = useSelector((state) => state.task);
+  const { userId, userName, userToken } = JSON.parse(localStorage.getItem("user"));
+  const { tasks: tasksData, isSuccess, isLoading, isError, errorMessage } = useSelector((state) => state.task);
 
   // fetchses the latest tasks every time the location or path is loaded/refreshed
   const location = useLocation();
@@ -68,19 +51,19 @@ function TasksPage() {
   }, [location]);
 
   const taskContainerStyle =
-    "transform duration-500 hover:scale-95 cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full max-w-[600px] min-w-[400px] items-center justify-between";
-  const regularButtonStyle = `cursor-pointer text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] shadow-md flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
+    "transform duration-500 hover:scale-95 cursor-pointer gap-2 text-[#0B1869] font-semibold p-2 bg-white border-b border-t border-[#0B1869] shadow-sm shadow-[#0B1869] mb-1 rounded mr-1 ml-1 flex flex-row w-full md:w-[40vw] xl:w-[30vw] w-[95vw] items-center justify-between";
+  const regularButtonStyle = `whitespace-nowrap cursor-pointer text-white  bg-[#0B1869] hover:bg-[#0B1869]/95 font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] shadow-md flex items-center justify-center hover:bg-[#0B1869]  hover:text-white hover:border-none gap-2`;
 
   const [filterInputs, setFilterInputs] = useState({
     sortOption: "",
     filterOption: "",
-    searchTaskInput: "",
+    searchTaskInput: ""
   });
 
   const { sortOption, filterOption, searchTaskInput } = filterInputs;
   const [filterDates, setFilterDates] = useState({
     filterStartDate: "",
-    filterEndDate: "",
+    filterEndDate: ""
   });
   const { filterStartDate, filterEndDate } = filterDates;
 
@@ -97,11 +80,8 @@ function TasksPage() {
       return tasksData;
     }
 
-    const dataToFilterAfterFilter =
-      filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
-    return dataToFilterAfterFilter.filter(
-      (task) => task.taskStatus === filterOption
-    );
+    const dataToFilterAfterFilter = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+    return dataToFilterAfterFilter.filter((task) => task.taskStatus === filterOption);
   }, [filterOption, tasksData]);
 
   useEffect(() => {
@@ -115,24 +95,16 @@ function TasksPage() {
       setClearFilterMessage(false);
       return dataToSort;
     } else if (sortOption === "Oldest Start Date") {
-      const result = [...dataToSort].sort(
-        (a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate)
-      );
+      const result = [...dataToSort].sort((a, b) => new Date(a.taskStartDate) - new Date(b.taskStartDate));
       return result;
     } else if (sortOption === "Newest Start Date") {
-      const result = [...dataToSort].sort(
-        (a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate)
-      );
+      const result = [...dataToSort].sort((a, b) => new Date(b.taskStartDate) - new Date(a.taskStartDate));
       return result;
     } else if (sortOption === "Oldest Due Date") {
-      const result = [...dataToSort].sort(
-        (a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate)
-      );
+      const result = [...dataToSort].sort((a, b) => new Date(a.taskDueDate) - new Date(b.taskDueDate));
       return result;
     } else if (sortOption === "Newest Due Date") {
-      const result = [...dataToSort].sort(
-        (a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate)
-      );
+      const result = [...dataToSort].sort((a, b) => new Date(b.taskDueDate) - new Date(a.taskDueDate));
       return result;
     }
   }, [sortOption, tasksData]);
@@ -146,8 +118,7 @@ function TasksPage() {
       return tasksData;
     }
 
-    const dataToSearchAfterSearch =
-      filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+    const dataToSearchAfterSearch = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
 
     return dataToSearchAfterSearch.filter((task) =>
       task.taskName.toLowerCase().includes(searchTaskInput.toLowerCase())
@@ -166,15 +137,14 @@ function TasksPage() {
     () =>
       filterSortStore.map((task) => {
         return {
-          [task._id]: { checked: false },
+          [task._id]: { checked: false }
         };
       }),
     [filterSortStore]
   );
   //store the mapped status objects in a state
 
-  const [regularCheckBoxStatusO, setRegularCheckBoxStatusO] =
-    useState(initialTaskStatuses);
+  const [regularCheckBoxStatusO, setRegularCheckBoxStatusO] = useState(initialTaskStatuses);
 
   // extracts the exact boolean statuses from the status objects as a flat array
   const extractedStatuses = useMemo(
@@ -189,19 +159,13 @@ function TasksPage() {
   // stores the extracted boolean statuses in a state
   // const [regularCheckBoxStatus, setRegularCheckBoxStatus] = useState(extractedStatuses);
 
-  const oneOrMoreRegBoxIsTrue = extractedStatuses.some(
-    (checkStatus) => checkStatus === true
-  );
-  const onlyOneCheckIsTrue =
-    extractedStatuses.filter((checkStatus) => checkStatus === true).length ===
-    1;
+  const oneOrMoreRegBoxIsTrue = extractedStatuses.some((checkStatus) => checkStatus === true);
+  const onlyOneCheckIsTrue = extractedStatuses.filter((checkStatus) => checkStatus === true).length === 1;
 
   const handleRegularCheckBoxOnchange = (event, taskId) => {
     event.stopPropagation();
     const updatedStatuses = [...regularCheckBoxStatusO];
-    const index = updatedStatuses.findIndex(
-      (statusOb) => Object.keys(statusOb)[0] === taskId
-    );
+    const index = updatedStatuses.findIndex((statusOb) => Object.keys(statusOb)[0] === taskId);
     const taskStatus = updatedStatuses[index][taskId].checked;
     updatedStatuses[index] = { [taskId]: { checked: !taskStatus } };
     setRegularCheckBoxStatusO(updatedStatuses);
@@ -227,7 +191,7 @@ function TasksPage() {
   const handleSelectAllCheck = () => {
     setSelectAllCheckBoxStatus(!selectAllCheckStatus);
     const updatedStatuses = Array.from(filterSortStore, (taskStatusObj) => ({
-      [taskStatusObj._id]: { checked: !selectAllCheckStatus },
+      [taskStatusObj._id]: { checked: !selectAllCheckStatus }
     }));
 
     setRegularCheckBoxStatusO(updatedStatuses);
@@ -269,7 +233,7 @@ function TasksPage() {
       const taskToEditForEditDialog = {
         ...taskToEdit,
         taskStartDate: formatDateToDefault(taskToEdit.taskStartDate),
-        taskDueDate: formatDateToDefault(taskToEdit.taskDueDate),
+        taskDueDate: formatDateToDefault(taskToEdit.taskDueDate)
       };
       setEditTaskData(taskToEditForEditDialog);
       dispatch(setEditTaskDialogIsOpen(true));
@@ -283,9 +247,7 @@ function TasksPage() {
       const tasksToDeleteLookUp = extractedStatuses
         .map((checkedBox, index) => {
           if (checkedBox === true) {
-            const foundTask = filterSortStore.find(
-              (task, taskIndex) => taskIndex === index
-            );
+            const foundTask = filterSortStore.find((task, taskIndex) => taskIndex === index);
 
             if (foundTask) {
               return foundTask;
@@ -310,8 +272,7 @@ function TasksPage() {
     setFilterInputs((prev) => ({ ...prev, filterOption: "" }));
   };
   const handleDateFilter = () => {
-    const dataToFilter =
-      filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
+    const dataToFilter = filterSortStore.length !== tasksData.length ? tasksData : filterSortStore;
 
     if (filterOption === "Start Date Range") {
       const filteredDate = dataToFilter.filter(
@@ -336,70 +297,53 @@ function TasksPage() {
   };
 
   const filterSelectStyling =
-    "font-semibold outline-none text-[#0B1869] rounded-md text-center border border-[#0B1869] p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
+    "font-semibold outline-none text-[#0B1869] w-[200px] rounded-md text-center border border-[#0B1869] p-2 text-sm focus:border-2 focus:border-2 shadow-sm shadow-blue-200";
   const searchInputStyling =
     "flex flex-row shadow-sm placeholder-[#0B1869] text-[#0B1869] rounded-lg border border-[#0B1869] text-sm font-semibold w-full p-2 shadow-sm shadow-blue-200 rounded focus:border-2 border-blue-[#0B1869] outline-none";
   const optionStyling = "font-semibold text-center";
-  const clearFilterIconStyle =
-    "text-[#0B1869] text-xl rounded-md hover:text-white hover:bg-[#0B1869]";
+  const clearFilterIconStyle = "text-[#0B1869] text-xl rounded-md hover:text-white hover:bg-[#0B1869]";
   const selectDivStyling = "flex flex-row gap-x-2 items-center";
 
   const dateInputStyling =
     "shadow-sm text-[#0B1869] text-sm font-semibold border border-blue-900 text-center p-2 rounded focus:border-2 border-blue-900 outline-none";
   const filterByDateDialog = (
-    <div className="gap-y-2 w-[200px] flex flex-col justify-center items-center border border-[#0B1869] rounded-md py-2 bg-blue-50 absolute right-full mr-1 z-40">
-      <AllPurposeLabel>Tasks Between</AllPurposeLabel>
-      <AllPurposeInput
-        styling={dateInputStyling}
-        inputType="date"
-        inputPlaceHolder=""
-        inputValue={filterStartDate}
-        inputName="filterStartDate"
-        onchangeFunction={handleFilterDatesInput}
-      />
-      <AllPurposeLabel>And</AllPurposeLabel>
-      <AllPurposeInput
-        styling={dateInputStyling}
-        inputType="date"
-        inputPlaceHolder=""
-        inputValue={filterEndDate}
-        inputName="filterEndDate"
-        onchangeFunction={handleFilterDatesInput}
-      />
-      <div className="flex flex-row gap-x-2 mt-2">
-        <button
-          className="bg-[#0B1869] p-2 rounded-md text-white hover:bg-[#0B1869]"
-          onClick={handleDateFilter}
-        >
+    <div className="gap-5 w-[70vw] md:w-[500px] md:h-[180px] flex flex-col justify-center items-center border border-[#0B1869] rounded-md py-2 bg-blue-50 absolute mr-1 z-50">
+      <div className="flex md:flex-row flex-col gap-5 items-center">
+        <AllPurposeLabel>Tasks Between</AllPurposeLabel>
+        <AllPurposeInput
+          styling={dateInputStyling}
+          inputType="date"
+          inputPlaceHolder=""
+          inputValue={filterStartDate}
+          inputName="filterStartDate"
+          onchangeFunction={handleFilterDatesInput}
+        />
+        <AllPurposeLabel>And</AllPurposeLabel>
+        <AllPurposeInput
+          styling={dateInputStyling}
+          inputType="date"
+          inputPlaceHolder=""
+          inputValue={filterEndDate}
+          inputName="filterEndDate"
+          onchangeFunction={handleFilterDatesInput}
+        />
+      </div>
+
+      <div className="flex flex-row gap-5 w-full mt-2 items-center justify-center">
+        <button className="bg-[#0B1869] w-1/4 p-2 rounded-md text-white hover:bg-[#0B1869]" onClick={handleDateFilter}>
           Filter
         </button>
-        <button
-          className="bg-red-700 p-2 rounded-md text-white  hover:bg-red-800"
-          onClick={clearFilter}
-        >
+        <button className="bg-red-700 p-2 w-1/4 rounded-md text-white  hover:bg-red-800" onClick={clearFilter}>
           Cancel
         </button>{" "}
       </div>
     </div>
   );
   const filterNav = (
-    <div className="w-full flex flex-wrap sm:flex-nowrap gap-x-6 gap-2 ">
+    <div className="w-full flex md:flex-row flex-col gap-x-6 gap-5 items-center md:justify-start justify-center">
       <div className={selectDivStyling}>
-        {sortOption !== "" ? (
-          <FaTimes
-            title="clear Sort"
-            onClick={clearSort}
-            className={clearFilterIconStyle}
-          />
-        ) : (
-          ""
-        )}
-        <select
-          className={filterSelectStyling}
-          name="sortOption"
-          value={sortOption}
-          onChange={handleFilterInputs}
-        >
+        {sortOption !== "" ? <FaTimes title="clear Sort" onClick={clearSort} className={clearFilterIconStyle} /> : ""}
+        <select className={filterSelectStyling} name="sortOption" value={sortOption} onChange={handleFilterInputs}>
           <option className={optionStyling} value="" disabled>
             Sort By
           </option>
@@ -420,21 +364,12 @@ function TasksPage() {
 
       <div className={selectDivStyling}>
         {filterOption !== "" ? (
-          <FaTimes
-            title="clear Filter"
-            onClick={clearFilter}
-            className={clearFilterIconStyle}
-          />
+          <FaTimes title="clear Filter" onClick={clearFilter} className={clearFilterIconStyle} />
         ) : (
           ""
         )}
 
-        <select
-          className={filterSelectStyling}
-          name="filterOption"
-          value={filterOption}
-          onChange={handleFilterInputs}
-        >
+        <select className={filterSelectStyling} name="filterOption" value={filterOption} onChange={handleFilterInputs}>
           <option className={optionStyling} value="" disabled>
             Filter By
           </option>
@@ -454,11 +389,7 @@ function TasksPage() {
             Due Date Range
           </option>
         </select>
-        {filterOption === "Start Date Range" || filterOption === "Due Date Range"
-        ? filterByDateDialog
-        : ""}
       </div>
-      
     </div>
   );
 
@@ -468,30 +399,19 @@ function TasksPage() {
         const taskObjForEdit = {
           ...rawtaskObj,
           taskStartDate: formatDateToDefault(rawtaskObj.taskStartDate),
-          taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate),
+          taskDueDate: formatDateToDefault(rawtaskObj.taskDueDate)
         };
 
         const todayDate = formatDateToDefault(new Date());
 
-        const {
-          _id: taskId,
-          taskName,
-          taskStartDate,
-          taskStartTime,
-          taskStatus,
-          taskDueDate,
-        } = rawtaskObj;
+        const { _id: taskId, taskName, taskStartDate, taskStartTime, taskStatus, taskDueDate } = rawtaskObj;
 
         if (regularCheckBoxStatusO.length !== filterSortStore.length) {
           setRegularCheckBoxStatusO(initialTaskStatuses);
         }
         const statusArrayToUse =
-          regularCheckBoxStatusO.length === filterSortStore.length
-            ? regularCheckBoxStatusO
-            : initialTaskStatuses;
-        const taskCheckStatus = statusArrayToUse.find(
-          (statusObj) => Object.keys(statusObj)[0] === taskId
-        );
+          regularCheckBoxStatusO.length === filterSortStore.length ? regularCheckBoxStatusO : initialTaskStatuses;
+        const taskCheckStatus = statusArrayToUse.find((statusObj) => Object.keys(statusObj)[0] === taskId);
 
         return (
           <div
@@ -501,23 +421,15 @@ function TasksPage() {
             }}
             className={taskContainerStyle}
           >
-            {/* <div>
-              startDate: {formatDate(taskStartDate)} <hr /> endDate: {formatDate(taskDueDate)}
-            </div> */}
-            <div className="mr-2">
+            <div>
               <div
                 className={`${
-                  taskObjForEdit.taskDueDate < todayDate &&
-                  taskStatus !== "Completed"
-                    ? "bg-red-600"
-                    : "bg-green-600"
+                  taskObjForEdit.taskDueDate < todayDate && taskStatus !== "Completed" ? "bg-red-600" : "bg-green-600"
                 } w-3 h-3 rounded-full justify-center`}
               ></div>
             </div>
-            <div
-              onClick={(event) => event.stopPropagation()}
-              className="flex flex-col mr-4"
-            >
+
+            <div onClick={(event) => event.stopPropagation()} className="flex flex-col mr-4">
               <AllPurposeCheckBox
                 inputId={taskId}
                 inputName={taskId}
@@ -528,14 +440,12 @@ function TasksPage() {
                 checkBoxIdentity={taskId}
               />
             </div>
-            <div className="w-full flex flex-col">
-              <div className=" basis-3/4 flex flex-row items-center justify-between max-w-full">
-                <div className="max-w-[300px] w-full">{taskName}</div>
-                <div className="max-w-md">
-                  <TaskStatusChip>{taskStatus}</TaskStatusChip>
-                </div>
-              </div>
+
+            <div className="">{taskName}</div>
+            <div className="">
+              <TaskStatusChip>{taskStatus}</TaskStatusChip>
             </div>
+
             <button
               title="edit"
               className="ml-4 hover:text-white hover:bg-[#0B1869] text-xl p-2 rounded-lg justify-center items-center"
@@ -556,51 +466,43 @@ function TasksPage() {
   const loader = (
     <div className="flex flex-col justify-center items-center space-y-5">
       <div className="w-10 h-10 border-4 border-[#0B1869] border-t-transparent rounded-full animate-spin"></div>
-      <AllPurposeLabel>
-        Please wait {userName} whilst we load your tasks.........
-      </AllPurposeLabel>
+      <AllPurposeLabel>Please wait {userName} whilst we load your tasks.........</AllPurposeLabel>
     </div>
   );
 
   const [countCheckedBoxes, setCountCheckedBoxes] = useState(0);
 
   useEffect(() => {
-    const checkedBoxes = extractedStatuses.filter(
-      (status) => status === true
-    ).length;
+    const checkedBoxes = extractedStatuses.filter((status) => status === true).length;
     setCountCheckedBoxes(checkedBoxes);
   }, [regularCheckBoxStatusO]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center relative">
       {newTaskDialogIsOpen && <NewTaskDialog />}
       {editTaskDialogIsOpen && (
         <EditTaskDialog
-          taskData={
-            editTaskDialogFromViewIsOpen && editTaskDialogIsOpen
-              ? viewTaskDataToExport
-              : editTaskData
-          }
+          taskData={editTaskDialogFromViewIsOpen && editTaskDialogIsOpen ? viewTaskDataToExport : editTaskData}
         />
       )}
       {viewTaskDialogIsOpen && <ViewTaskDialog taskData={viewTaskData} />}
-      {deleteTaskDialogIsOpen && !deleteTaskFromView && (
-        <DeleteTaskDialog tasksToDelete={tasksToDelete} />
-      )}
+      {deleteTaskDialogIsOpen && !deleteTaskFromView && <DeleteTaskDialog tasksToDelete={tasksToDelete} />}
       {/* top task controller */}
 
-      <div className="top-[195px] w-full flex flex-col items-center justify-center bg-white z-20">
-        <h1 className="text-[#0B1869] font-bold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2 transform hover:scale-110">
+      <div className="w-full flex flex-col items-center justify-center z-20 xl:sticky top-45 bg-white">
+        {filterOption === "Start Date Range" || filterOption === "Due Date Range" ? filterByDateDialog : ""}
+        <h1 className="text-[#0B1869] font-bold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2">
           Hello {userName}, Let's add some tasks and complete some
         </h1>
-        <div className="bg-white border w-[50%] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-wrap space-y-4 justify-center items-center relative">
-          <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-x-4 gap-y-2 items-center">
+
+        <div className="bg-white fixed top-0 md:relative border md:w-[70vw] gap-5 w-[95vw] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-col space-y-4 justify-center items-center">
+          <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-5 items-center justify-center">
             {/* Filters*/}
 
             {filterNav}
 
             {/* Search Input */}
-            <div className="w-full sm:w-[70%] max-w-full flex flex-row items-center space-x-2">
+            <div className="md:w-full w-[300px] max-w-full flex flex-row items-center space-x-2">
               <FaSearch className="text-[#0B1869] text-3xl shrink-0" />
               <AllPurposeInput
                 styling={searchInputStyling}
@@ -613,8 +515,8 @@ function TasksPage() {
             </div>
           </div>
 
-          <div className="flex flex-row w-full">
-            <div className="flex items-center justify-self-center ">
+          <div className="flex flex-col md:flex-row w-full items-center gap-5 justify-center">
+            <div className="flex w-full items-center">
               <AllPurposeCheckBox
                 inputId="selectAll"
                 inputName="selectAll"
@@ -623,29 +525,18 @@ function TasksPage() {
                 checked={selectAllCheckStatus}
                 isRegularCheckbox={false}
               />
+
+              <p className="row-span-2 text-[#0B1869] font-semibold w-[20%] flex ml-10 items-center whitespace-nowrap">
+                {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
+              </p>
             </div>
 
-            <p className="row-span-2 text-[#0B1869] font-semibold w-[20%] flex ml-10 items-center">
-              {oneOrMoreRegBoxIsTrue &&
-                `${countCheckedBoxes} ${
-                  countCheckedBoxes <= 1 ? "task" : "tasks"
-                } Selected`}
-            </p>
-
-            <div className="w-full flex flex-row space-x-10 justify-between">
-              <div className="flex flex-row items-center w-[50%] space-x-4 justify-center">
-                <button
-                  title="delete"
-                  className={deleteButtonStyle}
-                  onClick={handleDeleteFromNav}
-                >
+            <div className="w-full flex flex-wrap md:flex-row space-x-10 md:justify-between justify-center items-center">
+              <div className="flex flex-row items-center space-x-4 justify-center">
+                <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
                   Delete {deleteIcon}
                 </button>
-                <button
-                  title="edit"
-                  className={editButtonStyle}
-                  onClick={handleEditTaskFromNavButton}
-                >
+                <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
                   Edit {editIcon}
                 </button>
               </div>
@@ -653,7 +544,7 @@ function TasksPage() {
               <button
                 onClick={showNewTaskDialog}
                 title="Add Task"
-                className="text-[#0B1869] font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border border-[#0B1869] hover:bg-[#0B1869] hover:text-white hover:border-none"
+                className="text-white whitespace-nowrap font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border bg-[#0B1869] hover:bg-[#0B1869]/95"
               >
                 Add Task {addIcon}
               </button>
@@ -663,11 +554,7 @@ function TasksPage() {
       </div>
 
       <div className="flex flex-wrap justify-center items-center p-4 gap-2">
-        {isLoading
-          ? loader
-          : filterSortStore.length < 1
-          ? noTaskMessage
-          : tasksToDisplay}
+        {isLoading ? loader : filterSortStore.length < 1 ? noTaskMessage : tasksToDisplay}
       </div>
     </div>
   );

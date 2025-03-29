@@ -28,11 +28,11 @@ function Header() {
   };
 
   return (
-    <header className="flex flex-wrap  top-0 items-center lg:justify-between justify-center px-32 pt-16 pb-8 bg-white z-50">
+    <div className="flex flex-col md:flex-row gap-5 items-center lg:justify-between justify-center px-32 pt-16 pb-8 w-full md:sticky top-0 bg-white z-20">
 
-      <div className="justify-center flex-shrink-0">
+      <div className="justify-center flex-shrink-0 not-first-of-type:h-[90px] w-[190px]">
         <Link title="Al-Yeqeen Task Tracker Home" to="/">
-          <ToDoLogo logoStyling="h-[100px] w-[220px]" />
+          <ToDoLogo logoStyling="" />
         </Link>
       </div>
 
@@ -47,7 +47,7 @@ function Header() {
           </li>
         </ul>
       </div>
-    </header>
+    </div>
   );
 }
 
