@@ -39,8 +39,8 @@ function DashboardPage() {
   ];
 
   return (
-    <div>
-      <div className="flex flex-col gap-y-8 px-10 py-10 rounded-md border shadow-md mx-20 mt-5 bg-gradient-to-r from-blue-200 to-green-50">
+    <div className="md:px-20 px-5">
+      <div className="flex flex-col gap-y-8 md:px-10 px-5 py-10 rounded-md border shadow-md  mt-5 bg-gradient-to-r from-blue-200 to-green-50">
         <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 mr-6 min-w-[100%]">
           <div className={`${dashboardEntityStyle} bg-blue-800 text-white`}>
             <AllPurposeLabel labelStyling={labelDefaultStyling}>Total Tasks</AllPurposeLabel>
