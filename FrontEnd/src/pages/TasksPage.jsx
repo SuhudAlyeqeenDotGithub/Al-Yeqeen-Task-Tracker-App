@@ -476,6 +476,7 @@ function TasksPage() {
     const checkedBoxes = extractedStatuses.filter((status) => status === true).length;
     setCountCheckedBoxes(checkedBoxes);
   }, [regularCheckBoxStatusO]);
+  const [openFilterDia, setOpenFlterDia] = useState(true);
 
   return (
     <div className="flex flex-col items-center justify-center relative">
@@ -494,63 +495,86 @@ function TasksPage() {
         <h1 className="text-[#0B1869] font-bold flex flex-wrap justify-center text-2xl mb-6 ml-6 mt-2">
           Hello {userName}, Let's add some tasks and complete some
         </h1>
-
-        <div className="bg-white fixed top-0 md:relative border md:w-[70vw] gap-5 w-[95vw] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-col space-y-4 justify-center items-center">
-          <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-5 items-center justify-center">
-            {/* Filters*/}
-
-            {filterNav}
-
-            {/* Search Input */}
-            <div className="md:w-full w-[300px] max-w-full flex flex-row items-center space-x-2">
-              <FaSearch className="text-[#0B1869] text-3xl shrink-0" />
-              <AllPurposeInput
-                styling={searchInputStyling}
-                inputType="input"
-                inputPlaceHolder="Search Task Name ..."
-                inputValue={searchTaskInput}
-                inputName="searchTaskInput"
-                onchangeFunction={handleFilterInputs}
-              />
+        {openFilterDia ? (
+          <div className="bg-white fixed top-0 md:relative border md:w-[70vw] w-[95vw] border-[#0B1869] shadow-sm shadow-[#0B1869] py-4 px-6 m-4 rounded-md flex flex-col space-y-4 justify-center items-center">
+            <div
+              className="font-extrabold text-red-600 flex justify-end w-full hover:cursor-pointer"
+              title="Close Filter Dialog"
+              onClick={() => {
+                setOpenFlterDia(false);
+              }}
+            >
+              <p>X</p>
             </div>
-          </div>
+            <div>
+              <div className="flex flex-wrap md:flex-nowrap lg:w-full py-4 rounded-md gap-5 items-center justify-center">
+                {/* Filters*/}
 
-          <div className="flex flex-col md:flex-row w-full items-center gap-5 justify-center">
-            <div className="flex w-full items-center">
-              <AllPurposeCheckBox
-                inputId="selectAll"
-                inputName="selectAll"
-                inputValue="selectAll"
-                onchangeFunction={handleSelectAllCheck}
-                checked={selectAllCheckStatus}
-                isRegularCheckbox={false}
-              />
+                {filterNav}
 
-              <p className="row-span-2 text-[#0B1869] font-semibold w-[20%] flex ml-10 items-center whitespace-nowrap">
-                {oneOrMoreRegBoxIsTrue && `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
-              </p>
+                {/* Search Input */}
+                <div className="md:w-full w-[300px] max-w-full flex flex-row items-center space-x-2">
+                  <FaSearch className="text-[#0B1869] text-3xl shrink-0" />
+                  <AllPurposeInput
+                    styling={searchInputStyling}
+                    inputType="input"
+                    inputPlaceHolder="Search Task Name ..."
+                    inputValue={searchTaskInput}
+                    inputName="searchTaskInput"
+                    onchangeFunction={handleFilterInputs}
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="w-full flex flex-wrap md:flex-row space-x-10 md:justify-between justify-center items-center">
-              <div className="flex flex-row items-center space-x-4 justify-center">
-                <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
-                  Delete {deleteIcon}
-                </button>
-                <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
-                  Edit {editIcon}
-                </button>
+            <div className="flex flex-col md:flex-row w-full items-center gap-5 justify-center">
+              <div className="flex w-full items-center">
+                <AllPurposeCheckBox
+                  inputId="selectAll"
+                  inputName="selectAll"
+                  inputValue="selectAll"
+                  onchangeFunction={handleSelectAllCheck}
+                  checked={selectAllCheckStatus}
+                  isRegularCheckbox={false}
+                />
+
+                <p className="row-span-2 text-[#0B1869] font-semibold w-[20%] flex ml-10 items-center whitespace-nowrap">
+                  {oneOrMoreRegBoxIsTrue &&
+                    `${countCheckedBoxes} ${countCheckedBoxes <= 1 ? "task" : "tasks"} Selected`}
+                </p>
               </div>
 
-              <button
-                onClick={showNewTaskDialog}
-                title="Add Task"
-                className="text-white whitespace-nowrap font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border bg-[#0B1869] hover:bg-[#0B1869]/95"
-              >
-                Add Task {addIcon}
-              </button>
+              <div className="w-full flex flex-wrap md:flex-row space-x-10 md:justify-between justify-center items-center">
+                <div className="flex flex-row items-center space-x-4 justify-center">
+                  <button title="delete" className={deleteButtonStyle} onClick={handleDeleteFromNav}>
+                    Delete {deleteIcon}
+                  </button>
+                  <button title="edit" className={editButtonStyle} onClick={handleEditTaskFromNavButton}>
+                    Edit {editIcon}
+                  </button>
+                </div>
+
+                <button
+                  onClick={showNewTaskDialog}
+                  title="Add Task"
+                  className="text-white whitespace-nowrap font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border bg-[#0B1869] hover:bg-[#0B1869]/95"
+                >
+                  Add Task {addIcon}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <button
+            onClick={() => {
+              setOpenFlterDia(true);
+            }}
+            title="Open Filter Dialog"
+            className="text-white whitespace-nowrap font-semibold shadow-sm p-2 pr-4 pl-4 mt-2 rounded-md border bg-[#0B1869] hover:bg-[#0B1869]/95"
+          >
+            Open Filter Dialog
+          </button>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center items-center p-4 gap-2">

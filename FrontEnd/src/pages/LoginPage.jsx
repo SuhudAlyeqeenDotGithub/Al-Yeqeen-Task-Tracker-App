@@ -77,7 +77,7 @@ const LoginPage = () => {
 
   return (
     <div className={loginBackground}>
-      <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-[#0B1869] shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
+      <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-[#0B1869] shadow-lg xl:w-[29vw] md:w-[40vw] w-[90vw] flex flex-col justify-center  items-center min-h-[400px]">
       <Link title="Al-Yeqeen Task Tracker Home" to="/">
           <ToDoLogo logoStyling="w-40 h-20" />
         </Link>
@@ -125,11 +125,11 @@ const LoginPage = () => {
         </form>
 
         <div className="flex flex-col mt-3">
-          <Link to="/forgotPassword" className={hoverUnderline}>
+          {/* <Link to="/forgotPassword" className={hoverUnderline}>
             Forgot Password? Reset
-          </Link>
+          </Link> */}
           <Link to="/signup" className={hoverUnderline}>
-            Have no Account? Register
+            Have no Account? Register for free
           </Link>
         </div>
         <br />

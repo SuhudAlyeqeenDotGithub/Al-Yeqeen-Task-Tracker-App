@@ -75,7 +75,7 @@ const SignUpPage = () => {
 
   return (
     <div className={signUpBackground}>
-      <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-blue-300 shadow-lg max-w-md w-full flex flex-col justify-center  items-center min-h-[400px]">
+      <AllPurposeContainer containerStyling="bg-white p-8 rounded-xl border border-blue-300 shadow-lg xl:w-[29vw] md:w-[40vw] w-[90vw] flex flex-col justify-center  items-center min-h-[400px]">
         <Link title="Al-Yeqeen Task Tracker Home" to="/">
           <ToDoLogo logoStyling="w-40 h-20" />
         </Link>
